@@ -1,0 +1,14 @@
+{
+  "name": "@evy/styling",
+  "version": "0.1.0",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "license": "MIT",
+  "dependencies": {
+    "@chakra-ui/react": "^2.6.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.40.0",
+    "typescript": "^5.0.4"
+  }
+}

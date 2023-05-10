@@ -1,0 +1,49 @@
+{
+  "name": "@evy/nextjs",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "npm run with-env next build",
+    "clean": "git clean -xdf .next .turbo node_modules",
+    "dev": "npm run with-env next dev",
+    "lint": "dotenv -v SKIP_ENV_VALIDATION=1 next lint",
+    "lint:fix": "npm lint --fix",
+    "start": "npm run with-env next start",
+    "type-check": "tsc --noEmit",
+    "with-env": "dotenv -e ../../.env --"
+  },
+  "dependencies": {
+    "@chakra-ui/icons": "^2.0.19",
+    "@chakra-ui/react": "^2.6.1",
+    "@clerk/nextjs": "^4.17.3",
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
+    "@evy/api": "*",
+    "@evy/auth": "*",
+    "@evy/db": "*",
+    "@evy/styling": "*",
+    "@t3-oss/env-nextjs": "^0.3.1",
+    "@tanstack/react-query": "^4.29.5",
+    "@trpc/client": "^10.25.0",
+    "@trpc/next": "^10.25.0",
+    "@trpc/react-query": "^10.25.0",
+    "@trpc/server": "^10.25.0",
+    "framer-motion": "^10.12.10",
+    "next": "^13.4.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "superjson": "1.9.1",
+    "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "@evy/eslint-config": "*",
+    "@types/node": "^18.16.5",
+    "@types/react": "^18.2.6",
+    "@types/react-dom": "^18.2.4",
+    "autoprefixer": "^10.4.14",
+    "dotenv-cli": "^7.2.1",
+    "eslint": "^8.40.0",
+    "postcss": "^8.4.23",
+    "typescript": "^5.0.4"
+  }
+}
