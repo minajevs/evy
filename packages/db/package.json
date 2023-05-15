@@ -8,7 +8,7 @@
     "clean": "rm -rf .turbo node_modules",
     "db:generate": "npm run with-env prisma generate",
     "db:push": "npm run with-env prisma db push --skip-generate",
-    "dev": "npm run with-env prisma studio --port 5556",
+    "dev:prisma": "npm run with-env prisma studio --port 5556",
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {

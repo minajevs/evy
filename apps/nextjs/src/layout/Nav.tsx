@@ -5,10 +5,14 @@ import { useBackgroundColor } from "@evy/styling"
 import { UserButton } from "@clerk/nextjs"
 
 export const Nav = () => {
-  const background = useBackgroundColor()
   const { colorMode, toggleColorMode } = useColorMode()
+  const bg = useBackgroundColor('navigation')
   return <>
-    <Box bg={background} px={4}>
+    <Box
+      px={4}
+      bg={bg}
+      borderBottom='1px'
+      borderBottomColor={useBackgroundColor('bold-border')}>
       <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
         <Box>
           <Link href="/">
