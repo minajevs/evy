@@ -1,6 +1,9 @@
-import { Box, Flex, type BoxProps, CloseButton } from "@chakra-ui/react"
+import { Box, Flex, type BoxProps, CloseButton, Stack, Button, useColorMode, Text, Divider, VStack } from "@chakra-ui/react"
 import { NavItem } from "./NavItem"
 import { useBackgroundColor } from "@evy/styling"
+import { UserButton } from "@clerk/nextjs"
+import { MoonIcon, SunIcon } from "@chakra-ui/icons"
+import { Link } from "@chakra-ui/next-js"
 
 export type LinkItem = {
   name: string
@@ -13,6 +16,7 @@ type SidebarProps = {
 } & BoxProps
 
 export const SidebarContent = ({ onClose, linkItems, ...rest }: SidebarProps) => {
+  const { colorMode, toggleColorMode } = useColorMode()
   const bg = useBackgroundColor('navigation')
   return (
     <Box
@@ -23,14 +27,34 @@ export const SidebarContent = ({ onClose, linkItems, ...rest }: SidebarProps) =>
       pos="fixed"
       h="full"
       {...rest}>
-      <Flex h='10' alignItems="center" mx="8" justifyContent="space-between">
-        <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
-      </Flex>
-      {linkItems.map((link) => (
-        <NavItem key={link.name}>
-          {link.name}
-        </NavItem>
-      ))}
+      <VStack h='full' justifyContent='space-between'>
+        <Box>
+          <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
+            <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
+              <Link href="/">
+                📚 Evy
+              </Link>
+            </Text>
+            <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
+          </Flex>
+          {linkItems.map((link) => (
+            <NavItem key={link.name}>
+              {link.name}
+            </NavItem>
+          ))}
+          <NavItem>
+            + Add new collection
+          </NavItem>
+        </Box>
+        <Box px="8" py="16">
+          <Stack direction={'row'} spacing={7}>
+            <Button variant='ghost' onClick={toggleColorMode}>
+              {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+            </Button>
+            <UserButton />
+          </Stack>
+        </Box>
+      </VStack>
     </Box>
   )
 }

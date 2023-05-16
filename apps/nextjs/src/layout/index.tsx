@@ -25,9 +25,8 @@ const Layout = ({ children, collections, title }: Props) => {
       <link rel="icon" href="/favicon.ico" />
     </Head>
     <Box minH="100vh" bg={bg}>
-      <Nav />
       <Sidebar linkItems={linkItems} />
-      <Box ml={{ base: 0, md: 60 }} p="4">
+      <Box ml={{ base: 0, md: 60 }} p="8">
         {children}
       </Box>
     </Box>
