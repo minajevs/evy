@@ -1,9 +1,10 @@
 import { Box, Flex, type BoxProps, CloseButton, Stack, Button, useColorMode, Text, Divider, VStack } from "@chakra-ui/react"
-import { NavItem } from "./NavItem"
+import { NavItemLink } from "./NavItem"
 import { useBackgroundColor } from "@evy/styling"
 import { UserButton } from "@clerk/nextjs"
 import { MoonIcon, SunIcon } from "@chakra-ui/icons"
 import { Link } from "@chakra-ui/next-js"
+import NewCollection from "~/components/new-collection"
 
 export type LinkItem = {
   name: string
@@ -38,13 +39,11 @@ export const SidebarContent = ({ onClose, linkItems, ...rest }: SidebarProps) =>
             <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
           </Flex>
           {linkItems.map((link) => (
-            <NavItem key={link.name}>
+            <NavItemLink key={link.name}>
               {link.name}
-            </NavItem>
+            </NavItemLink>
           ))}
-          <NavItem>
-            + Add new collection
-          </NavItem>
+          <NewCollection />
         </Box>
         <Box px="8" py="16">
           <Stack direction={'row'} spacing={7}>
