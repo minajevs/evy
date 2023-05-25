@@ -1,22 +1,27 @@
-import { Button, FormControl, FormErrorMessage, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure } from "@chakra-ui/react"
-import { type SubmitHandler } from "react-hook-form"
+import { Button, FormControl, FormErrorMessage, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Textarea, useDisclosure } from "@chakra-ui/react"
 import { NavItemBase } from "~/layout/sidebar/NavItem"
-import { type NewCollectionType, useNewCollectionForm } from "./form"
+import { useForm } from "../forms"
+import { api } from "~/utils/api"
+import { newCollectionSchema } from "@evy/api/schemas"
+import { useRouter } from "next/router"
 
 export const NewCollection = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const router = useRouter()
 
   const {
     handleSubmit,
     register,
-    formState: { errors, isSubmitting, isDirty, isValid },
-  } = useNewCollectionForm()
+    formState: { errors, isDirty, isValid },
+  } = useForm({ schema: newCollectionSchema, })
 
-  const onSubmit: SubmitHandler<NewCollectionType> = ({ name }) => {
-    console.log(name)
-  }
+  const createMutation = api.collection.create.useMutation()
 
-  console.log(errors)
+  const onSubmit = handleSubmit(async (input) => {
+    await createMutation.mutateAsync(input)
+    onClose()
+    await router.replace(router.asPath)
+  })
 
   return <>
     <NavItemBase onClick={onOpen}>
@@ -28,25 +33,31 @@ export const NewCollection = () => {
     >
       <ModalOverlay />
       <ModalContent>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={onSubmit}>
           <ModalHeader>Create a collection</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
-            <FormControl isInvalid={errors.name !== undefined}>
-              <FormLabel htmlFor="name">First name</FormLabel>
+            <FormControl isInvalid={errors.name !== undefined} isRequired={true}>
+              <FormLabel htmlFor="name">Collection name</FormLabel>
               <Input
-                id="name"
                 {...register('name')}
-                placeholder='First name'
+                placeholder='Name'
               />
               <FormErrorMessage>
                 {errors.name?.message}
               </FormErrorMessage>
             </FormControl>
 
-            <FormControl mt={4}>
-              <FormLabel>Last name</FormLabel>
-              <Input placeholder='Last name' />
+            <FormControl isInvalid={errors.description !== undefined} mt={4}>
+              <FormLabel>Collection description</FormLabel>
+              <Textarea
+                {...register('description')}
+                placeholder='Placeholder'
+                resize='vertical'
+              />
+              <FormErrorMessage>
+                {errors.description?.message}
+              </FormErrorMessage>
             </FormControl>
           </ModalBody>
 

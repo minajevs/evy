@@ -4,18 +4,10 @@ import { type Collection, prisma } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
 import Layout from "~/layout"
 
-type Props = {
-  collections: Collection[]
-}
-
-const MyPage: NextPage<Props> = ({ collections }) => {
+const MyPage: NextPage = () => {
   return <>
-    <Layout title="My" collections={collections}>
-      {
-        collections.length === 0
-          ? <NoCollections />
-          : ''
-      }
+    <Layout title="My" collections={[]}>
+      <NoCollections />
     </Layout>
   </>
 }
@@ -27,7 +19,7 @@ const NoCollections = () => {
   </>
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res }) => {
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const auth = getAuth(req)
 
   if (!auth.userId) {
@@ -40,11 +32,11 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res }
     }
   })
 
-  return {
-    props: {
-      collections
-    }
+  if (collections.length === 0) {
+    return { props: {} }
   }
+
+  return { redirect: { destination: `/app/my/${collections[0]!.id}`, permanent: false } }
 }
 
 export default MyPage
