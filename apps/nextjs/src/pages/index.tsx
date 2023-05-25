@@ -14,8 +14,8 @@ const Home: NextPage = () => {
   );
 }
 
-export async function getServerSideProps({ req, res }: GetServerSidePropsContext) {
-  const auth = await getAuth(req)
+export function getServerSideProps({ req, res }: GetServerSidePropsContext) {
+  const auth = getAuth(req)
 
   if (!auth.userId) {
     return {}

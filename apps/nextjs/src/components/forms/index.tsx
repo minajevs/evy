@@ -1,5 +1,4 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { type ComponentProps } from 'react'
 import {
 	useForm as useHookForm,
 	type UseFormProps as UseHookFormProps,
