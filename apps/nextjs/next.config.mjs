@@ -11,13 +11,11 @@ const config = {
   typescript: { ignoreBuildErrors: true },
   // https://github.com/vercel/next.js/discussions/39549
   webpack(config, { nextRuntime }) {
-    if (typeof nextRuntime === 'undefined') {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-      }
+    if (nextRuntime !== 'nodejs') return config
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      fs: false,
     }
-
     return config
   },
 }
