@@ -43,7 +43,7 @@ jobs:
         run: npm ci
 
       - name: Build, lint and type-check
-        run: npm turbo build lint type-check
+        run: npx turbo build lint type-check
 
       - name: Check workspaces
-        run: npm manypkg check
+        run: npx manypkg check
