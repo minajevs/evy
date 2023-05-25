@@ -1,5 +1,5 @@
 import type { GetServerSidePropsContext, NextPage } from "next"
-import { clerkClient, getAuth, buildClerkProps } from "@clerk/nextjs/server"
+import { getAuth } from "@clerk/nextjs/server"
 import Layout from "~/layout"
 
 const Home: NextPage = () => {
@@ -8,7 +8,7 @@ const Home: NextPage = () => {
   // });
 
   return (
-    <Layout>
+    <Layout collections={[]}>
       Hello!
     </Layout>
   );
