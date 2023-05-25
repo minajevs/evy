@@ -17,6 +17,8 @@ jobs:
   build-lint:
     env:
       DATABASE_URL: file:./db.sqlite
+      NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: key
+      CLERK_SECRET_KEY: key
     runs-on: ubuntu-latest
 
     steps:
