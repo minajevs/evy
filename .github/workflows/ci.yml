@@ -2,9 +2,9 @@ name: CI
 
 on:
   pull_request:
-    branches: ["*"]
+    branches: ['*']
   push:
-    branches: ["main"]
+    branches: ['main']
   merge_group:
 
 # You can leverage Vercel Remote Caching with Turbo to speed up your builds
@@ -23,37 +23,27 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2.2.4
-
       - name: Setup Node 18
         uses: actions/setup-node@v3
         with:
           node-version: 18
+          cache: npm
 
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        run: |
-          echo "pnpm_cache_dir=$(pnpm store path)" >> $GITHUB_OUTPUT
-
-      - name: Setup pnpm cache
+      - name: Setup npm cache
         uses: actions/cache@v3
+        id: npm-cache
         with:
-          path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+            ${{ runner.os }}-node-
 
       - name: Install deps (with cache)
-        run: pnpm install
-
-      # Normally, this would be done as part of the turbo pipeline - however since the Expo app doesn't depend on `@evy/db` it doesn't care.
-      # TODO: Free for all to find a better solution here.
-      - name: Generate Prisma Client
-        run: pnpm turbo db:generate
+        if: steps.npm-cache.outputs.cache-hit != 'true'
+        run: npm ci
 
       - name: Build, lint and type-check
-        run: pnpm turbo build lint type-check
+        run: npm turbo build lint type-check
 
       - name: Check workspaces
-        run: pnpm manypkg check
+        run: npm manypkg check
