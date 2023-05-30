@@ -1,21 +1,42 @@
-import { Heading, Text } from "@chakra-ui/react"
+import { Card, CardBody, Heading, SimpleGrid, Text } from "@chakra-ui/react"
 import { getAuth } from "@clerk/nextjs/server"
-import { type Collection, prisma } from "@evy/db"
+import { type Collection, prisma, type Item } from "@evy/db"
+import { m } from "framer-motion"
 import type { GetServerSideProps, NextPage } from "next"
 import { z } from "zod"
+import { NewItem } from "~/components/new-item"
 import Layout from "~/layout"
 
 type Props = {
   collections: Collection[]
-  collection: Collection
+  collection: Collection & { items: Item[] }
 }
 
 const CollectionPage: NextPage<Props> = ({ collections, collection }) => {
   return <>
     <Layout title="Collection" collections={collections}>
       <Heading size="lg" mb="4">{collection.name}</Heading>
-      <Text>{collection.description}</Text>
+      <Text mb='8'>{collection.description}</Text>
+      <ItemList items={collection.items} />
     </Layout>
+  </>
+}
+
+type ItemListProps = {
+  items: Item[]
+}
+const ItemList = ({ items }: ItemListProps) => {
+
+  const itemViews = items.map(item => <>
+    {item.name}
+  </>)
+
+  return <>
+    <Heading size="md" mb='4'>Items</Heading>
+    <SimpleGrid columns={4} spacing='8'>
+      <NewItem />
+      {itemViews}
+    </SimpleGrid>
   </>
 }
 
@@ -28,22 +49,31 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
 
   const { id } = paramsSchema.parse(params)
 
-  const collections = await prisma.collection.findMany({
+  const currentCollection = await prisma.collection.findFirst({
     where: {
-      userId: auth.userId
+      userId: auth.userId,
+      id,
+    },
+    include: {
+      items: true
     }
   })
 
-  const collection = collections.find(x => x.id === id)
-
-  if (collection === undefined) {
+  if (currentCollection === null) {
     return { redirect: { destination: '/app/my', permanent: false } }
   }
 
+  const allCollections = await prisma.collection.findMany({
+    where: {
+      userId: auth.userId
+    },
+  })
+
+
   return {
     props: {
-      collections,
-      collection
+      collections: allCollections,
+      collection: currentCollection
     }
   }
 }

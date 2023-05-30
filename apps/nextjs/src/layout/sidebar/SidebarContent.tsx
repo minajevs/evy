@@ -27,6 +27,7 @@ export const SidebarContent = ({ onClose, linkItems, ...rest }: SidebarProps) =>
       w={{ base: 'full', md: 60 }}
       pos="fixed"
       h="full"
+      boxShadow='lg'
       {...rest}>
       <VStack h='full' justifyContent='space-between'>
         <Box>
