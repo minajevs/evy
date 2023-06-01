@@ -11,7 +11,7 @@ const MyApp: AppType = ({
   pageProps: { ...pageProps },
 }) => {
   return (
-    <ClerkProvider {...pageProps} >
+    <ClerkProvider {...pageProps}>
       <ChakraProvider theme={theme}>
         <Component {...pageProps} />
       </ChakraProvider>
