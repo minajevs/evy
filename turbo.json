@@ -24,6 +24,10 @@
     },
     "lint": {},
     "lint:fix": {},
+    "@evy/nextjs#start": {
+      "cache": false,
+      "dependsOn": []
+    },
     "clean": {
       "cache": false
     },

@@ -1,6 +1,6 @@
 import { Heading, Text } from "@chakra-ui/react"
 import { getAuth } from "@clerk/nextjs/server"
-import { type Collection, prisma } from "@evy/db"
+import { prisma } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
 import Layout from "~/layout"
 
