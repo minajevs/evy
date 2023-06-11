@@ -8,6 +8,4 @@ ENV RAILWAY_ENVIRONMENT=$RAILWAY_ENVIRONMENT
 ENV PORT=$PORT
 ENV DB_URL=$DATABASE_URL
 
-COPY entrypoint.sh /entrypoint.sh
-
-CMD ./entrypoint.sh
+ENTRYPOINT ["sh", "-c", "npm run cli db seed -- --swe && npm start"]
