@@ -8,4 +8,4 @@ ENV RAILWAY_ENVIRONMENT=$RAILWAY_ENVIRONMENT
 ENV PORT=$PORT
 ENV DB_URL=$DATABASE_URL
 
-CMD ["sh", "-c", "npm run cli db seed -- --swe && npm start"]
+CMD ["npm run cli db seed -- --swe && npm start"]
