@@ -3,8 +3,9 @@ name: CI
 on:
   pull_request:
     branches: ['*']
-  push:
-    branches: ['main']
+  # temporary off
+  #push:
+  #branches: ['main']
   merge_group:
 
 # You can leverage Vercel Remote Caching with Turbo to speed up your builds
