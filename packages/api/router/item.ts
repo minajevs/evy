@@ -1,4 +1,4 @@
-import { newCollectionSchema, newItemSchema } from '../schemas'
+import { newItemSchema } from '../schemas'
 import {
   createTRPCRouter,
   protectedProcedure,
@@ -7,13 +7,13 @@ import {
 
 export const itemRouter = createTRPCRouter({
   create: protectedProcedure
-    .input(newItemSchema.extend())
-    .mutation(({ ctx, input: { name, description } }) => {
+    .input(newItemSchema)
+    .mutation(({ ctx, input: { name, description, collectionId } }) => {
       return ctx.prisma.item.create({
         data: {
           name,
           description,
-          userId: ctx.auth.userId,
+          collectionId,
           createdAt: new Date(),
         },
       })

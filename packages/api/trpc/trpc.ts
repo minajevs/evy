@@ -7,11 +7,7 @@
  * The pieces you will need to use are documented accordingly near the end
  */
 
-import {
-  type SignedInAuthObject,
-  type SignedOutAuthObject,
-  getAuth,
-} from '@clerk/nextjs/server'
+import { getServerSession, type Session } from '@evy/auth'
 import { prisma } from '@evy/db'
 import { TRPCError, initTRPC } from '@trpc/server'
 import { type CreateNextContextOptions } from '@trpc/server/adapters/next'
@@ -28,7 +24,7 @@ import { ZodError } from 'zod'
  *
  */
 type AuthContext = {
-  auth: SignedInAuthObject | SignedOutAuthObject
+  session: Session | null
 }
 
 /**
@@ -40,9 +36,9 @@ type AuthContext = {
  * - trpc's `createSSGHelpers` where we don't have req/res
  * @see https://create.t3.gg/en/usage/trpc#-servertrpccontextts
  */
-const createInnerTRPCContext = ({ auth }: AuthContext) => {
+const createInnerTRPCContext = ({ session }: AuthContext) => {
   return {
-    auth,
+    session,
     prisma,
   }
 }
@@ -54,9 +50,10 @@ const createInnerTRPCContext = ({ auth }: AuthContext) => {
  */
 export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   const { req, res } = opts
+  const session = await getServerSession({ req, res })
 
   return createInnerTRPCContext({
-    auth: getAuth(req),
+    session,
   })
 }
 
@@ -107,12 +104,12 @@ export const publicProcedure = t.procedure
  * procedure
  */
 const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
-  if (!ctx.auth.userId) {
+  if (!ctx.session?.user.id) {
     throw new TRPCError({ code: 'UNAUTHORIZED' })
   }
   return next({
     ctx: {
-      auth: ctx.auth,
+      session: ctx.session,
     },
   })
 })

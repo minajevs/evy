@@ -1,5 +1,5 @@
 import { Heading, Text } from "@chakra-ui/react"
-import { getAuth } from "@clerk/nextjs/server"
+import { getServerSession } from "@evy/auth"
 import { prisma } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
 import Layout from "~/layout"
@@ -20,15 +20,15 @@ const NoCollections = () => {
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-  const auth = getAuth(req)
+  const auth = await getServerSession({ req, res })
 
-  if (!auth.userId) {
+  if (!auth) {
     return { redirect: { destination: '/', permanent: false } }
   }
 
   const collections = await prisma.collection.findMany({
     where: {
-      userId: auth.userId
+      userId: auth.user.id
     }
   })
 

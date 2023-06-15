@@ -1,5 +1,5 @@
 import { Card, CardBody, Heading, SimpleGrid, Text } from "@chakra-ui/react"
-import { getAuth } from "@clerk/nextjs/server"
+import { getServerSession } from "@evy/auth"
 import { type Collection, prisma, type Item } from "@evy/db"
 import { m } from "framer-motion"
 import type { GetServerSideProps, NextPage } from "next"
@@ -42,8 +42,8 @@ const ItemList = ({ items }: ItemListProps) => {
 
 const paramsSchema = z.object({ id: z.string() })
 export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, params }) => {
-  const auth = getAuth(req)
-  if (!auth.userId) {
+  const auth = await getServerSession({ req, res })
+  if (!auth) {
     return { redirect: { destination: '/', permanent: false } }
   }
 
@@ -51,7 +51,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
 
   const currentCollection = await prisma.collection.findFirst({
     where: {
-      userId: auth.userId,
+      userId: auth.user.id,
       id,
     },
     include: {
@@ -65,7 +65,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
 
   const allCollections = await prisma.collection.findMany({
     where: {
-      userId: auth.userId
+      userId: auth.user.id
     },
   })
 

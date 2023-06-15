@@ -1,5 +1,5 @@
 import type { AppType } from "next/app"
-import { ClerkProvider } from '@clerk/nextjs'
+import { SessionProvider } from "next-auth/react";
 import { ChakraProvider } from '@chakra-ui/react'
 
 import { theme } from '@evy/styling'
@@ -11,11 +11,11 @@ const MyApp: AppType = ({
   pageProps: { ...pageProps },
 }) => {
   return (
-    <ClerkProvider {...pageProps}>
+    <SessionProvider {...pageProps}>
       <ChakraProvider theme={theme}>
         <Component {...pageProps} />
       </ChakraProvider>
-    </ClerkProvider>
+    </SessionProvider>
   );
 };
 

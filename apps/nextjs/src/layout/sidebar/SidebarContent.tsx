@@ -1,10 +1,10 @@
 import { Box, Flex, type BoxProps, CloseButton, Stack, Button, useColorMode, Text, Divider, VStack } from "@chakra-ui/react"
 import { NavItemLink } from "./NavItem"
 import { useBackgroundColor } from "@evy/styling"
-import { UserButton } from "@clerk/nextjs"
 import { MoonIcon, SunIcon } from "@chakra-ui/icons"
 import { Link } from "@chakra-ui/next-js"
 import NewCollection from "~/components/new-collection"
+import { signIn, signOut, useSession } from "next-auth/react"
 
 export type LinkItem = {
   name: string
@@ -19,6 +19,10 @@ type SidebarProps = {
 export const SidebarContent = ({ onClose, linkItems, ...rest }: SidebarProps) => {
   const { colorMode, toggleColorMode } = useColorMode()
   const bg = useBackgroundColor('navigation')
+  const session = useSession()
+
+  console.log(session)
+
   return (
     <Box
       bg={bg}
@@ -51,7 +55,9 @@ export const SidebarContent = ({ onClose, linkItems, ...rest }: SidebarProps) =>
             <Button variant='ghost' onClick={toggleColorMode}>
               {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
             </Button>
-            <UserButton />
+            <Button variant='ghost' onClick={session.status === 'authenticated' ? () => void signOut() : () => void signIn()}>
+              {session.status === 'authenticated' ? "Sign out" : "Sign in"}
+            </Button>
           </Stack>
         </Box>
       </VStack>

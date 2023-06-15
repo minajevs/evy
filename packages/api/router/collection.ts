@@ -13,7 +13,7 @@ export const collectionRouter = createTRPCRouter({
         data: {
           name,
           description,
-          userId: ctx.auth.userId,
+          userId: ctx.session.user.id,
           createdAt: new Date(),
         },
       })

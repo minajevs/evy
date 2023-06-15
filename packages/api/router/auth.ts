@@ -6,7 +6,7 @@ import {
 
 export const authRouter = createTRPCRouter({
   getAuth: publicProcedure.query(({ ctx }) => {
-    return ctx.auth
+    return ctx.session
   }),
   getSecretMessage: protectedProcedure.query(() => {
     // testing type validation of overridden next-auth Session in @evy/auth package

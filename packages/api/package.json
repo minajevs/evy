@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@evy/db": "*",
+    "@evy/auth": "*",
     "@trpc/client": "^10.25.0",
     "@trpc/server": "^10.25.0",
     "superjson": "1.9.1",

@@ -2,11 +2,12 @@ import { Box, Button, Flex, Stack, useColorMode } from "@chakra-ui/react"
 import { MoonIcon, SunIcon } from '@chakra-ui/icons'
 import Link from "next/link"
 import { useBackgroundColor } from "@evy/styling"
-import { UserButton } from "@clerk/nextjs"
+import { useSession, signIn, signOut } from 'next-auth/react'
 
 export const Nav = () => {
   const { colorMode, toggleColorMode } = useColorMode()
   const bg = useBackgroundColor('navigation')
+  const session = useSession()
   return <>
     <Box
       px={4}
@@ -26,7 +27,9 @@ export const Nav = () => {
             <Button variant='ghost' onClick={toggleColorMode}>
               {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
             </Button>
-            <UserButton />
+            <Button variant='ghost' onClick={session ? () => void signOut() : () => void signIn()}>
+              {session ? "Sign out" : "Sign in"}
+            </Button>
           </Stack>
         </Flex>
       </Flex>

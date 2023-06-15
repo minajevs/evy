@@ -1,5 +1,5 @@
+import { getServerSession } from "@evy/auth";
 import type { GetServerSidePropsContext, NextPage } from "next"
-import { getAuth } from "@clerk/nextjs/server"
 import Layout from "~/layout"
 
 const Home: NextPage = () => {
@@ -14,11 +14,11 @@ const Home: NextPage = () => {
   );
 }
 
-export function getServerSideProps({ req, res }: GetServerSidePropsContext) {
-  const auth = getAuth(req)
+export async function getServerSideProps({ req, res }: GetServerSidePropsContext) {
+  const auth = await getServerSession({ req, res })
 
-  if (!auth.userId) {
-    return {}
+  if (!auth) {
+    return { props: {} }
   }
 
   return { redirect: { permanent: false, destination: "/app/my" } }
