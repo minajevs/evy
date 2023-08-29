@@ -5,10 +5,10 @@
   "types": "./index.ts",
   "license": "MIT",
   "dependencies": {
-    "@chakra-ui/react": "^2.6.1"
+    "@chakra-ui/react": "^2.8.0"
   },
   "devDependencies": {
-    "eslint": "^8.40.0",
-    "typescript": "^5.0.4"
+    "eslint": "^8.48.0",
+    "typescript": "^5.2.2"
   }
 }

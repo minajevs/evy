@@ -26,7 +26,6 @@ type ItemListProps = {
   items: Item[]
 }
 const ItemList = ({ items }: ItemListProps) => {
-
   const itemViews = items.map(item => <>
     {item.name}
   </>)

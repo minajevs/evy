@@ -74,6 +74,8 @@ pnpm db:push
 
 ### Configure Expo `dev`-script
 
+### Update all packages `npx syncpack update`
+
 #### Use iOS Simulator
 
 1. Make sure you have XCode and XCommand Line Tools installed [as shown on expo docs](https://docs.expo.dev/workflow/ios-simulator/).

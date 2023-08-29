@@ -21,14 +21,14 @@
   },
   "dependencies": {
     "@evy/eslint-config": "*",
-    "@ianvs/prettier-plugin-sort-imports": "^3.7.2",
-    "@manypkg/cli": "^0.20.0",
-    "@types/prettier": "^2.7.2",
-    "dotenv": "^16.0.3",
-    "eslint": "^8.40.0",
-    "prettier": "^2.8.8",
-    "turbo": "^1.10.3",
-    "typescript": "^5.0.4"
+    "@ianvs/prettier-plugin-sort-imports": "^4.1.0",
+    "@manypkg/cli": "^0.21.0",
+    "@types/prettier": "^3.0.0",
+    "dotenv": "^16.3.1",
+    "eslint": "^8.48.0",
+    "prettier": "^3.0.3",
+    "turbo": "^1.10.13",
+    "typescript": "^5.2.2"
   },
   "packageManager": "npm@9.5.1",
   "workspaces": [
