@@ -21,7 +21,7 @@
     "@evy/api": "*",
     "@evy/db": "*",
     "@evy/styling": "*",
-    "@hookform/resolvers": "^3.3.1",
+    "@hookform/resolvers": "^3.1.1",
     "@t3-oss/env-nextjs": "^0.6.1",
     "@tanstack/react-query": "^4.33.0",
     "@trpc/client": "^10.38.0",
@@ -35,7 +35,7 @@
     "react-dom": "18.2.0",
     "react-hook-form": "^7.45.4",
     "superjson": "1.13.1",
-    "zod": "^3.22.2"
+    "zod": "3.21.4"
   },
   "devDependencies": {
     "@evy/eslint-config": "*",

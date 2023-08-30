@@ -1,15 +1,38 @@
 import { Button, Card, CardBody, FormControl, FormErrorMessage, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Textarea, useDisclosure } from "@chakra-ui/react"
 import { useForm } from "../forms"
-import { newCollectionSchema } from "@evy/api/schemas"
+import { newItemSchema } from "@evy/api/schemas"
+import { useCallback } from "react"
+import { api } from "~/utils/api"
+import { useRouter } from "next/router"
 
-export const NewItem = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+type Props = {
+  collectionId: string
+}
+
+export const NewItem = ({ collectionId }: Props) => {
+  const { isOpen, onOpen: _onOpen, onClose } = useDisclosure()
+  const router = useRouter()
 
   const {
     handleSubmit,
     register,
     formState: { errors, isDirty, isValid },
-  } = useForm({ schema: newCollectionSchema, })
+    reset
+  } = useForm({ schema: newItemSchema, defaultValues: { collectionId } })
+
+  const createMutation = api.item.create.useMutation()
+
+  const onOpen = useCallback(() => {
+    reset()
+    _onOpen()
+  }, [reset, _onOpen])
+
+  const onSubmit = handleSubmit(async data => {
+    await createMutation.mutateAsync(data)
+    onClose()
+    reset()
+    router.replace(router.asPath)
+  })
 
   return <>
     <Card
@@ -37,7 +60,7 @@ export const NewItem = () => {
     >
       <ModalOverlay />
       <ModalContent>
-        <form onSubmit={console.log}>
+        <form onSubmit={onSubmit}>
           <ModalHeader>Create an item</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>

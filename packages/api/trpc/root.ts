@@ -1,9 +1,11 @@
 import { authRouter } from '../router/auth'
 import { collectionRouter } from '../router/collection'
+import { itemRouter } from '../router/item'
 import { createTRPCRouter } from './trpc'
 
 export const appRouter = createTRPCRouter({
   collection: collectionRouter,
+  item: itemRouter,
   auth: authRouter,
 })
 

@@ -31,14 +31,19 @@
     "typescript": "^5.2.2"
   },
   "packageManager": "npm@9.5.1",
-  "workspaces": [
-    "apps/nextjs",
-    "packages/api",
-    "packages/auth",
-    "packages/db",
-    "packages/config/*",
-    "packages/styling"
-  ],
+  "workspaces": {
+    "packages": [
+      "apps/nextjs",
+      "packages/api",
+      "packages/auth",
+      "packages/db",
+      "packages/config/*",
+      "packages/styling"
+    ],
+    "nohoist": [
+      "@hookform/resolvers"
+    ]
+  },
   "prettier": {
     "semi": false,
     "tabWidth": 2,

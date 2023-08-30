@@ -1,11 +1,11 @@
-import { Card, CardBody, Heading, SimpleGrid, Text } from "@chakra-ui/react"
+import { Card, CardBody, Editable, EditableInput, EditablePreview, Heading, SimpleGrid, Text } from "@chakra-ui/react"
 import { getServerSession } from "@evy/auth"
 import { type Collection, prisma, type Item } from "@evy/db"
-import { m } from "framer-motion"
 import type { GetServerSideProps, NextPage } from "next"
 import { z } from "zod"
 import { NewItem } from "~/components/new-item"
 import Layout from "~/layout"
+import { api } from "~/utils/api"
 
 type Props = {
   collections: Collection[]
@@ -13,31 +13,68 @@ type Props = {
 }
 
 const CollectionPage: NextPage<Props> = ({ collections, collection }) => {
+  const updateMutation = api.collection.updateName.useMutation()
+
+  const onSubmit = async (newName: string) => {
+    await updateMutation.mutateAsync({ name: newName, id: collection.id })
+  }
   return <>
     <Layout title="Collection" collections={collections}>
-      <Heading size="lg" mb="4">{collection.name}</Heading>
+      <Heading size="lg" mb="4">
+        <Editable
+          isDisabled={false}
+          key={collection.name}
+          defaultValue={collection.name}
+          onSubmit={onSubmit}
+        >
+          <EditablePreview />
+          <EditableInput />
+        </Editable>
+      </Heading>
       <Text mb='8'>{collection.description}</Text>
-      <ItemList items={collection.items} />
+      <ItemList collectionId={collection.id} items={collection.items} />
     </Layout>
   </>
 }
 
 type ItemListProps = {
+  collectionId: string
   items: Item[]
 }
-const ItemList = ({ items }: ItemListProps) => {
-  const itemViews = items.map(item => <>
-    {item.name}
-  </>)
+const ItemList = ({ collectionId, items }: ItemListProps) => {
+  const itemViews = items.map(item => <ItemView key={item.id} item={item} />)
 
   return <>
     <Heading size="md" mb='4'>Items</Heading>
     <SimpleGrid columns={4} spacing='8'>
-      <NewItem />
+      <NewItem collectionId={collectionId} />
       {itemViews}
     </SimpleGrid>
   </>
 }
+
+type ItemViewProps = {
+  item: Item
+}
+const ItemView = ({ item }: ItemViewProps) => <Card
+  boxShadow='lg'
+  _hover={{
+    boxShadow: 'xl',
+    transform: 'translateY(-2px)',
+    transitionDuration: '0.2s',
+    transitionTimingFunction: "ease-in-out"
+  }}
+  _active={{
+    transform: 'translateY(2px)',
+    transitionDuration: '0.1s',
+  }}
+  cursor='pointer'
+>
+  <CardBody>
+    {item.name}
+    {item.description}
+  </CardBody>
+</Card>
 
 const paramsSchema = z.object({ id: z.string() })
 export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, params }) => {

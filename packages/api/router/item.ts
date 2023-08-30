@@ -1,9 +1,5 @@
 import { newItemSchema } from '../schemas'
-import {
-  createTRPCRouter,
-  protectedProcedure,
-  publicProcedure,
-} from '../trpc/trpc'
+import { createTRPCRouter, protectedProcedure } from '../trpc/trpc'
 
 export const itemRouter = createTRPCRouter({
   create: protectedProcedure

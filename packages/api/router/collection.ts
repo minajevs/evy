@@ -1,4 +1,4 @@
-import { newCollectionSchema } from '../schemas'
+import { newCollectionSchema, updateCollectionNameSchema } from '../schemas'
 import {
   createTRPCRouter,
   protectedProcedure,
@@ -15,6 +15,18 @@ export const collectionRouter = createTRPCRouter({
           description,
           userId: ctx.session.user.id,
           createdAt: new Date(),
+        },
+      })
+    }),
+  updateName: protectedProcedure
+    .input(updateCollectionNameSchema)
+    .mutation(({ ctx, input: { id, name } }) => {
+      return ctx.prisma.collection.update({
+        where: {
+          id,
+        },
+        data: {
+          name,
         },
       })
     }),

@@ -21,8 +21,6 @@ export const SidebarContent = ({ onClose, linkItems, ...rest }: SidebarProps) =>
   const bg = useBackgroundColor('navigation')
   const session = useSession()
 
-  console.log(session)
-
   return (
     <Box
       bg={bg}
