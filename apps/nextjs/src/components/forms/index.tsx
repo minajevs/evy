@@ -15,6 +15,7 @@ export const useForm = <T extends ZodSchema<any>>({
 }: UseFormProps<T>) => {
 	return useHookForm({
 		...formConfig,
+		mode: 'onChange',
 		resolver: zodResolver(schema)
 	})
 }

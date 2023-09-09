@@ -21,7 +21,7 @@ export async function getServerSideProps({ req, res }: GetServerSidePropsContext
     return { props: {} }
   }
 
-  return { redirect: { permanent: false, destination: "/app/my" } }
+  return { redirect: { permanent: false, destination: "/my" } }
 }
 
 export default Home

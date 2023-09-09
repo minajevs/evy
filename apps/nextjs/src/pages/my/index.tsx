@@ -36,7 +36,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     return { props: {} }
   }
 
-  return { redirect: { destination: `/app/my/${collections[0]!.id}`, permanent: false } }
+  return { redirect: { destination: `/my/${collections[0]!.id}`, permanent: false } }
 }
 
 export default MyPage
