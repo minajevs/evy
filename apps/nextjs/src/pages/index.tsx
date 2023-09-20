@@ -8,7 +8,7 @@ const Home: NextPage = () => {
   // });
 
   return (
-    <Layout collections={[]}>
+    <Layout layout={{ collections: [] }}>
       Hello!
     </Layout>
   );

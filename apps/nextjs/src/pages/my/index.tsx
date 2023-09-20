@@ -6,7 +6,7 @@ import Layout from "~/layout"
 
 const MyPage: NextPage = () => {
   return <>
-    <Layout title="My" collections={[]}>
+    <Layout title="My" layout={{ collections: [] }}>
       <NoCollections />
     </Layout>
   </>
