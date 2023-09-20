@@ -20,7 +20,7 @@ RUN apt-get update -qq && \
 
 # Install node modules
 COPY --link .npmrc package-lock.json package.json ./
-RUN npm ci --include=dev
+RUN npm i
 
 # Copy application code
 COPY --link . .
