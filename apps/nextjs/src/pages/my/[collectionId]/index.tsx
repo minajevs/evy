@@ -9,15 +9,15 @@ import { api } from "~/utils/api"
 import { Link } from "@chakra-ui/next-js"
 import { EditIcon } from "@chakra-ui/icons"
 import { EditText } from "~/components/common/EditText"
+import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 
 type Props = {
-  collections: Collection[]
   collection: Collection & { items: Item[] }
-}
+} & LayoutServerSideProps
 
-const CollectionPage: NextPage<Props> = ({ collections, collection }) => {
+const CollectionPage: NextPage<Props> = ({ layout, collection }) => {
   return <>
-    <Layout title="Collection" collections={collections}>
+    <Layout title="Collection" layout={layout}>
       <HStack width='100%' justifyContent='space-between'>
         <Heading size="lg" mb="4">
           <Text>{collection.name}</Text>
@@ -98,17 +98,10 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
     return { redirect: { destination: '/my', permanent: false } }
   }
 
-  const allCollections = await prisma.collection.findMany({
-    where: {
-      userId: auth.user.id
-    },
-  })
-
-
   return {
     props: {
-      collections: allCollections,
-      collection: currentCollection
+      collection: currentCollection,
+      ...await getLayoutProps(auth.user.id)
     }
   }
 }

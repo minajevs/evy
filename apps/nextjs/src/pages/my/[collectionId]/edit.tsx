@@ -12,15 +12,15 @@ import { EditText } from "~/components/common/EditText"
 import { editCollectionSchema } from "@evy/api/schemas"
 import { useForm } from "~/components/forms"
 import { useRouter } from "next/router"
+import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 
 type Props = {
-  collections: Collection[]
   collection: Collection & { items: Item[] }
-}
+} & LayoutServerSideProps
 
 const CustomInput = forwardRef<InputProps, As>((props, ref) => <Input variant='unstyled' mb={0} ref={ref} {...props} />)
 
-const CollectionEditPage: NextPage<Props> = ({ collections, collection }) => {
+const CollectionEditPage: NextPage<Props> = ({ layout, collection }) => {
   const router = useRouter()
   const [loading, { on }] = useBoolean()
   const {
@@ -38,7 +38,7 @@ const CollectionEditPage: NextPage<Props> = ({ collections, collection }) => {
   })
 
   return <>
-    <Layout title="Collection" collections={collections}>
+    <Layout title="Collection" layout={layout}>
       <form onSubmit={onSubmit}>
         <Flex justifyContent='space-between' h='4rem'>
           <FormControl isInvalid={errors.name !== undefined} isRequired isDisabled={loading}>
@@ -101,17 +101,10 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
     return { redirect: { destination: '/my', permanent: false } }
   }
 
-  const allCollections = await prisma.collection.findMany({
-    where: {
-      userId: auth.user.id
-    },
-  })
-
-
   return {
     props: {
-      collections: allCollections,
-      collection: currentCollection
+      collection: currentCollection,
+      ...await getLayoutProps(auth.user.id)
     }
   }
 }

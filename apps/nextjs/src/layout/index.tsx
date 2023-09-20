@@ -5,14 +5,14 @@ import { useBackgroundColor } from "@evy/styling"
 import { Sidebar } from "./sidebar"
 import type { Collection } from "@evy/db"
 import { type LinkItem } from "./sidebar/SidebarContent"
+import { type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 
 type Props = {
   children: React.ReactNode
-  collections: Collection[]
   title?: string
-}
+} & LayoutServerSideProps
 
-const Layout = ({ children, collections, title }: Props) => {
+const Layout = ({ children, layout: { collections }, title }: Props) => {
   const bg = useBackgroundColor('page')
   const linkItems: LinkItem[] = collections.map(collection => ({
     name: collection.name,

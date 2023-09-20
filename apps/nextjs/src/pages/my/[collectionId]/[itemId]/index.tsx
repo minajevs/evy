@@ -9,15 +9,15 @@ import { ItemMedia } from "~/components/item-media"
 import { NewItem } from "~/components/new-item"
 import Layout from "~/layout"
 import { api } from "~/utils/api"
+import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 
 type Props = {
-  collections: Collection[]
   item: Item & { collection: Collection }
-}
+} & LayoutServerSideProps
 
-const ItemPage: NextPage<Props> = ({ collections, item }) => {
+const ItemPage: NextPage<Props> = ({ layout, item }) => {
   return <>
-    <Layout title="Collection" collections={collections}>
+    <Layout title="Collection" layout={layout}>
       <HStack width='100%' justifyContent='space-between'>
         <Heading size="lg" mb="4">
           <Link href={`/my/${item.collectionId}`}>{item.collection.name}</Link>
@@ -61,17 +61,10 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
     return { redirect: { destination: '/my', permanent: false } }
   }
 
-  const allCollections = await prisma.collection.findMany({
-    where: {
-      userId: auth.user.id
-    },
-  })
-
-
   return {
     props: {
-      collections: allCollections,
-      item: currentItem
+      item: currentItem,
+      ...await getLayoutProps(auth.user.id)
     }
   }
 }

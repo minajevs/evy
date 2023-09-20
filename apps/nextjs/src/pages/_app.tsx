@@ -1,6 +1,7 @@
 import type { AppType } from "next/app"
 import { SessionProvider } from "next-auth/react";
 import { ChakraProvider } from '@chakra-ui/react'
+import NextNProgress from 'nextjs-progressbar'
 
 import { theme } from '@evy/styling'
 
@@ -13,6 +14,7 @@ const MyApp: AppType = ({
   return (
     <SessionProvider {...pageProps}>
       <ChakraProvider theme={theme}>
+        <NextNProgress stopDelayMs={100} />
         <Component {...pageProps} />
       </ChakraProvider>
     </SessionProvider>

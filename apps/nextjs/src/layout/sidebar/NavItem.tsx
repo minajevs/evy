@@ -1,25 +1,22 @@
 import { Link } from "@chakra-ui/next-js"
-import { Flex, type FlexProps } from "@chakra-ui/react"
+import { Button, type ButtonProps, Flex, type FlexProps, Text } from "@chakra-ui/react"
 
 type BaseNavItemProps = {
   children: React.ReactNode
-} & FlexProps
+} & ButtonProps
 
 export const NavItemBase = ({ children, ...rest }: BaseNavItemProps) => {
-  return <Flex
-    align="center"
-    p="4"
-    mx="4"
-    borderRadius="lg"
-    role="group"
-    cursor="pointer"
-    _hover={{
-      bg: 'brand.700',
-      color: 'white',
-    }}
+  return <Button
+    textAlign='left'
+    width='100%'
+    justifyContent='flex-start'
+    borderRadius="0"
+    variant='ghost'
+    px='8'
+    height='12'
     {...rest}>
-    {children}
-  </Flex >
+    <Text>{children}</Text>
+  </Button>
 }
 
 type NavItemProps = {
@@ -28,7 +25,7 @@ type NavItemProps = {
 
 export const NavItemLink = (props: NavItemProps) => {
   return (
-    <Link href={props.href} style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
+    <Link href={props.href}>
       <NavItemBase {...props} />
     </Link>
   )

@@ -1,4 +1,4 @@
-import { Box, Flex, type BoxProps, CloseButton, Stack, Button, useColorMode, Text, Divider, VStack } from "@chakra-ui/react"
+import { Box, Flex, type BoxProps, CloseButton, Stack, Button, useColorMode, Text, Divider, VStack, Heading } from "@chakra-ui/react"
 import { NavItemLink } from "./NavItem"
 import { useBackgroundColor } from "@evy/styling"
 import { MoonIcon, SunIcon } from "@chakra-ui/icons"
@@ -31,16 +31,18 @@ export const SidebarContent = ({ onClose, linkItems, ...rest }: SidebarProps) =>
       h="full"
       boxShadow='lg'
       {...rest}>
-      <VStack h='full' justifyContent='space-between'>
-        <Box>
-          <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-            <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-              <Link href="/">
-                📚 Evy
-              </Link>
-            </Text>
-            <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
-          </Flex>
+      <VStack h='full'>
+        {/* Heading */}
+        <Box pt='8' pb='4' w='100%'>
+          <Heading size="lg" mx='8' mb='4' justifyContent='flex-start'>
+            <Link href="/">
+              Evy ⚡️
+            </Link>
+          </Heading>
+          <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
+        </Box>
+        {/* Nav Links */}
+        <Box py='4'>
           {linkItems.map((link) => (
             <NavItemLink key={link.name} href={link.href}>
               {link.name}
@@ -48,15 +50,14 @@ export const SidebarContent = ({ onClose, linkItems, ...rest }: SidebarProps) =>
           ))}
           <NewCollection />
         </Box>
-        <Box px="8" py="16">
-          <Stack direction={'row'} spacing={7}>
-            <Button variant='ghost' onClick={toggleColorMode}>
-              {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
-            </Button>
-            <Button variant='ghost' onClick={session.status === 'authenticated' ? () => void signOut() : () => void signIn()}>
-              {session.status === 'authenticated' ? "Sign out" : "Sign in"}
-            </Button>
-          </Stack>
+        {/* Other Settings */}
+        <Box px="8" pt="4" pb='16' marginTop='auto'>
+          <Button variant='ghost' onClick={toggleColorMode}>
+            {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+          </Button>
+          <Button variant='ghost' onClick={session.status === 'authenticated' ? () => void signOut() : () => void signIn()}>
+            {session.status === 'authenticated' ? "Sign out" : "Sign in"}
+          </Button>
         </Box>
       </VStack>
     </Box>

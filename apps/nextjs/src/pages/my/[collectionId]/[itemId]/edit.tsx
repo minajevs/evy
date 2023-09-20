@@ -11,15 +11,15 @@ import { useForm } from "~/components/forms"
 import { NewItem } from "~/components/new-item"
 import Layout from "~/layout"
 import { api } from "~/utils/api"
+import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 
 type Props = {
-  collections: Collection[]
   item: Item & { collection: Collection }
-}
+} & LayoutServerSideProps
 
 const CustomInput = forwardRef<InputProps, As>((props, ref) => <Input variant='unstyled' mb={0} ref={ref} {...props} />)
 
-const EditItemPage: NextPage<Props> = ({ collections, item }) => {
+const EditItemPage: NextPage<Props> = ({ layout, item }) => {
   const router = useRouter()
   const [loading, { on }] = useBoolean()
   const {
@@ -37,7 +37,7 @@ const EditItemPage: NextPage<Props> = ({ collections, item }) => {
   })
 
   return <>
-    <Layout title="Item" collections={collections}>
+    <Layout title="Item" layout={layout}>
       <form onSubmit={onSubmit}>
         <Flex justifyContent='space-between' h='4rem'>
           <FormControl isInvalid={errors.name !== undefined} isRequired isDisabled={loading}>
@@ -103,17 +103,10 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
     return { redirect: { destination: '/my', permanent: false } }
   }
 
-  const allCollections = await prisma.collection.findMany({
-    where: {
-      userId: auth.user.id
-    },
-  })
-
-
   return {
     props: {
-      collections: allCollections,
-      item: currentItem
+      item: currentItem,
+      ...await getLayoutProps(auth.user.id)
     }
   }
 }
