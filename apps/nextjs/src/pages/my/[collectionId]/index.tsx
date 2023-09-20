@@ -16,11 +16,6 @@ type Props = {
 }
 
 const CollectionPage: NextPage<Props> = ({ collections, collection }) => {
-  const updateMutation = api.collection.updateName.useMutation()
-
-  const onSubmit = async (newName: string) => {
-    await updateMutation.mutateAsync({ name: newName, id: collection.id })
-  }
   return <>
     <Layout title="Collection" collections={collections}>
       <HStack width='100%' justifyContent='space-between'>

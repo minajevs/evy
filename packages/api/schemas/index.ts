@@ -13,5 +13,10 @@ export const newCollectionSchema = z.object({
 export const newItemSchema = z.object({
   collectionId: z.string().min(1),
   name: z.string().min(1, 'Item name is required'),
-  description: z.string().max(10),
+  description: z.string(),
+})
+export const editItemSchema = z.object({
+  itemId: z.string().min(1),
+  name: z.string().min(1, 'Item name is required'),
+  description: z.string(),
 })

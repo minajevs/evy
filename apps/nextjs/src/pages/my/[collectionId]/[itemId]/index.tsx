@@ -5,6 +5,7 @@ import { getServerSession } from "@evy/auth"
 import { type Collection, prisma, type Item } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
 import { z } from "zod"
+import { ItemMedia } from "~/components/item-media"
 import { NewItem } from "~/components/new-item"
 import Layout from "~/layout"
 import { api } from "~/utils/api"
@@ -19,13 +20,17 @@ const ItemPage: NextPage<Props> = ({ collections, item }) => {
     <Layout title="Collection" collections={collections}>
       <HStack width='100%' justifyContent='space-between'>
         <Heading size="lg" mb="4">
-          <Link href={`/my/${item.collectionId}`}>{item.collection.name}</Link> <Text display='inline' fontWeight={200}>/</Text> {item.name}
+          <Link href={`/my/${item.collectionId}`}>{item.collection.name}</Link>
+          <Text display='inline' pl='1' fontWeight={200}>/</Text>
+          <Text display='inline' pl='1'>{item.name}</Text>
         </Heading>
-        <Button leftIcon={<EditIcon />} variant='solid'>
+        <Button leftIcon={<EditIcon />} variant='solid' as={Link} href={`/my/${item.collection.id}/${item.id}/edit`}>
           Edit
         </Button>
       </HStack>
       <Text mb='8'>{item.description}</Text>
+      <Heading size='md'>Media</Heading>
+      <ItemMedia />
     </Layout>
   </>
 }
