@@ -1,7 +1,7 @@
 import { Button, Card, CardBody, FormControl, FormErrorMessage, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Textarea, useDisclosure } from "@chakra-ui/react"
 import { useForm } from "../forms"
 import { newItemSchema } from "@evy/api/schemas"
-import { useCallback } from "react"
+import { useCallback, useEffect } from "react"
 import { api } from "~/utils/api"
 import { useRouter } from "next/router"
 
@@ -19,6 +19,10 @@ export const NewItem = ({ collectionId }: Props) => {
     formState: { errors, isDirty, isValid },
     reset
   } = useForm({ schema: newItemSchema, defaultValues: { collectionId } })
+
+  useEffect(() => {
+    reset({ collectionId })
+  }, [collectionId, reset])
 
   const createMutation = api.item.create.useMutation()
 

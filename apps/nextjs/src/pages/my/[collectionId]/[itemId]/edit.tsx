@@ -26,6 +26,7 @@ const EditItemPage: NextPage<Props> = ({ layout, item }) => {
     handleSubmit,
     register,
     formState: { errors, isDirty, isValid },
+    watch
   } = useForm({ schema: editItemSchema, defaultValues: { itemId: item.id, name: item.name, description: item.description ?? undefined } })
 
   const updateMutation = api.item.update.useMutation()
@@ -41,12 +42,11 @@ const EditItemPage: NextPage<Props> = ({ layout, item }) => {
       <form onSubmit={onSubmit}>
         <Flex justifyContent='space-between' h='4rem'>
           <FormControl isInvalid={errors.name !== undefined} isRequired isDisabled={loading}>
-            <Heading size="lg">
+            <Heading size="lg" mb="4">
               <Link href={`/my/${item.collectionId}`}>{item.collection.name}</Link>
               <Text display='inline' pl='1' fontWeight={200}>/</Text>
-              <Heading size="lg" display='inline' pl='1' w='auto' as={CustomInput} {...register('name')} placeholder='Name' />
+              <Text display='inline' pl='1'>{watch('name')}</Text>
             </Heading>
-            <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
           </FormControl>
           <ButtonGroup isAttached>
             <Button leftIcon={<CheckIcon />} variant='solid' isLoading={loading} isDisabled={!isValid} type="submit">
@@ -61,6 +61,14 @@ const EditItemPage: NextPage<Props> = ({ layout, item }) => {
             }
           </ButtonGroup>
         </Flex>
+        <FormControl isInvalid={errors.name !== undefined} isRequired isDisabled={loading}>
+          <FormLabel>Item name</FormLabel>
+          <Input
+            {...register('name')}
+            placeholder='Name'
+          />
+          <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
+        </FormControl>
         <FormControl isInvalid={errors.description !== undefined} mt={4} isDisabled={loading}>
           <FormLabel>Item description</FormLabel>
           <Textarea

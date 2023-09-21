@@ -16,7 +16,7 @@ const Layout = ({ children, layout: { collections }, title }: Props) => {
   const bg = useBackgroundColor('page')
   const linkItems: LinkItem[] = collections.map(collection => ({
     name: collection.name,
-    href: collection.id
+    href: `/my/${collection.id}`
   }))
   return <>
     <Head>

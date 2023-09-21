@@ -18,8 +18,6 @@ type Props = {
   collection: Collection & { items: Item[] }
 } & LayoutServerSideProps
 
-const CustomInput = forwardRef<InputProps, As>((props, ref) => <Input variant='unstyled' mb={0} ref={ref} {...props} />)
-
 const CollectionEditPage: NextPage<Props> = ({ layout, collection }) => {
   const router = useRouter()
   const [loading, { on }] = useBoolean()
@@ -27,6 +25,7 @@ const CollectionEditPage: NextPage<Props> = ({ layout, collection }) => {
     handleSubmit,
     register,
     formState: { errors, isDirty, isValid },
+    watch
   } = useForm({ schema: editCollectionSchema, defaultValues: { id: collection.id, name: collection.name, description: collection.description ?? undefined } })
 
   const updateMutation = api.collection.update.useMutation()
@@ -41,14 +40,9 @@ const CollectionEditPage: NextPage<Props> = ({ layout, collection }) => {
     <Layout title="Collection" layout={layout}>
       <form onSubmit={onSubmit}>
         <Flex justifyContent='space-between' h='4rem'>
-          <FormControl isInvalid={errors.name !== undefined} isRequired isDisabled={loading}>
-            <Heading
-              size="lg"
-              as={CustomInput}
-              {...register('name')}
-              placeholder='Name' />
-            <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
-          </FormControl>
+          <Heading size="lg" mb="4">
+            <Text>{watch('name')}</Text>
+          </Heading>
           <ButtonGroup isAttached>
             <Button leftIcon={<CheckIcon />} variant='solid' isLoading={loading} isDisabled={!isValid} type="submit">
               Save
@@ -62,6 +56,14 @@ const CollectionEditPage: NextPage<Props> = ({ layout, collection }) => {
             }
           </ButtonGroup>
         </Flex>
+        <FormControl isInvalid={errors.name !== undefined} isRequired isDisabled={loading}>
+          <FormLabel>Collection name</FormLabel>
+          <Input
+            {...register('name')}
+            placeholder='Name'
+          />
+          <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
+        </FormControl>
         <FormControl isInvalid={errors.description !== undefined} mt={4} isDisabled={loading}>
           <FormLabel>Collection description</FormLabel>
           <Textarea
