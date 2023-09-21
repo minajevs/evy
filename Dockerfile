@@ -20,6 +20,8 @@ RUN apt-get update -qq && \
 
 # Install node modules
 COPY --link .npmrc package-lock.json package.json ./
+COPY --link apps/nextjs/package.json ./apps/nextjs/
+COPY --link packages/db/package.json ./packages/db/
 RUN npm ci --include=dev
 
 # Copy application code
