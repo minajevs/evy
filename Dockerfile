@@ -21,6 +21,13 @@ ARG GITHUB_CLIENT_SECRET
 ARG NEXTAUTH_URL
 ARG NEXTAUTH_SECRET
 
+# Is it okay to expose those vars to env?
+ENV DATABASE_URL ${DATABASE_URL}
+ENV GITHUB_CLIENT_ID ${GITHUB_CLIENT_ID}
+ENV GITHUB_CLIENT_SECRET ${GITHUB_CLIENT_SECRET}
+ENV NEXTAUTH_URL ${NEXTAUTH_URL}
+ENV NEXTAUTH_SECRET ${NEXTAUTH_SECRET}
+
 # Install packages needed to build node modules
 RUN apt-get update -qq && \
     apt-get install -y build-essential pkg-config python-is-python3
