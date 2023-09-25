@@ -20,3 +20,12 @@ export const editItemSchema = z.object({
   name: z.string().min(1, 'Item name is required'),
   description: z.string(),
 })
+
+export const directUploadUrlSchema = z.object({
+  itemId: z.string().min(1),
+})
+export const imageUploadResultSchema = z.object({
+  externalImageId: z.string().min(1),
+  thumbhash: z.string().min(1),
+  itemId: z.string().min(1),
+})

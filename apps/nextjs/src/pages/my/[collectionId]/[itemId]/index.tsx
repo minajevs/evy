@@ -1,8 +1,8 @@
-import { EditIcon } from "@chakra-ui/icons"
+import { AddIcon, EditIcon } from "@chakra-ui/icons"
 import { Link } from "@chakra-ui/next-js"
 import { Button, Card, CardBody, Editable, EditableInput, EditablePreview, Flex, HStack, Heading, SimpleGrid, Text } from "@chakra-ui/react"
 import { getServerSession } from "@evy/auth"
-import { type Collection, prisma, type Item } from "@evy/db"
+import { type Collection, prisma, type Item, type ItemImage } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
 import { z } from "zod"
 import { ItemMedia } from "~/components/item-media"
@@ -12,7 +12,7 @@ import { api } from "~/utils/api"
 import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 
 type Props = {
-  item: Item & { collection: Collection }
+  item: Item & { collection: Collection } & { images: ItemImage[] }
 } & LayoutServerSideProps
 
 const ItemPage: NextPage<Props> = ({ layout, item }) => {
@@ -29,8 +29,13 @@ const ItemPage: NextPage<Props> = ({ layout, item }) => {
         </Button>
       </HStack>
       <Text mb='8'>{item.description}</Text>
-      <Heading size='md'>Media</Heading>
-      <ItemMedia />
+      <HStack width='100%' justifyContent='space-between'>
+        <Heading size='md'>Media</Heading>
+        <Button leftIcon={<AddIcon />} variant='solid'>
+          Add
+        </Button>
+      </HStack>
+      <ItemMedia itemId={item.id} images={item.images} />
     </Layout>
   </>
 }
@@ -53,7 +58,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
       id: itemId
     },
     include: {
-      collection: true
+      collection: true,
+      images: true
     }
   })
 

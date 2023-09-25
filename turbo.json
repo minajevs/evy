@@ -10,6 +10,14 @@
       "inputs": ["prisma/schema.prisma"],
       "cache": false
     },
+    "db:push-force": {
+      "inputs": ["prisma/schema.prisma"],
+      "cache": false
+    },
+    "db:migrate": {
+      "inputs": ["prisma/schema.prisma"],
+      "cache": false
+    },
     "dev": {
       "persistent": true,
       "cache": false
@@ -49,6 +57,7 @@
     "NODE_ENV",
     "SKIP_ENV_VALIDATION",
     "VERCEL",
-    "VERCEL_URL"
+    "VERCEL_URL",
+    "NEXT_PUBLIC_CLOUDFLARE_ACCOUNT_ID"
   ]
 }

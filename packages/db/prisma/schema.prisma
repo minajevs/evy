@@ -28,10 +28,24 @@ model Item {
     collectionId    String
 
     collection      Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+    images          ItemImage[]
 
-    createdAt   DateTime
+    createdAt       DateTime
     
     @@index([collectionId])
+} 
+
+model ItemImage {
+    id              String @id @default(cuid())
+    itemId          String
+    externalImageId String
+    thumbhash       String
+
+    item            Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+    createdAt       DateTime
+    
+    @@index([itemId])
 } 
 
 // -------------------
