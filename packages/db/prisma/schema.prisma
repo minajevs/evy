@@ -41,6 +41,9 @@ model ItemImage {
     externalImageId String
     thumbhash       String
 
+    name            String?
+    description     String?
+
     item            Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
 
     createdAt       DateTime
