@@ -11,14 +11,12 @@ type Props = {
 } & BoxProps
 
 export const ImageDisplay = ({ image, fit, height, width, ...rest }: Props) => {
-  return <Box
-    role='group'
-    zIndex={1}
-    {...rest}>
+  return <Box width='full' height='full'>
     <Box
       pos='relative'
       height={height}
       width={width}
+      {...rest}
       // _after={{
       //   content: '""',
       //   w: 'full',

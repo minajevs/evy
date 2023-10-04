@@ -1,15 +1,12 @@
-import { AddIcon, EditIcon } from "@chakra-ui/icons"
+import { EditIcon } from "@chakra-ui/icons"
 import { Link } from "@chakra-ui/next-js"
-import { Button, Card, CardBody, Editable, EditableInput, EditablePreview, Flex, HStack, Heading, SimpleGrid, Text, useDisclosure } from "@chakra-ui/react"
+import { Button, HStack, Heading, Text } from "@chakra-ui/react"
 import { getServerSession } from "@evy/auth"
 import { type Collection, prisma, type Item, type ItemImage } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
 import { z } from "zod"
 import { ItemMedia } from "~/components/item-media"
-import { UploadDialog } from "~/components/item-media/new-media/UploadDialog"
-import { NewItem } from "~/components/new-item"
 import Layout from "~/layout"
-import { api } from "~/utils/api"
 import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 
 type Props = {

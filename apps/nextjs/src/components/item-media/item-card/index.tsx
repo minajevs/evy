@@ -1,6 +1,6 @@
 import { type ItemImage } from "@evy/db"
 import { ImageDisplay } from "../image-display"
-import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure } from "@chakra-ui/react"
+import { Box } from "@chakra-ui/react"
 
 type Props = {
   image: ItemImage
@@ -8,6 +8,15 @@ type Props = {
 }
 export const ItemCard = ({ image, onClick }: Props) => {
   return <>
-    <ImageDisplay image={image} height='25vh' cursor='pointer' onClick={onClick} />
+    <Box
+      role='group'
+      zIndex={1}
+      cursor='pointer'
+      onClick={onClick}>
+      <ImageDisplay
+        image={image}
+        height='25vh'
+      />
+    </Box>
   </>
 }

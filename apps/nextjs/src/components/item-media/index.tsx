@@ -4,7 +4,7 @@ import { useCallback, useState } from "react"
 import { AddIcon } from "@chakra-ui/icons"
 import { UploadDialog } from "./new-media/UploadDialog"
 import { ItemCard } from "./item-card"
-import { ImageUpdate } from "./image-update"
+import { ImageModal } from "./image-update/ImageModal"
 
 type Props = {
   itemId: string
@@ -20,6 +20,10 @@ export const ItemMedia = ({ itemId, images }: Props) => {
 
   const onUploaded = useCallback((image: ItemImage) => {
     setLocalImages(prev => [...prev, image])
+  }, [setLocalImages])
+
+  const onDeleted = useCallback((image: ItemImage) => {
+    setLocalImages(prev => prev.filter(x => x.id !== image.id))
   }, [setLocalImages])
 
   const onClick = useCallback((image: ItemImage) => {
@@ -48,7 +52,11 @@ export const ItemMedia = ({ itemId, images }: Props) => {
     />
     {
       editImage !== null
-        ? <ImageUpdate image={editImage} disclosure={editImageDisclosure} />
+        ? <ImageModal
+          image={editImage}
+          disclosure={editImageDisclosure}
+          onDeleted={onDeleted}
+        />
         : null
     }
   </>

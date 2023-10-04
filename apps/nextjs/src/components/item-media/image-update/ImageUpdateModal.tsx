@@ -12,7 +12,7 @@ type Props = {
   onSave: () => void
 }
 
-export const ImageUpdateForm = ({ image, onSave }: Props) => {
+export const ImageUpdateModal = ({ image, onSave }: Props) => {
   const [loading, { on }] = useBoolean()
   const {
     handleSubmit,

@@ -3,9 +3,10 @@ import {
   directUploadUrlSchema,
   createBasicImageSchema,
   updateImageSchema,
+  deleteImageSchema,
 } from '../schemas'
 import { createTRPCRouter, protectedProcedure } from '../trpc/trpc'
-import { getDirectUploadUrl } from '@evy/images'
+import { getDirectUploadUrl, deleteImage } from '@evy/images'
 import { TRPCError } from '@trpc/server'
 
 export const imageRouter = createTRPCRouter({
@@ -59,5 +60,58 @@ export const imageRouter = createTRPCRouter({
           description,
         },
       })
+    }),
+  deleteImage: protectedProcedure
+    .input(deleteImageSchema)
+    .mutation(async ({ ctx, input: { imageId } }) => {
+      try {
+        return ctx.prisma.$transaction(
+          async (tx) => {
+            const image = await tx.itemImage.findFirst({
+              where: {
+                id: imageId,
+                AND: {
+                  item: {
+                    collection: {
+                      userId: ctx.session.user.id,
+                    },
+                  },
+                },
+              },
+            })
+
+            if (image === null) return true
+
+            await tx.itemImage.delete({
+              where: {
+                id: imageId,
+              },
+            })
+
+            const result = await deleteImage({
+              externalImageId: image.externalImageId,
+            })
+            if (!result.success) {
+              const firstError = result.errors[0]
+              if (firstError?.code === 5404) {
+                // 5404 = Image not found, meaning that we should delete image from DB and forget it
+                return true
+              }
+
+              console.error(result)
+              throw new Error(
+                'Rollback transaction because image cannot be deleted',
+              )
+            }
+          },
+          {
+            // default timeout is 5000ms
+            // which is apparently slow for cloudflare images api to answer
+            timeout: 10000,
+          },
+        )
+      } catch (e) {
+        return false
+      }
     }),
 })

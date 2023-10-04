@@ -34,3 +34,6 @@ export const updateImageSchema = z.object({
   name: z.string(),
   description: z.string(),
 })
+export const deleteImageSchema = z.object({
+  imageId: z.string().min(1),
+})
