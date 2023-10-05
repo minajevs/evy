@@ -49,6 +49,7 @@
   },
   "globalEnv": [
     "CI",
+    "HOSTNAME",
     "DATABASE_URL",
     "NEXTAUTH_SECRET",
     "NEXTAUTH_URL",
