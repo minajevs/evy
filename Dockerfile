@@ -8,30 +8,18 @@ FROM node:${NODE_VERSION}-slim as base
 WORKDIR /app
 
 # Set production environment
-ENV NODE_ENV="production"
+ENV NODE_ENV production
+ENV NEXT_TELEMETRY_DISABLED 1
 
 
 # Throw-away build stage to reduce size of final image
 FROM base as build
 
 # Build variables
-ARG DATABASE_URL
-ARG GITHUB_CLIENT_ID
-ARG GITHUB_CLIENT_SECRET
-ARG NEXTAUTH_URL
-ARG NEXTAUTH_SECRET
 ARG NEXT_PUBLIC_CLOUDFLARE_ACCOUNT_ID
-ARG CLOUDFLARE_API_TOKEN
 ARG NEXT_PUBLIC_CLOUDFLARE_ACCOUNT_HASH
 
-# Is it okay to expose those vars to env?
-ENV DATABASE_URL ${DATABASE_URL}
-ENV GITHUB_CLIENT_ID ${GITHUB_CLIENT_ID}
-ENV GITHUB_CLIENT_SECRET ${GITHUB_CLIENT_SECRET}
-ENV NEXTAUTH_URL ${NEXTAUTH_URL}
-ENV NEXTAUTH_SECRET ${NEXTAUTH_SECRET}
 ENV NEXT_PUBLIC_CLOUDFLARE_ACCOUNT_ID ${NEXT_PUBLIC_CLOUDFLARE_ACCOUNT_ID}
-ENV CLOUDFLARE_API_TOKEN ${CLOUDFLARE_API_TOKEN}
 ENV NEXT_PUBLIC_CLOUDFLARE_ACCOUNT_HASH ${NEXT_PUBLIC_CLOUDFLARE_ACCOUNT_HASH}
 
 # Install packages needed to build node modules
@@ -48,7 +36,10 @@ RUN npm ci --include=dev
 COPY --link . .
 
 # Build application
-RUN npm run build
+# Since we’re not pulling the server environment variables into our container, 
+# the environment schema validation will fail. To prevent this, we have to add a SKIP_ENV_VALIDATION=1
+# flag to the build command so that the env-schemas aren’t validated at build time.
+RUN SKIP_ENV_VALIDATION=1 npm run build
 
 # Remove development dependencies
 RUN npm prune --omit=dev
@@ -57,9 +48,18 @@ RUN npm prune --omit=dev
 # Final stage for app image
 FROM base
 
-# Copy built application
-COPY --from=build /app /app
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
 
-# Start the server by default, this can be overwritten at runtime
+COPY --from=build /app/apps/nextjs/next.config.mjs ./
+COPY --from=build /app/apps/nextjs/public ./public
+COPY --from=build /app/apps/nextjs/package.json ./package.json
+
+COPY --from=build --chown=nextjs:nodejs /app/apps/nextjs/.next/standalone ./
+COPY --from=build --chown=nextjs:nodejs /app/apps/nextjs/.next/static ./.next/static
+
+USER nextjs
 EXPOSE 3000
-CMD [ "npm", "run", "start" ]
+ENV PORT 3000
+
+CMD ["node", "apps/nextjs/server.js"]

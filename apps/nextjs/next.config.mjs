@@ -4,6 +4,8 @@ import '@evy/auth/env.mjs'
 
 /** @type {import("next").NextConfig} */
 const config = {
+  // enable standalone deployment for docker
+  output: 'standalone',
   reactStrictMode: true,
   /** Enables hot reloading for local packages without a build step */
   transpilePackages: [
