@@ -52,7 +52,7 @@ const config = {
       fallback: [],
     }
   },
-  assetPrefix: process.env.HOSTNAME,
+  assetPrefix: process.env.APP_HOST,
   // https://github.com/vercel/next.js/discussions/39549
   webpack(config, { nextRuntime }) {
     if (nextRuntime !== 'nodejs') return config

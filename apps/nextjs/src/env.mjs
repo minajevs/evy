@@ -8,7 +8,7 @@ export const env = createEnv({
    */
   server: {
     DATABASE_URL: z.string().url(),
-    HOSTNAME: z.string().optional(),
+    APP_HOST: z.string().optional(),
   },
   /**
    * Specify your client-side environment variables schema here.
@@ -22,7 +22,7 @@ export const env = createEnv({
    */
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
-    HOSTNAME: process.env.HOSTNAME,
+    APP_HOST: process.env.APP_HOST,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   skipValidation: !!process.env.CI || !!process.env.SKIP_ENV_VALIDATION,
