@@ -30,6 +30,28 @@ const config = {
     //   loader: 'custom',
     //   loaderFile: './images/loader.js',
   },
+  // enable URL rewrite
+  // eslint-disable-next-line @typescript-eslint/require-await
+  async rewrites() {
+    return {
+      beforeFiles: [
+        // if the host is `my.evy.app`,
+        // this rewrite will be applied
+        {
+          source: '/:path*',
+          has: [
+            {
+              type: 'host',
+              value: 'my.evy.app',
+            },
+          ],
+          destination: '/my/:path*',
+        },
+      ],
+      afterFiles: [],
+      fallback: [],
+    }
+  },
   // https://github.com/vercel/next.js/discussions/39549
   webpack(config, { nextRuntime }) {
     if (nextRuntime !== 'nodejs') return config
