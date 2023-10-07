@@ -27,7 +27,6 @@
     "@manypkg/cli": "^0.21.0",
     "dotenv-cli": "^7.3.0",
     "eslint": "^8.48.0",
-    "nextjs-progressbar": "^0.0.16",
     "prettier": "^3.0.3",
     "turbo": "^1.10.14",
     "typescript": "^5.2.2"

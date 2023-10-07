@@ -4,16 +4,23 @@ import '@evy/auth/env.mjs'
 
 /** @type {import("next").NextConfig} */
 const config = {
-  // enable standalone deployment for docker
+  experimental: {
+    /** Enable superjson plugin for SWC */
+    swcPlugins: [['next-superjson-plugin', {}]],
+  },
+  /** enable standalone deployment for docker */
   output: 'standalone',
   reactStrictMode: true,
-  /** Enables hot reloading for local packages without a build step */
   transpilePackages: [
+    /** Enables hot reloading for local packages without a build step */
     '@evy/api',
     '@evy/db',
     '@evy/auth',
     '@evy/images',
     '@evy/styles',
+    /** Required as per mdxeditor docs  */
+    '@mdxeditor/editor',
+    'react-diff-view',
   ],
   /** We already do linting and typechecking as separate tasks in CI */
   eslint: { ignoreDuringBuilds: true },
