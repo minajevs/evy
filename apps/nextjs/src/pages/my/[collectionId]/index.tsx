@@ -1,14 +1,12 @@
-import { Button, Card, CardBody, Editable, EditableInput, EditablePreview, Flex, HStack, Heading, SimpleGrid, Text, useBoolean } from "@chakra-ui/react"
+import { Box, Button, Card, CardBody, Editable, EditableInput, EditablePreview, Flex, HStack, Heading, SimpleGrid, Text, useBoolean } from "@chakra-ui/react"
 import { getServerSession } from "@evy/auth"
 import { type Collection, prisma, type Item } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
 import { z } from "zod"
 import { NewItem } from "~/components/new-item"
 import Layout from "~/layout"
-import { api } from "~/utils/api"
 import { Link } from "@chakra-ui/next-js"
 import { EditIcon } from "@chakra-ui/icons"
-import { EditText } from "~/components/common/EditText"
 import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 
 type Props = {
@@ -38,14 +36,22 @@ type ItemListProps = {
   items: Item[]
 }
 const ItemList = ({ collectionId, items }: ItemListProps) => {
-  const itemViews = items.map(item => <ItemView key={item.id} item={item} />)
+  const itemViews = <SimpleGrid columns={4} spacing='8'>
+    {items.map(item => <ItemView key={item.id} item={item} />)}
+  </SimpleGrid>
+  const noItems = <Box>
+    <Text>No items in this collection yet</Text>
+    <Text>Click "Add" to add a first item</Text>
+  </Box>
 
   return <>
-    <Heading size="md" mb='4'>Items</Heading>
-    <SimpleGrid columns={4} spacing='8'>
+    <HStack width='100%' justifyContent='space-between' mb='4'>
+      <Heading size="md">Items</Heading>
       <NewItem collectionId={collectionId} />
-      {itemViews}
-    </SimpleGrid>
+    </HStack>
+    {items.length === 0
+      ? noItems
+      : itemViews}
   </>
 }
 
@@ -54,11 +60,10 @@ type ItemViewProps = {
 }
 const ItemView = ({ item }: ItemViewProps) => <Link href={`/my/${item.collectionId}/${item.id}`}>
   <Card
-    boxShadow='lg'
     _hover={{
-      boxShadow: 'xl',
+      boxShadow: 'md',
       transform: 'translateY(-2px)',
-      transitionDuration: '0.2s',
+      transitionDuration: '0.1s',
       transitionTimingFunction: "ease-in-out"
     }}
     _active={{

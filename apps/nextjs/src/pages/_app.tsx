@@ -6,7 +6,6 @@ import NextNProgress from 'nextjs-progressbar'
 import { theme } from '@evy/styling'
 
 import { api } from "~/utils/api"
-import ConfirmContext from "~/utils/confirm/context"
 import { ConfirmProvider } from "~/utils/confirm/ConfirmProvider";
 
 const MyApp: AppType = ({

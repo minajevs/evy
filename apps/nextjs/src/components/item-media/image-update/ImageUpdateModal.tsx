@@ -19,10 +19,10 @@ export const ImageUpdateModal = ({ image, onSave }: Props) => {
     register,
     formState: { errors, isValid },
     reset
-  } = useForm({ schema: updateImageSchema, defaultValues: { imageId: image.id } })
+  } = useForm({ schema: updateImageSchema, defaultValues: { id: image.id } })
 
   useEffect(() => {
-    reset({ imageId: image.id })
+    reset({ id: image.id })
   }, [image.id, reset])
 
   const mutation = api.image.updateImage.useMutation()

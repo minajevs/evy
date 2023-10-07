@@ -16,6 +16,7 @@ model Collection {
     description String?
     userId      String
 
+    user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
     items       Item[]
 
     createdAt   DateTime
@@ -83,12 +84,18 @@ model Session {
 
 model User {
     id            String    @id @default(cuid())
+    username      String    @unique
     name          String?
     email         String?   @unique
     emailVerified DateTime?
     image         String?
+
+    createdAt     DateTime
+
     accounts      Account[]
     sessions      Session[]
+
+    collections   Collection[]
 }
 
 model VerificationToken {

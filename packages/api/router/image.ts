@@ -45,7 +45,7 @@ export const imageRouter = createTRPCRouter({
     ),
   updateImage: protectedProcedure
     .input(updateImageSchema)
-    .mutation(async ({ ctx, input: { imageId, name, description } }) => {
+    .mutation(async ({ ctx, input: { id: imageId, name, description } }) => {
       return ctx.prisma.itemImage.update({
         where: {
           id: imageId,
@@ -63,7 +63,7 @@ export const imageRouter = createTRPCRouter({
     }),
   deleteImage: protectedProcedure
     .input(deleteImageSchema)
-    .mutation(async ({ ctx, input: { imageId } }) => {
+    .mutation(async ({ ctx, input: { id: imageId } }) => {
       try {
         return ctx.prisma.$transaction(
           async (tx) => {

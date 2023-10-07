@@ -26,7 +26,7 @@ const EditItemPage: NextPage<Props> = ({ layout, item }) => {
     register,
     formState: { errors, isDirty, isValid },
     watch
-  } = useForm({ schema: editItemSchema, defaultValues: { itemId: item.id, name: item.name, description: item.description ?? undefined } })
+  } = useForm({ schema: editItemSchema, defaultValues: { id: item.id, name: item.name, description: item.description ?? undefined } })
 
   const updateMutation = api.item.update.useMutation()
 

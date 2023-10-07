@@ -4,6 +4,7 @@ import { newItemSchema } from "@evy/api/schemas"
 import { useCallback, useEffect } from "react"
 import { api } from "~/utils/api"
 import { useRouter } from "next/router"
+import { AddIcon } from "@chakra-ui/icons"
 
 type Props = {
   collectionId: string
@@ -39,25 +40,12 @@ export const NewItem = ({ collectionId }: Props) => {
   })
 
   return <>
-    <Card
-      onClick={onOpen}
-      boxShadow='lg'
-      _hover={{
-        boxShadow: 'xl',
-        transform: 'translateY(-2px)',
-        transitionDuration: '0.2s',
-        transitionTimingFunction: "ease-in-out"
-      }}
-      _active={{
-        transform: 'translateY(2px)',
-        transitionDuration: '0.1s',
-      }}
-      cursor='pointer'
-    >
-      <CardBody>
-        + Add new item
-      </CardBody>
-    </Card>
+    <Button
+      leftIcon={<AddIcon />}
+      variant='solid'
+      onClick={onOpen}>
+      Add
+    </Button>
     <Modal
       isOpen={isOpen}
       onClose={onClose}
