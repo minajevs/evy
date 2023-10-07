@@ -13,6 +13,7 @@ import { editCollectionSchema } from "@evy/api/schemas"
 import { useForm } from "~/components/forms"
 import { useRouter } from "next/router"
 import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
+import { MDXEditor } from "@mdxeditor/editor"
 
 type Props = {
   collection: Collection & { items: Item[] }

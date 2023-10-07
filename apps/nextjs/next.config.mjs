@@ -4,10 +4,6 @@ import '@evy/auth/env.mjs'
 
 /** @type {import("next").NextConfig} */
 const config = {
-  experimental: {
-    /** Enable superjson plugin for SWC */
-    swcPlugins: [['next-superjson-plugin', {}]],
-  },
   /** enable standalone deployment for docker */
   output: 'standalone',
   reactStrictMode: true,
@@ -39,6 +35,8 @@ const config = {
   },
   // https://github.com/vercel/next.js/discussions/39549
   webpack(config, { nextRuntime }) {
+    config.experiments = { ...config.experiments, topLevelAwait: true }
+
     if (nextRuntime !== 'nodejs') return config
     config.resolve.fallback = {
       ...config.resolve.fallback,
