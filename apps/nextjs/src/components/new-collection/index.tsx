@@ -24,8 +24,8 @@ export const NewCollection = () => {
   })
 
   return <>
-    <NavItemBase onClick={onOpen}>
-      + Add new collection
+    <NavItemBase onClick={onOpen} mt='8'>
+      + Add new
     </NavItemBase>
     <Modal
       isOpen={isOpen}

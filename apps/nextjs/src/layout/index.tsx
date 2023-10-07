@@ -1,9 +1,7 @@
 import Head from "next/head"
-import { Nav } from "./Nav"
 import { Box } from "@chakra-ui/react"
 import { useBackgroundColor } from "@evy/styling"
 import { Sidebar } from "./sidebar"
-import type { Collection } from "@evy/db"
 import { type LinkItem } from "./sidebar/SidebarContent"
 import { type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 
