@@ -20,7 +20,10 @@ export const userRouter = createTRPCRouter({
     .query(async ({ ctx, input: { username } }) => {
       const existingUser = await ctx.prisma.user.findFirst({
         where: {
-          username,
+          username: {
+            equals: username,
+            mode: 'insensitive',
+          },
         },
       })
       return existingUser === null
