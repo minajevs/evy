@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardBody, Editable, EditableInput, EditablePreview, Flex, HStack, Heading, SimpleGrid, Text, useBoolean } from "@chakra-ui/react"
+import { Box, Button, Card, CardBody, Editable, EditableInput, EditablePreview, Flex, HStack, Heading, SimpleGrid, Text, VStack, useBoolean } from "@chakra-ui/react"
 import { getServerSession } from "@evy/auth"
 import { type Collection, prisma, type Item } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
@@ -25,7 +25,11 @@ const CollectionPage: NextPage<Props> = ({ layout, collection }) => {
         </Button>
       </HStack>
 
-      <Text mb='8'>{collection.description}</Text>
+      {
+        collection.description !== null && collection.description.length > 0
+          ? <Text mb='8'>{collection.description}</Text>
+          : null
+      }
       <ItemList collectionId={collection.id} items={collection.items} />
     </Layout>
   </>

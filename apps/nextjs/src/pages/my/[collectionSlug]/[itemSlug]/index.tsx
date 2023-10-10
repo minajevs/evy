@@ -26,7 +26,12 @@ const ItemPage: NextPage<Props> = ({ layout, item }) => {
           Edit
         </Button>
       </HStack>
-      <Text mb='8'>{item.description}</Text>
+      {
+        item.description !== null && item.description.length > 0
+          ? <Text mb='8'>{item.description}</Text>
+          : null
+      }
+
       <ItemMedia itemId={item.id} images={item.images} />
     </Layout>
   </>

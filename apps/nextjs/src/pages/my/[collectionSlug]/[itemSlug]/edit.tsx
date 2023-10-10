@@ -56,14 +56,12 @@ const EditItemPage: NextPage<Props> = ({ layout, item }) => {
   return <>
     <Layout title="Item" layout={layout}>
       <form onSubmit={onSubmit}>
-        <Flex justifyContent='space-between' h='4rem'>
-          <FormControl isInvalid={errors.name !== undefined} isRequired isDisabled={loading}>
-            <Heading size="lg" mb="4">
-              <Link href={`/my/${item.collection.slug}`}>{item.collection.name}</Link>
-              <Text display='inline' pl='1' fontWeight={200}>/</Text>
-              <Text display='inline' pl='1'>{watch('name')}</Text>
-            </Heading>
-          </FormControl>
+        <Flex justifyContent='space-between'>
+          <Heading size="lg" mb="4">
+            <Link href={`/my/${item.collection.slug}`}>{item.collection.name}</Link>
+            <Text display='inline' pl='1' fontWeight={200}>/</Text>
+            <Text display='inline' pl='1'>{watch('name')}</Text>
+          </Heading>
           <ButtonGroup isAttached>
             <Button leftIcon={<CheckIcon />} variant='solid' isLoading={loading} isDisabled={saveDisabled} type="submit">
               Save
