@@ -1,28 +1,36 @@
-import { Box, Button, Card, CardBody, Editable, EditableInput, EditablePreview, Flex, HStack, Heading, SimpleGrid, Text, VStack, useBoolean } from "@chakra-ui/react"
+import { Box, Button, ButtonGroup, Card, CardBody, Editable, EditableInput, EditablePreview, Flex, HStack, Heading, SimpleGrid, Text, VStack, useBoolean } from "@chakra-ui/react"
 import { getServerSession } from "@evy/auth"
-import { type Collection, prisma, type Item } from "@evy/db"
+import { type Collection, prisma, type Item, type User } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
 import { z } from "zod"
 import { NewItem } from "~/components/new-item"
 import Layout from "~/layout"
 import { Link } from "@chakra-ui/next-js"
-import { EditIcon } from "@chakra-ui/icons"
+import { EditIcon, LinkIcon } from "@chakra-ui/icons"
 import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
+import { ShareDialog } from "~/components/share-dialog/ShareDialog"
+import { env } from "~/env.mjs"
 
 type Props = {
-  collection: Collection & { items: (Item & { collection: Collection })[] }
+  collection: Collection & { items: (Item & { collection: Collection })[] } & { user: User }
 } & LayoutServerSideProps
 
 const CollectionPage: NextPage<Props> = ({ layout, collection }) => {
+  const url = `${env.NEXT_PUBLIC_HOST}/${collection.user.username}/${collection.slug}`
   return <>
     <Layout title="Collection" layout={layout}>
       <HStack width='100%' justifyContent='space-between'>
         <Heading size="lg" mb="4">
           <Text>{collection.name}</Text>
         </Heading>
-        <Button leftIcon={<EditIcon />} variant='solid' as={Link} href={`/my/${collection.slug}/edit`}>
-          Edit
-        </Button>
+        <ButtonGroup isAttached>
+          <ShareDialog buttonProps={{ leftIcon: <LinkIcon /> }}>
+            {url}
+          </ShareDialog>
+          <Button leftIcon={<EditIcon />} variant='solid' as={Link} href={`/my/${collection.slug}/edit`}>
+            Edit
+          </Button>
+        </ButtonGroup>
       </HStack>
 
       {
@@ -99,6 +107,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
       slug: collectionSlug,
     },
     include: {
+      user: true,
       items: {
         include: {
           collection: true

@@ -1,19 +1,22 @@
-import { EditIcon } from "@chakra-ui/icons"
+import { EditIcon, LinkIcon } from "@chakra-ui/icons"
 import { Link } from "@chakra-ui/next-js"
-import { Button, HStack, Heading, Text } from "@chakra-ui/react"
+import { Button, ButtonGroup, HStack, Heading, Text } from "@chakra-ui/react"
 import { getServerSession } from "@evy/auth"
-import { type Collection, prisma, type Item, type ItemImage } from "@evy/db"
+import { type Collection, prisma, type Item, type ItemImage, type User } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
 import { z } from "zod"
 import { ItemMedia } from "~/components/item-media"
+import { ShareDialog } from "~/components/share-dialog/ShareDialog"
+import { env } from "~/env.mjs"
 import Layout from "~/layout"
 import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 
 type Props = {
-  item: Item & { collection: Collection } & { images: ItemImage[] }
+  item: Item & { collection: Collection & { user: User } } & { images: ItemImage[] }
 } & LayoutServerSideProps
 
 const ItemPage: NextPage<Props> = ({ layout, item }) => {
+  const url = `${env.NEXT_PUBLIC_HOST}/${item.collection.user.username}/${item.collection.slug}/${item.slug}`
   return <>
     <Layout title="Collection" layout={layout}>
       <HStack width='100%' justifyContent='space-between'>
@@ -22,9 +25,14 @@ const ItemPage: NextPage<Props> = ({ layout, item }) => {
           <Text display='inline' pl='1' fontWeight={200}>/</Text>
           <Text display='inline' pl='1'>{item.name}</Text>
         </Heading>
-        <Button leftIcon={<EditIcon />} variant='solid' as={Link} href={`/my/${item.collection.slug}/${item.slug}/edit`}>
-          Edit
-        </Button>
+        <ButtonGroup>
+          <ShareDialog buttonProps={{ leftIcon: <LinkIcon /> }}>
+            {url}
+          </ShareDialog>
+          <Button leftIcon={<EditIcon />} variant='solid' as={Link} href={`/my/${item.collection.slug}/${item.slug}/edit`}>
+            Edit
+          </Button>
+        </ButtonGroup>
       </HStack>
       {
         item.description !== null && item.description.length > 0
@@ -55,7 +63,11 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
       slug: itemSlug
     },
     include: {
-      collection: true,
+      collection: {
+        include: {
+          user: true
+        }
+      },
       images: true
     }
   })

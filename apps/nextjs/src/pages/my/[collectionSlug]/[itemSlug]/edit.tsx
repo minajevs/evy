@@ -68,7 +68,7 @@ const EditItemPage: NextPage<Props> = ({ layout, item }) => {
             </Button>
             {
               !loading ?
-                <Button variant='solid' as={Link} href={`/my/${item.collection.slug}/${item.id}`}>
+                <Button variant='solid' as={Link} href={`/my/${item.collection.slug}/${item.slug}`}>
                   Cancel
                 </Button>
                 : null
