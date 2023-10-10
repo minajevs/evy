@@ -1,5 +1,5 @@
 import { Button, FormControl, FormErrorMessage, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Textarea, useDisclosure } from "@chakra-ui/react"
-import { useForm } from "../forms"
+import { useZodForm } from "../forms"
 import { api } from "~/utils/api"
 import { newCollectionSchema } from "@evy/api/schemas"
 import { useRouter } from "next/router"
@@ -13,7 +13,7 @@ export const NewCollection = () => {
     handleSubmit,
     register,
     formState: { errors, isDirty, isValid },
-  } = useForm({ schema: newCollectionSchema, })
+  } = useZodForm({ schema: newCollectionSchema, })
 
   const createMutation = api.collection.create.useMutation()
 

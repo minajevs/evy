@@ -10,7 +10,7 @@ import { EditIcon } from "@chakra-ui/icons"
 import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 
 type Props = {
-  collection: Collection & { items: Item[] }
+  collection: Collection & { items: (Item & { collection: Collection })[] }
 } & LayoutServerSideProps
 
 const CollectionPage: NextPage<Props> = ({ layout, collection }) => {
@@ -20,7 +20,7 @@ const CollectionPage: NextPage<Props> = ({ layout, collection }) => {
         <Heading size="lg" mb="4">
           <Text>{collection.name}</Text>
         </Heading>
-        <Button leftIcon={<EditIcon />} variant='solid' as={Link} href={`/my/${collection.id}/edit`}>
+        <Button leftIcon={<EditIcon />} variant='solid' as={Link} href={`/my/${collection.slug}/edit`}>
           Edit
         </Button>
       </HStack>
@@ -33,7 +33,7 @@ const CollectionPage: NextPage<Props> = ({ layout, collection }) => {
 
 type ItemListProps = {
   collectionId: string
-  items: Item[]
+  items: (Item & { collection: Collection })[]
 }
 const ItemList = ({ collectionId, items }: ItemListProps) => {
   const itemViews = <SimpleGrid columns={4} spacing='8'>
@@ -56,9 +56,9 @@ const ItemList = ({ collectionId, items }: ItemListProps) => {
 }
 
 type ItemViewProps = {
-  item: Item
+  item: Item & { collection: Collection }
 }
-const ItemView = ({ item }: ItemViewProps) => <Link href={`/my/${item.collectionId}/${item.id}`}>
+const ItemView = ({ item }: ItemViewProps) => <Link href={`/my/${item.collection.slug}/${item.slug}`}>
   <Card
     _hover={{
       boxShadow: 'md',
@@ -80,22 +80,26 @@ const ItemView = ({ item }: ItemViewProps) => <Link href={`/my/${item.collection
 </Link>
 
 
-const paramsSchema = z.object({ collectionId: z.string() })
+const paramsSchema = z.object({ collectionSlug: z.string() })
 export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, params }) => {
   const auth = await getServerSession({ req, res })
   if (!auth) {
     return { redirect: { destination: '/', permanent: false } }
   }
 
-  const { collectionId } = paramsSchema.parse(params)
+  const { collectionSlug } = paramsSchema.parse(params)
 
   const currentCollection = await prisma.collection.findFirst({
     where: {
       userId: auth.user.id,
-      id: collectionId,
+      slug: collectionSlug,
     },
     include: {
-      items: true
+      items: {
+        include: {
+          collection: true
+        }
+      }
     }
   })
 

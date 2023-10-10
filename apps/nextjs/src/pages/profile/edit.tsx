@@ -8,11 +8,12 @@ import type { GetServerSideProps, GetServerSidePropsContext, NextPage } from "ne
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { useForm } from "~/components/forms";
+import { useZodForm } from "~/components/forms";
 import Layout from "~/layout"
 import { api } from "~/utils/api";
 import { type LayoutServerSideProps } from "~/utils/layoutServerSideProps";
 import { useDebounce } from "~/utils/useDebounce";
+import { useVerifyValue } from "~/utils/useVerifyValue";
 
 type Props = {
   user: User
@@ -22,42 +23,34 @@ type Props = {
 const EditProfile: NextPage<Props> = ({ user, layout }) => {
   const router = useRouter()
   const [loading, { on }] = useBoolean()
-  const [currentUsername, setCurrentUsername] = useState(user.username)
-  const debouncedUsername = useDebounce(currentUsername, 500)
+  const { debounceSettled, shouldVerify, verifyValue, onChange } = useVerifyValue(user.username)
 
   const {
     handleSubmit,
     register,
-    formState: { errors, isDirty, isValid },
-    setValue,
-    watch
-  } = useForm({
+    formState: { errors, isValid },
+  } = useZodForm({
     schema: editUserSchema, defaultValues: {
       username: user.username,
       name: user.name ?? undefined
     }
   })
 
-  const usernameChanged = currentUsername !== user.username
-
   const updateMutation = api.user.update.useMutation()
-  const verifyUsernameAvailableQuery = api.user.verifyUsernameAvailable.useQuery({ username: debouncedUsername }, {
-    enabled: debouncedUsername !== user.username && usernameChanged && errors.username === undefined,
+  const verifyUsernameAvailableQuery = api.user.verifyUsernameAvailable.useQuery({ username: verifyValue }, {
+    enabled: shouldVerify && errors.username === undefined,
     cacheTime: 0
   })
+
+  const usernameAvailable = verifyUsernameAvailableQuery.data ?? false
+  const errorAvailability = shouldVerify && !usernameAvailable
+  const saveDisabled = !isValid || errorAvailability || !debounceSettled
 
   const onSubmit = handleSubmit(async (input) => {
     on()
     await updateMutation.mutateAsync(input)
     await router.replace(`/profile`)
   })
-
-  const onUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => setCurrentUsername(event.target.value)
-
-  const usernameVerifying = usernameChanged && verifyUsernameAvailableQuery.isLoading
-  const usernameAvailable = usernameVerifying ? true : verifyUsernameAvailableQuery.data ?? true
-
-  const saveDisabled = !isValid || debouncedUsername !== currentUsername || !usernameAvailable
 
   return (
     <Layout layout={layout}>
@@ -81,7 +74,7 @@ const EditProfile: NextPage<Props> = ({ user, layout }) => {
         </HStack>
         <VStack spacing='4' alignItems='baseline'>
           {user.email
-            ? <Box minWidth='33vw'>
+            ? <Box width='full'>
               <FormLabel>Email</FormLabel>
               <Input
                 placeholder='Email'
@@ -91,19 +84,19 @@ const EditProfile: NextPage<Props> = ({ user, layout }) => {
             </Box>
             : null
           }
-          <Box minWidth='33vw'>
-            <FormControl isInvalid={errors.username !== undefined || !usernameAvailable} isRequired isDisabled={loading}>
+          <Box width='full'>
+            <FormControl isInvalid={errors.username !== undefined || errorAvailability} isRequired isDisabled={loading}>
               <FormLabel>Username</FormLabel>
               <InputGroup>
                 <Input
                   {...register('username', {
-                    onChange: onUsernameChange
+                    onChange: onChange
                   })}
                   placeholder='Username'
                 />
                 <InputRightElement>
                   {
-                    debouncedUsername !== currentUsername || !usernameChanged || errors.username !== undefined
+                    !(shouldVerify && errors.username === undefined)
                       ? null
                       : verifyUsernameAvailableQuery.isLoading
                         ? <Spinner />
@@ -119,7 +112,7 @@ const EditProfile: NextPage<Props> = ({ user, layout }) => {
                   : 'This username is unavailable'}</FormErrorMessage>
             </FormControl>
           </Box>
-          <Box minWidth='33vw'>
+          <Box width='full'>
             <FormControl isInvalid={errors.name !== undefined} isDisabled={loading}>
               <FormLabel>Name</FormLabel>
               <Input

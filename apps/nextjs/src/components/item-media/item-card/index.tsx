@@ -13,9 +13,13 @@ export const ItemCard = ({ image, onClick }: Props) => {
       zIndex={1}
       cursor='pointer'
       onClick={onClick}>
+      {/* width - full, heigh - full, paddingTop - 100% to achieve square */}
+      {/* set paddingTop to change dimensions, eg. w = 100px, paddingTop = 33% => h == 33px  */}
       <ImageDisplay
         image={image}
-        height='25vh'
+        width='full'
+        height='full'
+        paddingTop='100%'
       />
     </Box>
   </>

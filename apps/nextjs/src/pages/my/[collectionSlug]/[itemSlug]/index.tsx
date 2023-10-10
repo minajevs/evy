@@ -18,11 +18,11 @@ const ItemPage: NextPage<Props> = ({ layout, item }) => {
     <Layout title="Collection" layout={layout}>
       <HStack width='100%' justifyContent='space-between'>
         <Heading size="lg" mb="4">
-          <Link href={`/my/${item.collectionId}`}>{item.collection.name}</Link>
+          <Link href={`/my/${item.collection.slug}`}>{item.collection.name}</Link>
           <Text display='inline' pl='1' fontWeight={200}>/</Text>
           <Text display='inline' pl='1'>{item.name}</Text>
         </Heading>
-        <Button leftIcon={<EditIcon />} variant='solid' as={Link} href={`/my/${item.collection.id}/${item.id}/edit`}>
+        <Button leftIcon={<EditIcon />} variant='solid' as={Link} href={`/my/${item.collection.slug}/${item.slug}/edit`}>
           Edit
         </Button>
       </HStack>
@@ -32,22 +32,22 @@ const ItemPage: NextPage<Props> = ({ layout, item }) => {
   </>
 }
 
-const paramsSchema = z.object({ itemId: z.string(), collectionId: z.string() })
+const paramsSchema = z.object({ itemSlug: z.string(), collectionSlug: z.string() })
 export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, params }) => {
   const auth = await getServerSession({ req, res })
   if (!auth) {
     return { redirect: { destination: '/', permanent: false } }
   }
 
-  const { itemId, collectionId } = paramsSchema.parse(params)
+  const { itemSlug, collectionSlug } = paramsSchema.parse(params)
 
   const currentItem = await prisma.item.findFirst({
     where: {
       collection: {
-        id: collectionId,
+        slug: collectionSlug,
         userId: auth.user.id,
       },
-      id: itemId
+      slug: itemSlug
     },
     include: {
       collection: true,

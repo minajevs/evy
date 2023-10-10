@@ -11,8 +11,9 @@ type Props = {
   itemId: string
   disclosure: UseDisclosureReturn
   onUploaded: (newImage: ItemImage) => void
+  onUpdated: (image: ItemImage) => void
 }
-export const UploadDialog = ({ itemId, disclosure, onUploaded }: Props) => {
+export const UploadDialog = ({ itemId, disclosure, onUploaded, onUpdated }: Props) => {
   const router = useRouter()
   const { isOpen, onOpen, onClose } = disclosure
   const [directUpload, setDirectUpload] = useState<DirectUploadUrlResult | null>(null)
@@ -32,13 +33,14 @@ export const UploadDialog = ({ itemId, disclosure, onUploaded }: Props) => {
     }
   }, [disclosure, directUpload, itemId, directUploadMutateAsync])
 
-  const onSave = useCallback(async () => {
+  const onSave = useCallback(async (image: ItemImage) => {
+    onUpdated(image)
     onClose()
     await router.replace(router.asPath)
     setDirectUpload(null)
     setUploading(false)
     setUploadedImage(null)
-  }, [setDirectUpload, onClose, router])
+  }, [setDirectUpload, onClose, router, onUpdated])
 
   const handleFiles = useCallback(async (files: File[]) => {
     const validationResult = validateFiles(files)

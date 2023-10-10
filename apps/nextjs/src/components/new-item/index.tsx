@@ -1,5 +1,5 @@
 import { Button, Card, CardBody, FormControl, FormErrorMessage, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Textarea, useDisclosure } from "@chakra-ui/react"
-import { useForm } from "../forms"
+import { useZodForm } from "../forms"
 import { newItemSchema } from "@evy/api/schemas"
 import { useCallback, useEffect } from "react"
 import { api } from "~/utils/api"
@@ -19,7 +19,7 @@ export const NewItem = ({ collectionId }: Props) => {
     register,
     formState: { errors, isDirty, isValid },
     reset
-  } = useForm({ schema: newItemSchema, defaultValues: { collectionId } })
+  } = useZodForm({ schema: newItemSchema, defaultValues: { collectionId } })
 
   useEffect(() => {
     reset({ collectionId })

@@ -14,18 +14,22 @@ model Collection {
     id          String @id @default(cuid())
     name        String
     description String?
+    slug        String @unique
     userId      String
 
     user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
     items       Item[]
 
     createdAt   DateTime
+    @@index([userId])
+    @@index([slug])
 }
 
 model Item {
     id              String @id @default(cuid())
     name            String
     description     String?
+    slug            String 
     collectionId    String
 
     collection      Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
@@ -33,7 +37,9 @@ model Item {
 
     createdAt       DateTime
     
+    @@unique([slug, collectionId])
     @@index([collectionId])
+    @@index([slug])
 } 
 
 model ItemImage {

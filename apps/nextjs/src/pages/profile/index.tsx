@@ -63,7 +63,7 @@ const CollectionView = ({ collection }: CollectionViewProps) => {
   const description = collection.description === null || collection.description.length === 0
     ? <Text as='i'>No description</Text>
     : <Text>{collection.description}</Text>
-  return <Link href={`/my/${collection.id}`}>
+  return <Link href={`/my/${collection.slug}`}>
     <Card
       _hover={{
         boxShadow: 'md',
