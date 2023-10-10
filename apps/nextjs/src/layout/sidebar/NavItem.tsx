@@ -14,8 +14,12 @@ export const NavItemBase = ({ children, ...rest }: BaseNavItemProps) => {
     variant='ghost'
     px='8'
     height='12'
+    textOverflow='ellipsis'
+    overflow='hidden'
+    whiteSpace='nowrap'
+    display='inline-block'
     {...rest}>
-    <Text>{children}</Text>
+    {children}
   </Button>
 }
 
