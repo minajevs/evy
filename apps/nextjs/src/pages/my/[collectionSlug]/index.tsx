@@ -16,7 +16,7 @@ type Props = {
 } & LayoutServerSideProps
 
 const CollectionPage: NextPage<Props> = ({ layout, collection }) => {
-  const url = `${env.NEXT_PUBLIC_HOST}/${collection.user.username}/${collection.slug}`
+  const url = `https://${env.NEXT_PUBLIC_HOST}/${collection.user.username}/${collection.slug}`
   return <>
     <Layout title="Collection" layout={layout}>
       <HStack width='100%' justifyContent='space-between'>
@@ -32,7 +32,6 @@ const CollectionPage: NextPage<Props> = ({ layout, collection }) => {
           </Button>
         </ButtonGroup>
       </HStack>
-
       {
         collection.description !== null && collection.description.length > 0
           ? <Text mb='8'>{collection.description}</Text>

@@ -16,7 +16,7 @@ type Props = {
 } & LayoutServerSideProps
 
 const ItemPage: NextPage<Props> = ({ layout, item }) => {
-  const url = `${env.NEXT_PUBLIC_HOST}/${item.collection.user.username}/${item.collection.slug}/${item.slug}`
+  const url = `https://${env.NEXT_PUBLIC_HOST}/${item.collection.user.username}/${item.collection.slug}/${item.slug}`
   return <>
     <Layout title="Collection" layout={layout}>
       <HStack width='100%' justifyContent='space-between'>
