@@ -9,14 +9,12 @@ import { Link } from "@chakra-ui/next-js"
 import { EditIcon, LinkIcon } from "@chakra-ui/icons"
 import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 import { ShareDialog } from "~/components/share-dialog/ShareDialog"
-import { env } from "~/env.mjs"
 
 type Props = {
   collection: Collection & { items: (Item & { collection: Collection })[] } & { user: User }
 } & LayoutServerSideProps
 
 const CollectionPage: NextPage<Props> = ({ layout, collection }) => {
-  const url = `https://${env.NEXT_PUBLIC_HOST}/${collection.user.username}/${collection.slug}`
   return <>
     <Layout title="Collection" layout={layout}>
       <HStack width='100%' justifyContent='space-between'>
@@ -24,9 +22,11 @@ const CollectionPage: NextPage<Props> = ({ layout, collection }) => {
           <Text>{collection.name}</Text>
         </Heading>
         <ButtonGroup isAttached>
-          <ShareDialog buttonProps={{ leftIcon: <LinkIcon /> }}>
-            {url}
-          </ShareDialog>
+          <ShareDialog
+            buttonProps={{ leftIcon: <LinkIcon /> }}
+            username={collection.user.username}
+            collectionSlug={collection.slug}
+          />
           <Button leftIcon={<EditIcon />} variant='solid' as={Link} href={`/my/${collection.slug}/edit`}>
             Edit
           </Button>

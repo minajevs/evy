@@ -7,7 +7,6 @@ import type { GetServerSideProps, NextPage } from "next"
 import { z } from "zod"
 import { ItemMedia } from "~/components/item-media"
 import { ShareDialog } from "~/components/share-dialog/ShareDialog"
-import { env } from "~/env.mjs"
 import Layout from "~/layout"
 import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 
@@ -16,7 +15,6 @@ type Props = {
 } & LayoutServerSideProps
 
 const ItemPage: NextPage<Props> = ({ layout, item }) => {
-  const url = `https://${env.NEXT_PUBLIC_HOST}/${item.collection.user.username}/${item.collection.slug}/${item.slug}`
   return <>
     <Layout title="Collection" layout={layout}>
       <HStack width='100%' justifyContent='space-between'>
@@ -26,9 +24,12 @@ const ItemPage: NextPage<Props> = ({ layout, item }) => {
           <Text display='inline' pl='1'>{item.name}</Text>
         </Heading>
         <ButtonGroup>
-          <ShareDialog buttonProps={{ leftIcon: <LinkIcon /> }}>
-            {url}
-          </ShareDialog>
+          <ShareDialog
+            buttonProps={{ leftIcon: <LinkIcon /> }}
+            username={item.collection.user.username}
+            collectionSlug={item.collection.slug}
+            itemSlug={item.slug}
+          />
           <Button leftIcon={<EditIcon />} variant='solid' as={Link} href={`/my/${item.collection.slug}/${item.slug}/edit`}>
             Edit
           </Button>

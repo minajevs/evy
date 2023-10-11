@@ -36,7 +36,7 @@ const CollectionEditPage: NextPage<Props> = ({ layout, collection }) => {
     cacheTime: 0
   })
 
-  const slugAvailable = verifySlugAvailableQuery.data ?? true
+  const slugAvailable = verifySlugAvailableQuery.data ?? false
   const errorAvailability = shouldVerify && !slugAvailable
   const saveDisabled = !isValid || errorAvailability || !debounceSettled
 
