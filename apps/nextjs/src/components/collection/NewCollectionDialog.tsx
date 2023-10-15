@@ -5,7 +5,7 @@ import { newCollectionSchema } from "@evy/api/schemas"
 import { useRouter } from "next/router"
 import { NavItemBase } from "~/layout/sidebar/NavItem"
 
-export const NewCollection = () => {
+export const NewCollectionDialog = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const router = useRouter()
 
@@ -80,5 +80,5 @@ export const NewCollection = () => {
   </>
 }
 
-export default NewCollection
+export default NewCollectionDialog
 

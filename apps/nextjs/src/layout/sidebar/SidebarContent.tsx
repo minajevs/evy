@@ -3,8 +3,8 @@ import { NavItemLink } from "./NavItem"
 import { useBackgroundColor } from "@evy/styling"
 import { MoonIcon, SunIcon } from "@chakra-ui/icons"
 import { Link } from "@chakra-ui/next-js"
-import NewCollection from "~/components/new-collection"
 import { signIn, signOut, useSession } from "next-auth/react"
+import NewCollectionDialog from "~/components/collection/NewCollectionDialog"
 
 export type LinkItem = {
   name: string
@@ -54,7 +54,7 @@ export const SidebarContent = ({ onClose, linkItems, ...rest }: SidebarProps) =>
               {link.name}
             </NavItemLink>
           ))}
-          <NewCollection />
+          <NewCollectionDialog />
         </Box>
         {/* Other Settings */}
         <Box width='100%' pt="4" pb='16' marginTop='auto'>

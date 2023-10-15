@@ -1,17 +1,15 @@
-import { EditIcon } from "@chakra-ui/icons";
-import { HStack, Heading, Button, Text, Avatar, Box, Divider, SimpleGrid, Card, CardBody, VStack } from "@chakra-ui/react";
-import { getServerSession } from "@evy/auth";
-import { type Collection, prisma, type User, type Item } from "@evy/db";
-import type { GetServerSideProps, NextPage } from "next"
-import Link from "next/link";
-import { CollectionCard } from "~/components/collection/CollectionCard";
+import { EditIcon } from "@chakra-ui/icons"
+import { SimpleGrid, HStack, Heading, Button, Avatar, VStack, Divider, Box, Text } from "@chakra-ui/react"
+import { type Collection, type Item, type User } from "@evy/db"
+import { type NextPage } from "next"
+import Link from "next/link"
+import { CollectionCard } from "~/components/collection/CollectionCard"
 import Layout from "~/layout"
-import { type LayoutServerSideProps } from "~/utils/layoutServerSideProps";
+import { type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 
 type Props = {
   user: User & { collections: (Collection & { items: Item[] })[] }
 } & LayoutServerSideProps
-
 
 const Profile: NextPage<Props> = ({ user, layout }) => {
   const userImage = user.image ?? ''
@@ -55,37 +53,6 @@ const Profile: NextPage<Props> = ({ user, layout }) => {
       {collections}
     </Layout>
   )
-}
-
-export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, params }) => {
-  const auth = await getServerSession({ req, res })
-  if (!auth) {
-    return { redirect: { destination: '/', permanent: false } }
-  }
-
-  const user = await prisma.user.findFirst({
-    where: {
-      id: auth.user.id
-    },
-    include: {
-      collections: {
-        include: {
-          items: true
-        }
-      }
-    }
-  })
-
-  if (user === null) throw new Error('User is not found in DB')
-
-  return {
-    props: {
-      user,
-      layout: {
-        collections: user.collections
-      }
-    }
-  }
 }
 
 export default Profile
