@@ -1,8 +1,10 @@
 import { EditIcon } from "@chakra-ui/icons"
 import { SimpleGrid, HStack, Heading, Button, Avatar, VStack, Divider, Box, Text } from "@chakra-ui/react"
-import { type Collection, type Item, type User } from "@evy/db"
-import { type NextPage } from "next"
+import { getServerSession } from "@evy/auth"
+import { prisma, type Collection, type Item, type User } from "@evy/db"
+import { type GetServerSideProps, type NextPage } from "next"
 import Link from "next/link"
+import { z } from "zod"
 import { CollectionCard } from "~/components/collection/CollectionCard"
 import Layout from "~/layout"
 import { type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
@@ -44,15 +46,44 @@ const Profile: NextPage<Props> = ({ user, layout }) => {
             : null}
         </VStack>
       </HStack>
-      <Text fontWeight={500} color='gray.500'>
+      <Box fontWeight={500} color='gray.500'>
         <Text display='inline'>Joined:</Text>
         <Text display='inline'>{user.createdAt.toLocaleDateString('en-GB')}</Text>
-      </Text>
+      </Box>
       <Divider my='4' />
       <Heading size='md' mb='4'>Collections</Heading>
       {collections}
     </Layout>
   )
+}
+
+const paramsSchema = z.object({ username: z.string() })
+export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, params }) => {
+  const { username } = paramsSchema.parse(params)
+
+  const user = await prisma.user.findFirst({
+    where: {
+      username,
+    },
+    include: {
+      collections: {
+        include: {
+          items: true
+        }
+      }
+    }
+  })
+
+  if (user === null) throw new Error('User is not found in DB')
+
+  return {
+    props: {
+      user,
+      layout: {
+        collections: user.collections
+      }
+    }
+  }
 }
 
 export default Profile

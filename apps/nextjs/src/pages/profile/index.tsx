@@ -46,10 +46,10 @@ const Profile: NextPage<Props> = ({ user, layout }) => {
             : null}
         </VStack>
       </HStack>
-      <Text fontWeight={500} color='gray.500'>
+      <Box fontWeight={500} color='gray.500'>
         <Text display='inline'>Joined:</Text>
         <Text display='inline'>{user.createdAt.toLocaleDateString('en-GB')}</Text>
-      </Text>
+      </Box>
       <Divider my='4' />
       <Heading size='md' mb='4'>Collections</Heading>
       {collections}

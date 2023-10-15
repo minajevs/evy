@@ -28,7 +28,7 @@ export const Sidebar = ({ linkItems }: Props) => {
         </DrawerContent>
       </Drawer>
       {/* mobilenav */}
-      <MobileNav display={{ base: 'flex', md: 'none' }} onOpen={onOpen} />
+      {/* <MobileNav display={{ base: 'flex', md: 'none' }} onOpen={onOpen} /> */}
     </>
   );
 }
