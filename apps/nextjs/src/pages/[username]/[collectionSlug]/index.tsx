@@ -15,7 +15,7 @@ type Props = {
   collection: Collection & { items: (Item & { collection: Collection })[] } & { user: User }
 } & LayoutServerSideProps
 
-const CollectionPage: NextPage<Props> = ({ layout, collection }) => {
+const UserCollectionPage: NextPage<Props> = ({ layout, collection }) => {
   return <>
     <Layout title="Collection" layout={layout}>
       <HStack width='100%' justifyContent='space-between'>
@@ -28,9 +28,6 @@ const CollectionPage: NextPage<Props> = ({ layout, collection }) => {
             username={collection.user.username}
             collectionSlug={collection.slug}
           />
-          <Button leftIcon={<EditIcon />} variant='solid' as={Link} href={`/my/${collection.slug}/edit`}>
-            Edit
-          </Button>
         </ButtonGroup>
       </HStack>
       {
@@ -40,44 +37,44 @@ const CollectionPage: NextPage<Props> = ({ layout, collection }) => {
       }
       <HStack width='100%' justifyContent='space-between' mb='4'>
         <Heading size="md">Items</Heading>
-        <NewItem collectionId={collection.id} />
       </HStack>
-      <ItemList items={collection.items} />
+      <ItemList items={collection.items} username={collection.user.username} />
     </Layout>
   </>
 }
 
 type ItemListProps = {
+  username: string
   items: (Item & { collection: Collection })[]
 }
-const ItemList = ({ items }: ItemListProps) => {
+const ItemList = ({ username, items }: ItemListProps) => {
   if (items.length === 0) {
     return <Box>
       <Text>No items in this collection yet</Text>
-      <Text>{'Click "Add" to add a first item'}</Text>
     </Box>
   }
   return <SimpleGrid columns={4} spacing='8'>
-    {items.map(item => <ItemCard key={item.id} item={item} />)}
+    {items.map(item => <ItemCard key={item.id} item={item} linkPrefix={username} />)}
   </SimpleGrid>
 }
 
-const paramsSchema = z.object({ collectionSlug: z.string() })
+const paramsSchema = z.object({ username: z.string(), collectionSlug: z.string() })
 export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, params }) => {
-  const auth = await getServerSession({ req, res })
-  if (!auth) {
-    return { redirect: { destination: '/', permanent: false } }
-  }
-
-  const { collectionSlug } = paramsSchema.parse(params)
+  const { username, collectionSlug } = paramsSchema.parse(params)
 
   const currentCollection = await prisma.collection.findFirst({
     where: {
-      userId: auth.user.id,
+      user: {
+        username
+      },
       slug: collectionSlug,
     },
     include: {
-      user: true,
+      user: {
+        include: {
+          collections: true
+        }
+      },
       items: {
         include: {
           collection: true
@@ -87,15 +84,17 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
   })
 
   if (currentCollection === null) {
-    return { redirect: { destination: '/my', permanent: false } }
+    return { redirect: { destination: `/${username}`, permanent: false } }
   }
 
   return {
     props: {
       collection: currentCollection,
-      ...await getLayoutProps(auth.user.id)
+      layout: {
+        collections: currentCollection.user.collections
+      }
     }
   }
 }
 
-export default CollectionPage
+export default UserCollectionPage

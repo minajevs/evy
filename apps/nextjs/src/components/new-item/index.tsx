@@ -36,7 +36,7 @@ export const NewItem = ({ collectionId }: Props) => {
     await createMutation.mutateAsync(data)
     onClose()
     reset()
-    router.replace(router.asPath)
+    await router.replace(router.asPath)
   })
 
   return <>

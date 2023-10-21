@@ -1,4 +1,4 @@
-import { DirectUploadUrl } from './directUpload'
+import type { DirectUploadUrl } from './directUpload'
 import { validateFiles } from '../validateFiles'
 
 export type UploadProgressEvent = {

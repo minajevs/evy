@@ -20,7 +20,11 @@ const Profile: NextPage<Props> = ({ user, layout }) => {
 
   const collections = user.collections.length > 0
     ? <SimpleGrid columns={1} spacing='8'>
-      {user.collections.map(collection => <CollectionCard key={collection.id} collection={collection} />)}
+      {user.collections.map(collection => <CollectionCard
+        key={collection.id}
+        collection={collection}
+        linkPrefix={user.username}
+      />)}
     </SimpleGrid>
     : <Box>
       <Text>No collections yet</Text>
@@ -32,9 +36,6 @@ const Profile: NextPage<Props> = ({ user, layout }) => {
         <Heading size="lg" mb="4">
           <Text>Profile</Text>
         </Heading>
-        <Button leftIcon={<EditIcon />} variant='solid' as={Link} href={`/profile/edit`}>
-          Edit
-        </Button>
       </HStack>
 
       <HStack mb='4'>

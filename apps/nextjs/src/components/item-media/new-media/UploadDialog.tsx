@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from "react"
 import { type ItemImage } from "@evy/db"
 import { type DirectUploadUrlResult, uploadImage, validateFiles, getThumbhash } from "@evy/images"
 import { useRouter } from "next/router"
-import { ImageUpdateModal } from "../image-update/ImageUpdateModal"
+import { ImageUploadUpdateModal } from "./ImageUploadUpdateModal"
 
 type Props = {
   itemId: string
@@ -81,7 +81,7 @@ export const UploadDialog = ({ itemId, disclosure, onUploaded, onUpdated }: Prop
         <ModalFooter>
         </ModalFooter>
       </>
-      : <ImageUpdateModal image={uploadedImage} onSave={onSave} />
+      : <ImageUploadUpdateModal image={uploadedImage} onSave={onSave} />
 
   return <Modal size='2xl' isOpen={isOpen} onClose={onClose} >
     <ModalOverlay />

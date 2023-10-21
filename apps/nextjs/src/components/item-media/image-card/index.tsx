@@ -6,7 +6,7 @@ type Props = {
   image: ItemImage
   onClick: () => void
 }
-export const ItemCard = ({ image, onClick }: Props) => {
+export const ImageCard = ({ image, onClick }: Props) => {
   return <>
     <Box
       role='group'

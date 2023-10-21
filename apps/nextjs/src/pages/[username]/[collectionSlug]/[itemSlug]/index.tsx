@@ -1,11 +1,14 @@
-import { AddIcon, EditIcon, LinkIcon } from "@chakra-ui/icons"
+import { EditIcon, LinkIcon } from "@chakra-ui/icons"
 import { Link } from "@chakra-ui/next-js"
-import { Button, ButtonGroup, HStack, Heading, Text, useDisclosure } from "@chakra-ui/react"
+import { Box, Button, ButtonGroup, HStack, Heading, Text, useDisclosure } from "@chakra-ui/react"
 import { getServerSession } from "@evy/auth"
 import { type Collection, prisma, type Item, type ItemImage, type User } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
+import { useCallback, useState } from "react"
 import { z } from "zod"
 import { ItemMedia } from "~/components/item-media"
+import { ImageGrid } from "~/components/item-media/ImageGrid"
+import { ImageModal } from "~/components/item-media/ImageModal"
 import { ShareDialog } from "~/components/share-dialog/ShareDialog"
 import Layout from "~/layout"
 import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
@@ -15,7 +18,13 @@ type Props = {
 } & LayoutServerSideProps
 
 const ItemPage: NextPage<Props> = ({ layout, item }) => {
-  const uploadDisclosure = useDisclosure()
+  const viewImageDisclosure = useDisclosure()
+  const [viewImage, setViewImage] = useState<ItemImage | null>(null)
+
+  const onClick = useCallback((image: ItemImage) => {
+    setViewImage(image)
+    viewImageDisclosure.onOpen()
+  }, [setViewImage, viewImageDisclosure])
 
   return <>
     <Layout title="Collection" layout={layout}>
@@ -32,9 +41,6 @@ const ItemPage: NextPage<Props> = ({ layout, item }) => {
             collectionSlug={item.collection.slug}
             itemSlug={item.slug}
           />
-          <Button leftIcon={<EditIcon />} variant='solid' as={Link} href={`/my/${item.collection.slug}/${item.slug}/edit`}>
-            Edit
-          </Button>
         </ButtonGroup>
       </HStack>
       {
@@ -44,36 +50,46 @@ const ItemPage: NextPage<Props> = ({ layout, item }) => {
       }
       <HStack width='100%' justifyContent='space-between' mb={2}>
         <Heading size='md'>Media</Heading>
-        <Button leftIcon={<AddIcon />} variant='solid' onClick={uploadDisclosure.onOpen}>
-          Add
-        </Button>
       </HStack>
-      <ItemMedia itemId={item.id} images={item.images} uploadDisclosure={uploadDisclosure} />
+      <ImageGrid images={item.images} onClick={onClick}>
+        <Box>
+          <Text>No media for this item yet</Text>
+        </Box>
+      </ImageGrid>
+      {
+        viewImage !== null
+          ? <ImageModal
+            image={viewImage}
+            disclosure={viewImageDisclosure}
+          />
+          : null
+      }
     </Layout>
   </>
 }
 
-const paramsSchema = z.object({ itemSlug: z.string(), collectionSlug: z.string() })
+const paramsSchema = z.object({ username: z.string(), itemSlug: z.string(), collectionSlug: z.string() })
 export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, params }) => {
-  const auth = await getServerSession({ req, res })
-  if (!auth) {
-    return { redirect: { destination: '/', permanent: false } }
-  }
-
-  const { itemSlug, collectionSlug } = paramsSchema.parse(params)
+  const { username, itemSlug, collectionSlug } = paramsSchema.parse(params)
 
   const currentItem = await prisma.item.findFirst({
     where: {
       collection: {
         slug: collectionSlug,
-        userId: auth.user.id,
+        user: {
+          username
+        }
       },
       slug: itemSlug
     },
     include: {
       collection: {
         include: {
-          user: true
+          user: {
+            include: {
+              collections: true
+            }
+          }
         }
       },
       images: true
@@ -81,13 +97,15 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
   })
 
   if (currentItem === null) {
-    return { redirect: { destination: '/my', permanent: false } }
+    return { redirect: { destination: `/${username}/${collectionSlug}`, permanent: false } }
   }
 
   return {
     props: {
       item: currentItem,
-      ...await getLayoutProps(auth.user.id)
+      layout: {
+        collections: currentItem.collection.user.collections
+      }
     }
   }
 }

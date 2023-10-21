@@ -3,13 +3,14 @@ import { type Collection, type Item } from "@evy/db"
 import Link from "next/link"
 
 type CollectionCardProps = {
+  linkPrefix?: string
   collection: Collection & { items: Item[] }
 }
-export const CollectionCard = ({ collection }: CollectionCardProps) => {
+export const CollectionCard = ({ collection, linkPrefix }: CollectionCardProps) => {
   const description = collection.description === null || collection.description.length === 0
     ? <Text as='i'>No description</Text>
     : <Text>{collection.description}</Text>
-  return <Link href={`/my/${collection.slug}`}>
+  return <Link href={`/${linkPrefix ?? 'my'}/${collection.slug}`}>
     <Card
       _hover={{
         boxShadow: 'md',
