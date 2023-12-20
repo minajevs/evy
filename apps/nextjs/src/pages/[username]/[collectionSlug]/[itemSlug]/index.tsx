@@ -30,7 +30,7 @@ const ItemPage: NextPage<Props> = ({ layout, item }) => {
     <Layout title="Collection" layout={layout}>
       <HStack width='100%' justifyContent='space-between'>
         <Heading size="lg" mb="4">
-          <Link href={`/my/${item.collection.slug}`}>{item.collection.name}</Link>
+          <Link href={`/${item.collection.user.username}/${item.collection.slug}`}>{item.collection.name}</Link>
           <Text display='inline' pl='1' fontWeight={200}>/</Text>
           <Text display='inline' pl='1'>{item.name}</Text>
         </Heading>
