@@ -1,17 +1,16 @@
-import { EditIcon, LinkIcon } from "@chakra-ui/icons"
+import { Icon } from "@chakra-ui/react"
 import { Link } from "@chakra-ui/next-js"
-import { Box, Button, ButtonGroup, HStack, Heading, Text, useDisclosure } from "@chakra-ui/react"
-import { getServerSession } from "@evy/auth"
+import { Box, ButtonGroup, HStack, Heading, Text, useDisclosure } from "@chakra-ui/react"
 import { type Collection, prisma, type Item, type ItemImage, type User } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
 import { useCallback, useState } from "react"
 import { z } from "zod"
-import { ItemMedia } from "~/components/item-media"
 import { ImageGrid } from "~/components/item-media/ImageGrid"
 import { ImageModal } from "~/components/item-media/ImageModal"
 import { ShareDialog } from "~/components/share-dialog/ShareDialog"
 import Layout from "~/layout"
-import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
+import { type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
+import { FiShare, FiShare2 } from "react-icons/fi"
 
 type Props = {
   item: Item & { collection: Collection & { user: User } } & { images: ItemImage[] }
@@ -36,7 +35,7 @@ const ItemPage: NextPage<Props> = ({ layout, item }) => {
         </Heading>
         <ButtonGroup>
           <ShareDialog
-            buttonProps={{ leftIcon: <LinkIcon /> }}
+            buttonProps={{ leftIcon: <Icon as={FiShare2} /> }}
             username={item.collection.user.username}
             collectionSlug={item.collection.slug}
             itemSlug={item.slug}

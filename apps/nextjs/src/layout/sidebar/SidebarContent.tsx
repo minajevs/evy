@@ -1,7 +1,8 @@
 import { Box, Flex, type BoxProps, CloseButton, Stack, Button, useColorMode, Text, Divider, VStack, Heading, Avatar, HStack } from "@chakra-ui/react"
 import { NavItemLink } from "./NavItem"
 import { useBackgroundColor } from "@evy/styling"
-import { MoonIcon, SunIcon } from "@chakra-ui/icons"
+import { Icon } from '@chakra-ui/react'
+import { FiInbox, FiMoon, FiSun } from 'react-icons/fi'
 import { Link } from "@chakra-ui/next-js"
 import { signIn, signOut, useSession } from "next-auth/react"
 import NewCollectionDialog from "~/components/collection/NewCollectionDialog"
@@ -47,7 +48,7 @@ export const SidebarContent = ({ onClose, linkItems, ...rest }: SidebarProps) =>
         {/* Collections navigation */}
         <Box py='4' width='100%'>
           <Text px='8' py='2' color='teal' fontWeight='600'>
-            Collections
+            <Icon as={FiInbox} /> Collections
           </Text>
           {linkItems.map((link) => (
             <NavItemLink key={link.name} href={link.href}>
@@ -68,7 +69,7 @@ export const SidebarContent = ({ onClose, linkItems, ...rest }: SidebarProps) =>
               {session.status === 'authenticated' ? "Sign out" : "Sign in"}
             </Button>
             <Button width='100%' variant='ghost' onClick={toggleColorMode}>
-              {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+              {colorMode === 'light' ? <Icon as={FiMoon} /> : <Icon as={FiSun} />}
             </Button>
           </HStack>
         </Box>

@@ -1,8 +1,7 @@
-import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, type UseDisclosureReturn, ModalBody, Box, Card, CardBody, Text, Stack, VStack, FormControl, FormErrorMessage, FormLabel, Input, Textarea, Button, ButtonGroup, CardFooter, useBoolean, useEditable, useStatStyles } from "@chakra-ui/react"
+import { Modal, ModalOverlay, ModalContent, type UseDisclosureReturn, Card, CardBody, Text, VStack, Button, CardFooter, useBoolean } from "@chakra-ui/react"
 import { ImageDisplay } from "../image-display"
-import { Item, type ItemImage } from "@evy/db"
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons"
-import { Link } from "@chakra-ui/next-js"
+import { type ItemImage } from "@evy/db"
+import { Icon } from '@chakra-ui/react'
 import { useConfirm } from "~/utils/confirm"
 import { api } from "~/utils/api"
 import { ImageUpdateForm } from "./ImageUpdateForm"
@@ -10,6 +9,7 @@ import { useZodForm } from "~/components/forms"
 import { updateImageSchema } from "@evy/api/schemas"
 import { FormProvider } from "react-hook-form"
 import { useEffect, useState } from "react"
+import { FiEdit, FiTrash2 } from "react-icons/fi"
 
 type Props = {
   image: ItemImage
@@ -94,10 +94,10 @@ export const ImageUpdateModal = ({ image, onDeleted, disclosure: { isOpen, onClo
       </Button>
     </>
     : <>
-      <Button flex='1' variant='ghost' leftIcon={<EditIcon />} onClick={() => on()}>
+      <Button flex='1' variant='ghost' leftIcon={<Icon as={FiEdit} />} onClick={() => on()}>
         Edit
       </Button>
-      <Button flex='1' variant='ghost' leftIcon={<DeleteIcon />} colorScheme='red' onClick={handleDelete}>
+      <Button flex='1' variant='ghost' leftIcon={<Icon as={FiTrash2} />} colorScheme='red' onClick={handleDelete}>
         Delete
       </Button>
     </>

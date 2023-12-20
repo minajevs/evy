@@ -1,18 +1,15 @@
-import { CheckIcon, CloseIcon, EditIcon } from "@chakra-ui/icons";
-import { HStack, Heading, Button, Text, Avatar, WrapItem, Box, Divider, SimpleGrid, Card, CardHeader, CardBody, useBoolean, Flex, ButtonGroup, FormControl, FormLabel, Input, FormErrorMessage, VStack, FormHelperText, InputGroup, InputRightElement, Spinner } from "@chakra-ui/react";
+import { HStack, Heading, Button, Text, Box, useBoolean, ButtonGroup, FormControl, FormLabel, Input, FormErrorMessage, VStack, InputGroup, InputRightElement, Spinner, Icon } from "@chakra-ui/react";
 import { editUserSchema } from "@evy/api/schemas";
 import { getServerSession } from "@evy/auth";
-import { slugify } from "@evy/auth/src/slugify";
-import { type Collection, prisma, type User, type Item } from "@evy/db";
-import type { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next"
+import { prisma, type User } from "@evy/db";
+import type { GetServerSideProps, NextPage } from "next"
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { FiSave } from "react-icons/fi";
 import { useZodForm } from "~/components/forms";
 import Layout from "~/layout"
 import { api } from "~/utils/api";
 import { type LayoutServerSideProps } from "~/utils/layoutServerSideProps";
-import { useDebounce } from "~/utils/useDebounce";
 import { useVerifyValue } from "~/utils/useVerifyValue";
 
 type Props = {
@@ -60,7 +57,7 @@ const EditProfile: NextPage<Props> = ({ user, layout }) => {
             <Text>Profile</Text>
           </Heading>
           <ButtonGroup isAttached>
-            <Button leftIcon={<CheckIcon />} variant='solid' isLoading={loading} isDisabled={saveDisabled} type="submit">
+            <Button leftIcon={<Icon as={FiSave} />} variant='solid' isLoading={loading} isDisabled={saveDisabled} type="submit">
               Save
             </Button>
             {

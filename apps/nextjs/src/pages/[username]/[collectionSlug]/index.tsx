@@ -1,13 +1,11 @@
-import { Box, Button, ButtonGroup, Card, CardBody, Editable, EditableInput, EditablePreview, Flex, HStack, Heading, SimpleGrid, Text, VStack, useBoolean } from "@chakra-ui/react"
-import { getServerSession } from "@evy/auth"
+import { Box, ButtonGroup, HStack, Heading, SimpleGrid, Text } from "@chakra-ui/react"
 import { type Collection, prisma, type Item, type User } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
 import { z } from "zod"
-import { NewItem } from "~/components/new-item"
 import Layout from "~/layout"
-import { Link } from "@chakra-ui/next-js"
-import { EditIcon, LinkIcon } from "@chakra-ui/icons"
-import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
+import { Icon } from "@chakra-ui/react"
+import { FiShare2 } from "react-icons/fi"
+import { type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 import { ShareDialog } from "~/components/share-dialog/ShareDialog"
 import { ItemCard } from "~/components/item/ItemCard"
 
@@ -24,7 +22,7 @@ const UserCollectionPage: NextPage<Props> = ({ layout, collection }) => {
         </Heading>
         <ButtonGroup isAttached>
           <ShareDialog
-            buttonProps={{ leftIcon: <LinkIcon /> }}
+            buttonProps={{ leftIcon: <Icon as={FiShare2} /> }}
             username={collection.user.username}
             collectionSlug={collection.slug}
           />

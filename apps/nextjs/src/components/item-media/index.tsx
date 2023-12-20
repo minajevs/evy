@@ -1,9 +1,7 @@
 import { Box, Button, HStack, Heading, SimpleGrid, Text, type UseDisclosureReturn, useDisclosure } from "@chakra-ui/react"
 import { type ItemImage } from "@evy/db"
 import { useCallback, useState } from "react"
-import { AddIcon } from "@chakra-ui/icons"
 import { UploadDialog } from "./new-media/UploadDialog"
-import { ImageCard } from "./image-card"
 import { ImageGrid } from "./ImageGrid"
 import { ImageUpdateModal } from "./image-update/ImageUpdateModal"
 

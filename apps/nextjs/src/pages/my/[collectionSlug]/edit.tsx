@@ -6,13 +6,14 @@ import { z } from "zod"
 import Layout from "~/layout"
 import { api } from "~/utils/api"
 import { Link } from "@chakra-ui/next-js"
-import { CheckIcon, CloseIcon } from "@chakra-ui/icons"
+import { Icon } from "@chakra-ui/react"
 import { editCollectionSchema } from "@evy/api/schemas"
 import { useZodForm } from "~/components/forms"
 import { useRouter } from "next/router"
 import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 import { env } from "~/env.mjs"
 import { useVerifyValue } from "~/utils/useVerifyValue"
+import { FiCheck, FiClock, FiSave, FiX, FiXCircle } from "react-icons/fi"
 
 type Props = {
   collection: Collection & { items: Item[] } & { user: User }
@@ -54,7 +55,7 @@ const CollectionEditPage: NextPage<Props> = ({ layout, collection }) => {
             <Text>{watch('name')}</Text>
           </Heading>
           <ButtonGroup isAttached>
-            <Button leftIcon={<CheckIcon />} variant='solid' isLoading={loading} isDisabled={saveDisabled} type="submit">
+            <Button leftIcon={<Icon as={FiSave} />} variant='solid' isLoading={loading} isDisabled={saveDisabled} type="submit">
               Save
             </Button>
             {
@@ -108,8 +109,8 @@ const CollectionEditPage: NextPage<Props> = ({ layout, collection }) => {
                       : verifySlugAvailableQuery.isLoading
                         ? <Spinner />
                         : slugAvailable
-                          ? <CheckIcon color='green.500' />
-                          : <CloseIcon color='red.500' />
+                          ? <Icon as={FiCheck} color='green.500' />
+                          : <Icon as={FiX} color='red.500' />
                   }
                 </InputRightElement>
               </InputGroup>

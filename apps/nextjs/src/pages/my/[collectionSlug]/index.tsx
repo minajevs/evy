@@ -6,10 +6,11 @@ import { z } from "zod"
 import { NewItem } from "~/components/new-item"
 import Layout from "~/layout"
 import { Link } from "@chakra-ui/next-js"
-import { EditIcon, LinkIcon } from "@chakra-ui/icons"
+import { Icon } from "@chakra-ui/react"
 import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 import { ShareDialog } from "~/components/share-dialog/ShareDialog"
 import { ItemCard } from "~/components/item/ItemCard"
+import { FiEdit, FiShare2 } from "react-icons/fi"
 
 type Props = {
   collection: Collection & { items: (Item & { collection: Collection })[] } & { user: User }
@@ -24,11 +25,11 @@ const CollectionPage: NextPage<Props> = ({ layout, collection }) => {
         </Heading>
         <ButtonGroup isAttached>
           <ShareDialog
-            buttonProps={{ leftIcon: <LinkIcon /> }}
+            buttonProps={{ leftIcon: <Icon as={FiShare2} /> }}
             username={collection.user.username}
             collectionSlug={collection.slug}
           />
-          <Button leftIcon={<EditIcon />} variant='solid' as={Link} href={`/my/${collection.slug}/edit`}>
+          <Button leftIcon={<Icon as={FiEdit} />} variant='solid' as={Link} href={`/my/${collection.slug}/edit`}>
             Edit
           </Button>
         </ButtonGroup>

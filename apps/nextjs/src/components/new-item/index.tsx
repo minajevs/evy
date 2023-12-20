@@ -4,7 +4,8 @@ import { newItemSchema } from "@evy/api/schemas"
 import { useCallback, useEffect } from "react"
 import { api } from "~/utils/api"
 import { useRouter } from "next/router"
-import { AddIcon } from "@chakra-ui/icons"
+import { Icon } from "@chakra-ui/react"
+import { FiPlus } from "react-icons/fi"
 
 type Props = {
   collectionId: string
@@ -41,7 +42,7 @@ export const NewItem = ({ collectionId }: Props) => {
 
   return <>
     <Button
-      leftIcon={<AddIcon />}
+      leftIcon={<Icon as={FiPlus} />}
       variant='solid'
       onClick={onOpen}>
       Add

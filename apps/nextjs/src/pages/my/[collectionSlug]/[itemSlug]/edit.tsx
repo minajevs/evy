@@ -1,4 +1,4 @@
-import { CheckIcon, CloseIcon } from "@chakra-ui/icons"
+import { Icon } from "@chakra-ui/react"
 import { Link } from "@chakra-ui/next-js"
 import { Button, ButtonGroup, FormControl, Flex, FormErrorMessage, Heading, Text, useBoolean, forwardRef, type InputProps, type As, Input, FormLabel, Textarea, VStack, Box, InputGroup, InputLeftAddon, useColorModeValue, InputRightElement, Spinner } from "@chakra-ui/react"
 import { editItemSchema } from "@evy/api/schemas"
@@ -13,6 +13,7 @@ import Layout from "~/layout"
 import { api } from "~/utils/api"
 import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 import { useVerifyValue } from "~/utils/useVerifyValue"
+import { FiSave } from "react-icons/fi"
 
 type Props = {
   item: Item & { collection: Collection & { user: User } }
@@ -63,7 +64,7 @@ const EditItemPage: NextPage<Props> = ({ layout, item }) => {
             <Text display='inline' pl='1'>{watch('name')}</Text>
           </Heading>
           <ButtonGroup isAttached>
-            <Button leftIcon={<CheckIcon />} variant='solid' isLoading={loading} isDisabled={saveDisabled} type="submit">
+            <Button leftIcon={<Icon as={FiSave} />} variant='solid' isLoading={loading} isDisabled={saveDisabled} type="submit">
               Save
             </Button>
             {
