@@ -3,7 +3,7 @@ import { useZodForm } from "../forms"
 import { api } from "~/utils/api"
 import { newCollectionSchema } from "@evy/api/schemas"
 import { useRouter } from "next/router"
-import { NavItemBase } from "~/layout/sidebar/NavItem"
+import { NavItemBase } from "~/layout/navigation/NavItem"
 
 export const NewCollectionDialog = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()

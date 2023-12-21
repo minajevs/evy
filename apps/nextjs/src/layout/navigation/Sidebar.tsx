@@ -2,7 +2,7 @@ import { Box, Flex, type BoxProps, CloseButton, Stack, Button, useColorMode, Tex
 import { NavItemLink } from "./NavItem"
 import { useBackgroundColor } from "@evy/styling"
 import { Icon } from '@chakra-ui/react'
-import { FiInbox, FiMoon, FiSun } from 'react-icons/fi'
+import { FiInbox, FiMoon, FiSun, FiUser } from 'react-icons/fi'
 import { Link } from "@chakra-ui/next-js"
 import { signIn, signOut, useSession } from "next-auth/react"
 import NewCollectionDialog from "~/components/collection/NewCollectionDialog"
@@ -13,11 +13,10 @@ export type LinkItem = {
 }
 
 type SidebarProps = {
-  onClose: () => void
   linkItems: LinkItem[]
 } & BoxProps
 
-export const SidebarContent = ({ onClose, linkItems, ...rest }: SidebarProps) => {
+export const Sidebar = ({ linkItems, ...rest }: SidebarProps) => {
   const { colorMode, toggleColorMode } = useColorMode()
   const bg = useBackgroundColor('navigation')
   const session = useSession()
@@ -43,13 +42,15 @@ export const SidebarContent = ({ onClose, linkItems, ...rest }: SidebarProps) =>
               Evy ⚡️
             </Link>
           </Heading>
-          <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
         </Box>
         {/* Collections navigation */}
         <Box py='4' width='100%'>
-          <Text px='8' py='2' color='teal' fontWeight='600'>
-            <Icon as={FiInbox} /> Collections
-          </Text>
+          <HStack px='8' py='2' color='teal'>
+            <Icon as={FiInbox} />
+            <Text fontWeight='600'>
+              Collections
+            </Text>
+          </HStack>
           {linkItems.map((link) => (
             <NavItemLink key={link.name} href={link.href}>
               {link.name}
@@ -61,7 +62,12 @@ export const SidebarContent = ({ onClose, linkItems, ...rest }: SidebarProps) =>
         <Box width='100%' pt="4" pb='16' marginTop='auto'>
           <Divider />
           <NavItemLink href='/profile' alignItems='center' flexDirection='row'>
-            Profile
+            <HStack color='teal'>
+              <Icon as={FiUser} />
+              <Text fontWeight='600'>
+                Profile
+              </Text>
+            </HStack>
           </NavItemLink>
 
           <HStack width='100%' spacing='0'>

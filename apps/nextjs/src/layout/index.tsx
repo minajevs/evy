@@ -1,9 +1,10 @@
 import Head from "next/head"
 import { Box } from "@chakra-ui/react"
 import { useBackgroundColor } from "@evy/styling"
-import { Sidebar } from "./sidebar"
-import { type LinkItem } from "./sidebar/SidebarContent"
+import { Sidebar, type LinkItem } from "./navigation/Sidebar"
 import { type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
+import { BottomNavigation } from "./navigation/BottomNavigation"
+import { MobileNav } from "./navigation/MobileNav"
 
 type Props = {
   children: React.ReactNode
@@ -23,10 +24,15 @@ const Layout = ({ children, layout: { collections }, title }: Props) => {
       <link rel="icon" href="/favicon.ico" />
     </Head>
     <Box minH="100vh" bg={bg}>
-      <Sidebar linkItems={linkItems} />
+      <Sidebar
+        display={{ base: 'none', md: 'block' }}
+        linkItems={linkItems}
+      />
+      <MobileNav display={{ base: 'flex', md: 'none' }} />
       <Box ml={{ base: 0, md: 60 }} p="8">
         {children}
       </Box>
+      <BottomNavigation display={{ base: 'flex', md: 'none' }} />
     </Box>
   </>
 }
