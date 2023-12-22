@@ -30,7 +30,7 @@
     "@trpc/server": "^10.44.1",
     "babel-plugin-superjson-next": "^0.4.5",
     "framer-motion": "^10.16.1",
-    "next": "^14.0.4",
+    "next": "13.4.8",
     "nextjs-progressbar": "^0.0.16",
     "react": "^18.2.0",
     "react-dom": "18.2.0",
