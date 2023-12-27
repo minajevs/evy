@@ -28,6 +28,11 @@ const config = {
         hostname: 'imagedelivery.net',
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        port: '',
+      },
     ],
     // only necessary to resize local images
     //   loader: 'custom',

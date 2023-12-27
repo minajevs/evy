@@ -1,5 +1,5 @@
 import Head from "next/head"
-import { Box } from "@chakra-ui/react"
+import { Box, Flex } from "@chakra-ui/react"
 import { useBackgroundColor } from "@evy/styling"
 import { Sidebar, type LinkItem } from "./navigation/Sidebar"
 import { type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
