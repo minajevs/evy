@@ -7,6 +7,7 @@ import type { GetServerSidePropsContext, NextPage } from "next"
 import NextImage from 'next/image'
 import Layout from "~/layout"
 import LandingLayout from "~/layout/LandingLayout"
+import { signIn, signOut, useSession } from "next-auth/react"
 
 const Home: NextPage = () => {
   const pattern = useBackgroundPattern({ fade: true })
@@ -32,7 +33,7 @@ const Home: NextPage = () => {
         alignItems='center'
         mt={8}
       >
-        <Button size='lg' colorScheme="teal">
+        <Button size='lg' colorScheme="teal" onClick={() => void signIn()}>
           Get started
         </Button>
         <Text>

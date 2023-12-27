@@ -37,8 +37,6 @@ const LandingLayout = ({ children }: Props) => {
 
 const Navbar = () => {
   const { colorMode, toggleColorMode } = useColorMode()
-  const session = useSession()
-
   return <Box px={4} width='100%'>
     <Flex h={12} alignItems="center" justifyContent="space-between" mx="auto">
       <Heading size="lg" justifyContent='flex-start' w={150}>
