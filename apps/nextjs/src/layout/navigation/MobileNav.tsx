@@ -1,12 +1,16 @@
-import { Flex, IconButton, type FlexProps, Text, HStack, Menu, MenuButton, Avatar, VStack, MenuList, useColorModeValue, MenuItem, MenuDivider, Heading, Icon } from "@chakra-ui/react"
+import { Flex, IconButton, type FlexProps, Text, HStack, Menu, MenuButton, Avatar, VStack, MenuList, useColorModeValue, MenuItem, MenuDivider, Heading, Icon, useColorMode, Button } from "@chakra-ui/react"
 import { useBackgroundColor } from "@evy/styling";
 import { Link } from "@chakra-ui/next-js"
-import { FiSearch } from "react-icons/fi";
+import { signIn, signOut, useSession } from "next-auth/react"
+import { FiMoon, FiSearch, FiSun } from "react-icons/fi"
 
 type MobileProps = FlexProps
 
 export const MobileNav = ({ ...rest }: MobileProps) => {
+  const { colorMode, toggleColorMode } = useColorMode()
+  const session = useSession()
   const bg = useBackgroundColor('navigation')
+
   return (
     <Flex
       px={4}
@@ -25,12 +29,20 @@ export const MobileNav = ({ ...rest }: MobileProps) => {
       </Heading>
 
       <HStack spacing={0}>
-        <IconButton
+        {/* <IconButton
           variant='ghost'
           size='lg'
           aria-label="search"
           icon={<Icon as={FiSearch} />}
-        />
+        /> */}
+        <HStack spacing='0'>
+          <Button variant='ghost' onClick={toggleColorMode}>
+            {colorMode === 'light' ? <Icon as={FiMoon} /> : <Icon as={FiSun} />}
+          </Button>
+          <Button justifyContent='flex-start' textAlign='left' variant='ghost' onClick={session.status === 'authenticated' ? () => void signOut() : () => void signIn()}>
+            {session.status === 'authenticated' ? "Sign out" : "Sign in"}
+          </Button>
+        </HStack>
       </HStack>
     </Flex>
   )
