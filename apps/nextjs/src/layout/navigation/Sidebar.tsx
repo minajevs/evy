@@ -1,5 +1,5 @@
 import { Box, Flex, type BoxProps, CloseButton, Stack, Button, useColorMode, Text, Divider, VStack, Heading, Avatar, HStack } from "@chakra-ui/react"
-import { NavItemLink } from "./NavItem"
+import { NavItemBase, NavItemLink } from "./NavItem"
 import { useBackgroundColor } from "@evy/styling"
 import { Icon } from '@chakra-ui/react'
 import { FiInbox, FiMoon, FiSun, FiUser } from 'react-icons/fi'
@@ -45,18 +45,20 @@ export const Sidebar = ({ linkItems, ...rest }: SidebarProps) => {
         </Box>
         {/* Collections navigation */}
         <Box py='4' width='100%'>
-          <HStack px='8' py='2' color='teal'>
-            <Icon as={FiInbox} />
-            <Text fontWeight='600'>
-              Collections
-            </Text>
-          </HStack>
+          <NavItemLink href='/my' alignItems='center' flexDirection='row'>
+            <HStack color='teal'>
+              <Icon as={FiInbox} />
+              <Text fontWeight='600'>
+                Collections
+              </Text>
+            </HStack>
+          </NavItemLink>
           {linkItems.map((link) => (
             <NavItemLink key={link.name} href={link.href}>
               {link.name}
             </NavItemLink>
           ))}
-          <NewCollectionDialog />
+          <NewCollectionDialog as={NavItemBase} display="flex" mt={8} />
         </Box>
         {/* Other Settings */}
         <Box width='100%' pt="4" pb='16' marginTop='auto'>

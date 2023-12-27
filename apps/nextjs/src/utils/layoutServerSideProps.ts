@@ -13,6 +13,9 @@ export const getLayoutProps = async (
     where: {
       userId,
     },
+    orderBy: {
+      createdAt: 'desc',
+    },
   })
 
   return {

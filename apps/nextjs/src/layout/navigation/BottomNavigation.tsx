@@ -23,7 +23,7 @@ export const BottomNavigation = ({ ...rest }: Props) => {
       boxShadow='md'
       h={16}
       {...rest}>
-      <Link href='/'>
+      <Link href='/my'>
         <VStack color='teal' spacing={0}>
           <Icon as={FiInbox} boxSize={6} />
           <Text fontWeight='600'>

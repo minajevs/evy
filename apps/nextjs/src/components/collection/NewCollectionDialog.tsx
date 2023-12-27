@@ -1,11 +1,16 @@
-import { Button, FormControl, FormErrorMessage, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Textarea, useDisclosure } from "@chakra-ui/react"
+import { Button, type ButtonProps, FormControl, FormErrorMessage, FormLabel, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Textarea, useDisclosure } from "@chakra-ui/react"
 import { useZodForm } from "../forms"
 import { api } from "~/utils/api"
 import { newCollectionSchema } from "@evy/api/schemas"
 import { useRouter } from "next/router"
 import { NavItemBase } from "~/layout/navigation/NavItem"
+import { FiPlus } from "react-icons/fi"
 
-export const NewCollectionDialog = () => {
+type Props = {
+  as?: React.ElementType
+} & ButtonProps
+
+export const NewCollectionDialog = ({ as, ...rest }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const router = useRouter()
 
@@ -23,10 +28,15 @@ export const NewCollectionDialog = () => {
     await router.replace(router.asPath)
   })
 
+  const ButtonComponent = as ?? Button
+
   return <>
-    <NavItemBase onClick={onOpen} mt='8'>
-      + Add new
-    </NavItemBase>
+    <ButtonComponent
+      leftIcon={<Icon as={FiPlus} />}
+      onClick={onOpen}
+      {...rest}>
+      Add new
+    </ButtonComponent>
     <Modal
       isOpen={isOpen}
       onClose={onClose}

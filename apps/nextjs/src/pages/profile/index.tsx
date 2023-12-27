@@ -7,7 +7,7 @@ import Link from "next/link";
 import { FiEdit } from "react-icons/fi";
 import { CollectionCard } from "~/components/collection/CollectionCard";
 import Layout from "~/layout"
-import { type LayoutServerSideProps } from "~/utils/layoutServerSideProps";
+import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps";
 
 type Props = {
   user: User & { collections: (Collection & { items: Item[] })[] }
@@ -82,9 +82,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
   return {
     props: {
       user,
-      layout: {
-        collections: user.collections
-      }
+      ...await getLayoutProps(auth.user.id)
     }
   }
 }

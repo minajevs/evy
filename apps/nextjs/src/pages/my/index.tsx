@@ -1,13 +1,38 @@
-import { Heading, Text } from "@chakra-ui/react"
+import { HStack, Heading, SimpleGrid, Text } from "@chakra-ui/react"
 import { getServerSession } from "@evy/auth"
-import { prisma } from "@evy/db"
+import { type Collection, type Item, prisma } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
+import { CollectionCard } from "~/components/collection/CollectionCard"
+import NewCollectionDialog from "~/components/collection/NewCollectionDialog"
 import Layout from "~/layout"
+import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 
-const MyPage: NextPage = () => {
+type Props = {
+  collections: (Collection & { items: Item[] })[]
+} & LayoutServerSideProps
+
+const MyPage: NextPage<Props> = ({
+  collections, layout
+}) => {
+
+  if (collections.length === 0)
+    return <>
+      <Layout title="My Collections" layout={layout}>
+        <NoCollections />
+      </Layout>
+    </>
+
+  const colllectionView = <SimpleGrid columns={1} spacing='8'>
+    {collections.map(collection => <CollectionCard key={collection.id} collection={collection} />)}
+  </SimpleGrid>
+
   return <>
-    <Layout title="My" layout={{ collections: [] }}>
-      <NoCollections />
+    <Layout title="My Collections" layout={layout}>
+      <HStack width='100%' justifyContent='space-between' mb='4'>
+        <Heading size="md">Collections</Heading>
+        <NewCollectionDialog />
+      </HStack>
+      {colllectionView}
     </Layout>
   </>
 }
@@ -19,7 +44,7 @@ const NoCollections = () => {
   </>
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res }) => {
   const auth = await getServerSession({ req, res })
 
   if (!auth) {
@@ -29,14 +54,22 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const collections = await prisma.collection.findMany({
     where: {
       userId: auth.user.id
+    },
+    include: {
+      items: true
+    },
+    orderBy: {
+      createdAt: 'desc'
     }
   })
 
-  if (collections.length === 0) {
-    return { props: {} }
+  return {
+    props: {
+      collections,
+      ...await getLayoutProps(auth.user.id)
+    }
   }
 
-  return { redirect: { destination: `/my/${collections[0]!.slug}`, permanent: false } }
 }
 
 export default MyPage

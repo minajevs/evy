@@ -5,11 +5,11 @@ import { prisma, type User } from "@evy/db";
 import type { GetServerSideProps, NextPage } from "next"
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { FiSave } from "react-icons/fi";
+import { FiCheck, FiSave, FiX } from "react-icons/fi";
 import { useZodForm } from "~/components/forms";
 import Layout from "~/layout"
 import { api } from "~/utils/api";
-import { type LayoutServerSideProps } from "~/utils/layoutServerSideProps";
+import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps";
 import { useVerifyValue } from "~/utils/useVerifyValue";
 
 type Props = {
@@ -40,7 +40,7 @@ const EditProfile: NextPage<Props> = ({ user, layout }) => {
   })
 
   const usernameAvailable = verifyUsernameAvailableQuery.data ?? false
-  const errorAvailability = shouldVerify && !usernameAvailable
+  const errorAvailability = shouldVerify && !usernameAvailable && !verifyUsernameAvailableQuery.isLoading
   const saveDisabled = !isValid || errorAvailability || !debounceSettled
 
   const onSubmit = handleSubmit(async (input) => {
@@ -98,8 +98,8 @@ const EditProfile: NextPage<Props> = ({ user, layout }) => {
                       : verifyUsernameAvailableQuery.isLoading
                         ? <Spinner />
                         : usernameAvailable
-                          ? <CheckIcon color='green.500' />
-                          : <CloseIcon color='red.500' />
+                          ? <Icon as={FiCheck} color='green.500' />
+                          : <Icon as={FiX} color='red.500' />
                   }
                 </InputRightElement>
               </InputGroup>
@@ -145,9 +145,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
   return {
     props: {
       user,
-      layout: {
-        collections: user.collections
-      }
+      ...await getLayoutProps(auth.user.id)
     }
   }
 }

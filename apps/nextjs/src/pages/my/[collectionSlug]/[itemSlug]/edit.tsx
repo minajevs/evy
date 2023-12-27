@@ -13,7 +13,7 @@ import Layout from "~/layout"
 import { api } from "~/utils/api"
 import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 import { useVerifyValue } from "~/utils/useVerifyValue"
-import { FiSave } from "react-icons/fi"
+import { FiCheck, FiSave, FiX } from "react-icons/fi"
 
 type Props = {
   item: Item & { collection: Collection & { user: User } }
@@ -45,7 +45,7 @@ const EditItemPage: NextPage<Props> = ({ layout, item }) => {
   })
 
   const slugAvailable = verifyItemSlugQuery.data ?? false
-  const errorAvailability = shouldVerify && !slugAvailable
+  const errorAvailability = shouldVerify && !slugAvailable && !verifyItemSlugQuery.isLoading
   const saveDisabled = !isValid || errorAvailability || !debounceSettled
 
   const onSubmit = handleSubmit(async (input) => {
@@ -118,8 +118,8 @@ const EditItemPage: NextPage<Props> = ({ layout, item }) => {
                       : verifyItemSlugQuery.isLoading
                         ? <Spinner />
                         : slugAvailable
-                          ? <CheckIcon color='green.500' />
-                          : <CloseIcon color='red.500' />
+                          ? <Icon as={FiCheck} color='green.500' />
+                          : <Icon as={FiX} color='red.500' />
                   }
                 </InputRightElement>
               </InputGroup>

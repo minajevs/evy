@@ -38,7 +38,7 @@ const CollectionEditPage: NextPage<Props> = ({ layout, collection }) => {
   })
 
   const slugAvailable = verifySlugAvailableQuery.data ?? false
-  const errorAvailability = shouldVerify && !slugAvailable
+  const errorAvailability = shouldVerify && !slugAvailable && !verifySlugAvailableQuery.isLoading
   const saveDisabled = !isValid || errorAvailability || !debounceSettled
 
   const onSubmit = handleSubmit(async (input) => {
