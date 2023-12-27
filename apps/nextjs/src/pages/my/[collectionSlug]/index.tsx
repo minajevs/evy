@@ -58,7 +58,7 @@ const ItemList = ({ items }: ItemListProps) => {
       <Text>{'Click "Add" to add a first item'}</Text>
     </Box>
   }
-  return <SimpleGrid columns={4} spacing='8'>
+  return <SimpleGrid columns={{ sm: 2, md: 4 }} spacing='8'>
     {items.map(item => <ItemCard key={item.id} item={item} />)}
   </SimpleGrid>
 }
