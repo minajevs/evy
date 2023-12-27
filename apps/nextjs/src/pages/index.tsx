@@ -1,6 +1,6 @@
 
 import { Image } from "@chakra-ui/next-js";
-import { Box, Container, Skeleton, Stack, Text, useColorModeValue } from "@chakra-ui/react";
+import { Box, Button, Container, Heading, Skeleton, Stack, Text, VStack, useColorModeValue } from "@chakra-ui/react";
 import { getServerSession } from "@evy/auth";
 import { useBackgroundPattern } from "@evy/styling";
 import type { GetServerSidePropsContext, NextPage } from "next"
@@ -13,23 +13,33 @@ const Home: NextPage = () => {
 
   return (
     <LandingLayout>
-      <Stack
-        direction={{ base: 'column', md: 'row' }}
+      <VStack
         justifyContent='center'
+        alignItems='center'
         backgroundImage={pattern}
       >
+        <Heading fontSize='5xl' mt={12} mb={8}>
+          Keep track of your collections
+        </Heading>
+        <Container textAlign='center'>
+          <Text fontSize='xl'>
+            Evy is an app to manage, overview, track, share and discover precious hobbies
+          </Text>
+        </Container>
+      </VStack>
+      <VStack
+        justifyContent='center'
+        alignItems='center'
+        mt={8}
+      >
+        <Button size='lg' colorScheme="teal">
+          Get started
+        </Button>
         <Text>
           This is a landing page v0.1,
           don't judge, ok?
         </Text>
-        <Box
-          pos="relative"
-          minW='30rem'
-          minH='15rem'
-        >
-          Hello WOrld!
-        </Box>
-      </Stack>
+      </VStack>
     </LandingLayout>
   )
 }

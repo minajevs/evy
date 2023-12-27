@@ -13,14 +13,17 @@ export const useBackgroundPattern = (props?: Props) => {
   const translateY = props?.translateY ?? 0
   const fade = props?.fade ?? false
 
+  const opacity = 0.2
+
   const bg = useBackgroundColor('page')
   const [bgHex] = useToken('colors', [bg])
 
   if (fade)
     return `linear-gradient(
-      rgba(255,255,255,0),
-      ${bgHex}
-    ), ${backgroundPattern(fill, translateY)}`
+      180deg,
+      rgba(255,255,255,0) 50%,
+      ${bgHex} 100%
+    ), ${backgroundPattern(fill, opacity, translateY)}`
 
-  return `/**/${backgroundPattern(fill, translateY)}`
+  return `/**/${backgroundPattern(fill, opacity, translateY)}`
 }

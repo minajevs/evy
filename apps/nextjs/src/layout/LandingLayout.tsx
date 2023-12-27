@@ -7,6 +7,7 @@ import { BottomNavigation } from "./navigation/BottomNavigation"
 import { MobileNav } from "./navigation/MobileNav"
 import { Link } from "@chakra-ui/next-js"
 import { FiMoon, FiSun } from "react-icons/fi"
+import { signIn, signOut, useSession } from "next-auth/react"
 
 type Props = {
   children: React.ReactNode
@@ -15,7 +16,7 @@ type Props = {
 const LandingLayout = ({ children }: Props) => {
   const bg = useBackgroundColor('page')
   // Translate pattern by 100 pixels, where 100 is height of box
-  const pattern = useBackgroundPattern({ translateY: 100 })
+  const pattern = useBackgroundPattern({ translateY: 150 })
 
   return <>
     <Head>
@@ -25,9 +26,9 @@ const LandingLayout = ({ children }: Props) => {
     </Head>
     <Box minH="100vh" bg={bg}>
       <Box backgroundImage={pattern}>
-        <Box maxW='1440' height={100} px={{ base: 4, md: 8 }} py={6} mx='auto' >
+        <Flex maxW='1440' height={150} px={{ base: 4, md: 8 }} py={6} mx="auto">
           <Navbar />
-        </Box>
+        </Flex>
       </Box>
       {children}
     </Box>
@@ -36,9 +37,11 @@ const LandingLayout = ({ children }: Props) => {
 
 const Navbar = () => {
   const { colorMode, toggleColorMode } = useColorMode()
-  return <Box px={4}>
+  const session = useSession()
+
+  return <Box px={4} width='100%'>
     <Flex h={12} alignItems="center" justifyContent="space-between" mx="auto">
-      <Heading size="lg" justifyContent='flex-start'>
+      <Heading size="lg" justifyContent='flex-start' w={150}>
         <Link href="/">
           Evy ⚡️
         </Link>
@@ -56,11 +59,11 @@ const Navbar = () => {
         <NavLink name="About" href="/" />
         <NavLink name="Pricing" href="/" />
       </HStack>
-      <HStack>
+      <HStack w={150} justifyContent='end'>
         <Button onClick={toggleColorMode}>
           {colorMode === 'light' ? <Icon as={FiMoon} /> : <Icon as={FiSun} />}
         </Button>
-        <Button colorScheme="teal">
+        <Button colorScheme="teal" onClick={() => void signIn()}>
           Sign in
         </Button>
       </HStack>
