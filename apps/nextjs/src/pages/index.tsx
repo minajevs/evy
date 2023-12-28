@@ -19,7 +19,7 @@ const Home: NextPage = () => {
         alignItems='center'
         backgroundImage={pattern}
       >
-        <Heading fontSize='5xl' mt={12} mb={8}>
+        <Heading fontSize='5xl' mt={12} mb={8} textAlign='center'>
           Keep track of your collections
         </Heading>
         <Container textAlign='center'>
