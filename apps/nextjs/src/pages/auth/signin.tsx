@@ -6,7 +6,7 @@ import { getProviders, signIn } from "next-auth/react"
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@evy/auth"
 import { Stack, Flex, Heading, VStack, useColorModeValue, FormControl, FormLabel, Input, Checkbox, Button, Link, Text, Divider, Icon } from "@chakra-ui/react"
-import { useBackgroundPattern } from "@evy/styling"
+import { useBackgroundColor, useBackgroundPattern } from "@evy/styling"
 import { FiGithub } from "react-icons/fi"
 
 const adapterIcon = {
@@ -19,7 +19,14 @@ export default function SignIn({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const pattern = useBackgroundPattern({ fade: true })
 
-  return <Flex minH="100vh" p={8} pt={32} justifyContent="center" backgroundImage={pattern}>
+  return <Flex
+    minH="100vh"
+    p={8}
+    pt={32}
+    justifyContent="center"
+    bg={useBackgroundColor('page')}
+    backgroundImage={pattern}
+  >
     <Stack spacing={4}>
       <Stack align="center">
         <Heading fontSize="3xl">Welcome!</Heading>
@@ -30,7 +37,7 @@ export default function SignIn({
         spacing={8}
         boxSize={{ base: 'xs', sm: 'sm', md: 'md' }}
         h="max-content !important"
-        bg={useColorModeValue('white', 'gray.700')}
+        bg={useBackgroundColor('navigation')}
         rounded="lg"
         boxShadow="lg"
         p={{ base: 5, sm: 10 }}
