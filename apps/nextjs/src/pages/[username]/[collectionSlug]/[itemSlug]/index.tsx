@@ -1,16 +1,14 @@
-import { Icon } from "@chakra-ui/react"
 import { Link } from "@chakra-ui/next-js"
-import { Box, ButtonGroup, HStack, Heading, Text, useDisclosure } from "@chakra-ui/react"
+import { Box, HStack, Heading, Text, useDisclosure } from "@chakra-ui/react"
 import { type Collection, prisma, type Item, type ItemImage, type User } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
 import { useCallback, useState } from "react"
 import { z } from "zod"
 import { ImageGrid } from "~/components/item-media/ImageGrid"
 import { ImageModal } from "~/components/item-media/ImageModal"
-import { ShareDialog } from "~/components/share-dialog/ShareDialog"
 import Layout from "~/layout"
 import { type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
-import { FiShare2 } from "react-icons/fi"
+import { getServerSession } from "@evy/auth"
 
 type Props = {
   item: Item & { collection: Collection & { user: User } } & { images: ItemImage[] }
@@ -33,14 +31,6 @@ const ItemPage: NextPage<Props> = ({ layout, item }) => {
           <Text display='inline' pl='1' fontWeight={200}>/</Text>
           <Text display='inline' pl='1'>{item.name}</Text>
         </Heading>
-        <ButtonGroup>
-          <ShareDialog
-            buttonProps={{ leftIcon: <Icon as={FiShare2} /> }}
-            username={item.collection.user.username}
-            collectionSlug={item.collection.slug}
-            itemSlug={item.slug}
-          />
-        </ButtonGroup>
       </HStack>
       {
         item.description !== null && item.description.length > 0
@@ -68,8 +58,9 @@ const ItemPage: NextPage<Props> = ({ layout, item }) => {
 }
 
 const paramsSchema = z.object({ username: z.string(), itemSlug: z.string(), collectionSlug: z.string() })
-export const getServerSideProps: GetServerSideProps<Props> = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, params }) => {
   const { username, itemSlug, collectionSlug } = paramsSchema.parse(params)
+  const auth = await getServerSession({ req, res })
 
   const currentItem = await prisma.item.findFirst({
     where: {
@@ -84,11 +75,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ params }) 
     include: {
       collection: {
         include: {
-          user: {
-            include: {
-              collections: true
-            }
-          }
+          user: true
         }
       },
       images: true
@@ -103,7 +90,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ params }) 
     props: {
       item: currentItem,
       layout: {
-        collections: currentItem.collection.user.collections
+        loggedIn: auth?.user !== undefined,
+        collections: []
       }
     }
   }

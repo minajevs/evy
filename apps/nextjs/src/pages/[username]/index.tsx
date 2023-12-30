@@ -1,4 +1,5 @@
 import { SimpleGrid, HStack, Heading, Avatar, VStack, Divider, Box, Text } from "@chakra-ui/react"
+import { getServerSession } from "@evy/auth"
 import { prisma, type Collection, type Item, type User } from "@evy/db"
 import { type GetServerSideProps, type NextPage } from "next"
 import { z } from "zod"
@@ -56,8 +57,9 @@ const Profile: NextPage<Props> = ({ user, layout }) => {
 }
 
 const paramsSchema = z.object({ username: z.string() })
-export const getServerSideProps: GetServerSideProps<Props> = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, params }) => {
   const { username } = paramsSchema.parse(params)
+  const auth = await getServerSession({ req, res })
 
   const user = await prisma.user.findFirst({
     where: {
@@ -66,7 +68,10 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ params }) 
     include: {
       collections: {
         include: {
-          items: true
+          items: true,
+        },
+        orderBy: {
+          createdAt: 'desc'
         }
       }
     }
@@ -78,7 +83,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ params }) 
     props: {
       user,
       layout: {
-        collections: user.collections
+        loggedIn: auth?.user !== undefined,
+        collections: []
       }
     }
   }

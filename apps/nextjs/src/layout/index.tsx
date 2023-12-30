@@ -11,12 +11,23 @@ type Props = {
   title?: string
 } & LayoutServerSideProps
 
-const Layout = ({ children, layout: { collections }, title }: Props) => {
+const Layout = ({ children, layout, title }: Props) => {
   const bg = useBackgroundColor('page')
-  const linkItems: LinkItem[] = collections.map(collection => ({
-    name: collection.name,
-    href: `/my/${collection.slug}`
-  }))
+
+  let authContent = <></>
+  if (layout.loggedIn) {
+    const linkItems: LinkItem[] = layout.collections.map(collection => ({
+      name: collection.name,
+      href: `/my/${collection.slug}`
+    }))
+    authContent = <>
+      <Sidebar
+        display={{ base: 'none', md: 'block' }}
+        linkItems={linkItems}
+      />
+      <MobileNav display={{ base: 'flex', md: 'none' }} />
+    </>
+  }
   return <>
     <Head>
       <title>{`📚 Evy ${title !== undefined ? `| ${title}` : ''}`}</title>
@@ -24,11 +35,7 @@ const Layout = ({ children, layout: { collections }, title }: Props) => {
       <link rel="icon" href="/favicon.ico" />
     </Head>
     <Box minH="100vh" bg={bg}>
-      <Sidebar
-        display={{ base: 'none', md: 'block' }}
-        linkItems={linkItems}
-      />
-      <MobileNav display={{ base: 'flex', md: 'none' }} />
+      {authContent}
       <Box ml={{ base: 0, md: 60 }} p="8">
         {children}
       </Box>

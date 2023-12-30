@@ -1,13 +1,11 @@
-import { Box, ButtonGroup, HStack, Heading, SimpleGrid, Text } from "@chakra-ui/react"
+import { Box, HStack, Heading, SimpleGrid, Text } from "@chakra-ui/react"
 import { type Collection, prisma, type Item, type User } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
 import { z } from "zod"
 import Layout from "~/layout"
-import { Icon } from "@chakra-ui/react"
-import { FiShare2 } from "react-icons/fi"
 import { type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
-import { ShareDialog } from "~/components/share-dialog/ShareDialog"
 import { ItemCard } from "~/components/item/ItemCard"
+import { getServerSession } from "@evy/auth"
 
 type Props = {
   collection: Collection & { items: (Item & { collection: Collection })[] } & { user: User }
@@ -20,13 +18,6 @@ const UserCollectionPage: NextPage<Props> = ({ layout, collection }) => {
         <Heading size="lg" mb="4">
           <Text>{collection.name}</Text>
         </Heading>
-        <ButtonGroup isAttached>
-          <ShareDialog
-            buttonProps={{ leftIcon: <Icon as={FiShare2} /> }}
-            username={collection.user.username}
-            collectionSlug={collection.slug}
-          />
-        </ButtonGroup>
       </HStack>
       {
         collection.description !== null && collection.description.length > 0
@@ -57,8 +48,9 @@ const ItemList = ({ username, items }: ItemListProps) => {
 }
 
 const paramsSchema = z.object({ username: z.string(), collectionSlug: z.string() })
-export const getServerSideProps: GetServerSideProps<Props> = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, params }) => {
   const { username, collectionSlug } = paramsSchema.parse(params)
+  const auth = await getServerSession({ req, res })
 
   const currentCollection = await prisma.collection.findFirst({
     where: {
@@ -89,7 +81,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ params }) 
     props: {
       collection: currentCollection,
       layout: {
-        collections: currentCollection.user.collections
+        loggedIn: auth?.user !== undefined,
+        collections: []
       }
     }
   }

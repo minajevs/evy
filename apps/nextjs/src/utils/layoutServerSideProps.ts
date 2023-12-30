@@ -1,9 +1,14 @@
 import { prisma, type Collection } from '@evy/db'
 
 export type LayoutServerSideProps = {
-  layout: {
-    collections: Collection[]
-  }
+  layout:
+    | {
+        loggedIn: true
+        collections: Collection[]
+      }
+    | {
+        loggedIn: false
+      }
 }
 
 export const getLayoutProps = async (
@@ -20,6 +25,7 @@ export const getLayoutProps = async (
 
   return {
     layout: {
+      loggedIn: true,
       collections,
     },
   }
