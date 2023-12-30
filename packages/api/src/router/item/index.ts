@@ -1,10 +1,29 @@
 import { TRPCError } from '@trpc/server'
-import { editItemSchema, newItemSchema, verifyItemSlugSchema } from '../schemas'
-import { createTRPCRouter, protectedProcedure } from '../trpc/trpc'
+import { editItemSchema, newItemSchema, verifyItemSlugSchema } from './schemas'
+import { createTRPCRouter, protectedProcedure } from '../../trpc/trpc'
 import { slugify } from '@evy/auth/src/slugify'
 import { customAlphabet } from 'nanoid'
+import { prisma } from '@evy/db'
+import { urlSafeRegex } from '../../utils/urlSafeRegex'
 
 const slugId = customAlphabet('0123456789abcdefghijklmnopqrstuvwxyz', 5)
+
+const checkSlugAvailable = async (
+  userId: string,
+  collectionId: string,
+  slug: string,
+) => {
+  const existingItem = await prisma.item.findFirst({
+    where: {
+      collectionId,
+      collection: {
+        userId,
+      },
+      slug,
+    },
+  })
+  return existingItem === null
+}
 
 export const itemRouter = createTRPCRouter({
   create: protectedProcedure
@@ -43,7 +62,39 @@ export const itemRouter = createTRPCRouter({
     }),
   update: protectedProcedure
     .input(editItemSchema)
-    .mutation(({ ctx, input: { id, name, description, slug } }) => {
+    .mutation(async ({ ctx, input: { id, name, description, slug } }) => {
+      if (!urlSafeRegex.test(slug)) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Slug is in incorrect format',
+        })
+      }
+
+      const item = await ctx.prisma.item.findFirst({
+        where: {
+          id,
+          collection: {
+            userId: ctx.session.user.id,
+          },
+        },
+      })
+
+      if (item === null) throw new TRPCError({ code: 'BAD_REQUEST' })
+
+      if (item.slug !== slug) {
+        const slugAvailable = await checkSlugAvailable(
+          ctx.session.user.id,
+          item.collectionId,
+          slug,
+        )
+        if (!slugAvailable) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Slug is unavailable',
+          })
+        }
+      }
+
       return ctx.prisma.item.update({
         data: {
           name,
@@ -61,15 +112,6 @@ export const itemRouter = createTRPCRouter({
   verifyItemSlug: protectedProcedure
     .input(verifyItemSlugSchema)
     .query(async ({ ctx, input: { collectionId, slug } }) => {
-      const existing = await ctx.prisma.item.findFirst({
-        where: {
-          collectionId: collectionId,
-          slug,
-          collection: {
-            userId: ctx.session.user.id,
-          },
-        },
-      })
-      return existing === null
+      return await checkSlugAvailable(ctx.session.user.id, collectionId, slug)
     }),
 })

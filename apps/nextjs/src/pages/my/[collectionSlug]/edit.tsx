@@ -7,13 +7,13 @@ import Layout from "~/layout"
 import { api } from "~/utils/api"
 import { Link } from "@chakra-ui/next-js"
 import { Icon } from "@chakra-ui/react"
-import { editCollectionSchema } from "@evy/api/schemas"
 import { useZodForm } from "~/components/forms"
 import { useRouter } from "next/router"
 import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 import { env } from "~/env.mjs"
 import { useVerifyValue } from "~/utils/useVerifyValue"
 import { FiCheck, FiClock, FiSave, FiX, FiXCircle } from "react-icons/fi"
+import { editCollectionSchema } from "@evy/api/schemas"
 
 type Props = {
   collection: Collection & { items: Item[] } & { user: User }
@@ -39,7 +39,7 @@ const CollectionEditPage: NextPage<Props> = ({ layout, collection }) => {
 
   const slugAvailable = verifySlugAvailableQuery.data ?? false
   const errorAvailability = shouldVerify && !slugAvailable && !verifySlugAvailableQuery.isLoading
-  const saveDisabled = !isValid || errorAvailability || !debounceSettled
+  const saveDisabled = !isValid || shouldVerify && !slugAvailable || !debounceSettled
 
   const onSubmit = handleSubmit(async (input) => {
     on()

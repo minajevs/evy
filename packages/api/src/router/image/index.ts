@@ -1,13 +1,12 @@
-import { prisma } from '@evy/db'
-import {
-  directUploadUrlSchema,
-  createBasicImageSchema,
-  updateImageSchema,
-  deleteImageSchema,
-} from '../schemas'
-import { createTRPCRouter, protectedProcedure } from '../trpc/trpc'
 import { getDirectUploadUrl, deleteImage } from '@evy/images'
 import { TRPCError } from '@trpc/server'
+import { createTRPCRouter, protectedProcedure } from '../../trpc/trpc'
+import {
+  createBasicImageSchema,
+  deleteImageSchema,
+  directUploadUrlSchema,
+  updateImageSchema,
+} from './schemas'
 
 export const imageRouter = createTRPCRouter({
   getDirectUploadUrl: protectedProcedure

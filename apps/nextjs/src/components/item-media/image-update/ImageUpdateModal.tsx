@@ -6,10 +6,10 @@ import { useConfirm } from "~/utils/confirm"
 import { api } from "~/utils/api"
 import { ImageUpdateForm } from "./ImageUpdateForm"
 import { useZodForm } from "~/components/forms"
-import { updateImageSchema } from "@evy/api/schemas"
 import { FormProvider } from "react-hook-form"
 import { useEffect, useState } from "react"
 import { FiEdit, FiTrash2 } from "react-icons/fi"
+import { updateImageSchema } from "@evy/api/schemas"
 
 type Props = {
   image: ItemImage

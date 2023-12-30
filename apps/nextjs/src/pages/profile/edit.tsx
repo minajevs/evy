@@ -1,5 +1,5 @@
-import { HStack, Heading, Button, Text, Box, useBoolean, ButtonGroup, FormControl, FormLabel, Input, FormErrorMessage, VStack, InputGroup, InputRightElement, Spinner, Icon } from "@chakra-ui/react";
-import { editUserSchema } from "@evy/api/schemas";
+import { HStack, Heading, Button, Text, Box, useBoolean, ButtonGroup, FormControl, FormLabel, Input, FormErrorMessage, VStack, InputGroup, InputRightElement, Spinner, Icon } from "@chakra-ui/react"
+import { editUserSchema } from "@evy/api/schemas"
 import { getServerSession } from "@evy/auth";
 import { prisma, type User } from "@evy/db";
 import type { GetServerSideProps, NextPage } from "next"
@@ -41,7 +41,7 @@ const EditProfile: NextPage<Props> = ({ user, layout }) => {
 
   const usernameAvailable = verifyUsernameAvailableQuery.data ?? false
   const errorAvailability = shouldVerify && !usernameAvailable && !verifyUsernameAvailableQuery.isLoading
-  const saveDisabled = !isValid || errorAvailability || !debounceSettled
+  const saveDisabled = !isValid || shouldVerify && !usernameAvailable || !debounceSettled
 
   const onSubmit = handleSubmit(async (input) => {
     on()

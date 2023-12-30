@@ -1,7 +1,6 @@
 import { Icon } from "@chakra-ui/react"
 import { Link } from "@chakra-ui/next-js"
 import { Button, ButtonGroup, FormControl, Flex, FormErrorMessage, Heading, Text, useBoolean, forwardRef, type InputProps, type As, Input, FormLabel, Textarea, VStack, Box, InputGroup, InputLeftAddon, useColorModeValue, InputRightElement, Spinner } from "@chakra-ui/react"
-import { editItemSchema } from "@evy/api/schemas"
 import { getServerSession } from "@evy/auth"
 import { type Collection, prisma, type Item, type User } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
@@ -14,6 +13,7 @@ import { api } from "~/utils/api"
 import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 import { useVerifyValue } from "~/utils/useVerifyValue"
 import { FiCheck, FiSave, FiX } from "react-icons/fi"
+import { editItemSchema } from "@evy/api/schemas"
 
 type Props = {
   item: Item & { collection: Collection & { user: User } }
@@ -46,7 +46,7 @@ const EditItemPage: NextPage<Props> = ({ layout, item }) => {
 
   const slugAvailable = verifyItemSlugQuery.data ?? false
   const errorAvailability = shouldVerify && !slugAvailable && !verifyItemSlugQuery.isLoading
-  const saveDisabled = !isValid || errorAvailability || !debounceSettled
+  const saveDisabled = !isValid || shouldVerify && !slugAvailable || !debounceSettled
 
   const onSubmit = handleSubmit(async (input) => {
     on()

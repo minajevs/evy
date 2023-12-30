@@ -1,10 +1,10 @@
 import { Button, type ButtonProps, FormControl, FormErrorMessage, FormLabel, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Textarea, useDisclosure } from "@chakra-ui/react"
 import { useZodForm } from "../forms"
 import { api } from "~/utils/api"
-import { newCollectionSchema } from "@evy/api/schemas"
 import { useRouter } from "next/router"
 import { NavItemBase } from "~/layout/navigation/NavItem"
 import { FiPlus } from "react-icons/fi"
+import { newCollectionSchema } from "@evy/api/schemas"
 
 type Props = {
   as?: React.ElementType

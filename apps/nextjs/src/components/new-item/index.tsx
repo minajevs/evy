@@ -1,11 +1,11 @@
 import { Button, Card, CardBody, FormControl, FormErrorMessage, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Textarea, useDisclosure } from "@chakra-ui/react"
 import { useZodForm } from "../forms"
-import { newItemSchema } from "@evy/api/schemas"
 import { useCallback, useEffect } from "react"
 import { api } from "~/utils/api"
 import { useRouter } from "next/router"
 import { Icon } from "@chakra-ui/react"
 import { FiPlus } from "react-icons/fi"
+import { newItemSchema } from "@evy/api/schemas"
 
 type Props = {
   collectionId: string
