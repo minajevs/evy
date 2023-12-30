@@ -68,7 +68,7 @@ export const userRouter = createTRPCRouter({
     }),
   verifyUsernameAvailable: protectedProcedure
     .input(verifyUsernameSchema)
-    .query(async ({ ctx, input: { username } }) => {
+    .query(async ({ input: { username } }) => {
       const available = await checkUsernameAvailable(username)
       const blocked = checkUsernameBlocked(username)
       return available && !blocked

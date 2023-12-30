@@ -10,9 +10,8 @@ type Props = {
 
 export const ImageUpdateForm = ({ image }: Props) => {
   const {
-    handleSubmit,
     register,
-    formState: { errors, isValid },
+    formState: { errors },
     reset
   } = useZodFormContext<typeof updateImageSchema>()
 

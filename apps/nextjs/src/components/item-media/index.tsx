@@ -1,4 +1,4 @@
-import { Box, Button, HStack, Heading, SimpleGrid, Text, type UseDisclosureReturn, useDisclosure } from "@chakra-ui/react"
+import { Box, Text, type UseDisclosureReturn, useDisclosure } from "@chakra-ui/react"
 import { type ItemImage } from "@evy/db"
 import { useCallback, useState } from "react"
 import { UploadDialog } from "./new-media/UploadDialog"

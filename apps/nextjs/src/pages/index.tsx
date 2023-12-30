@@ -11,7 +11,7 @@ const Home: NextPage = () => {
       <Hero />
       <Text width='100%' textAlign='center' my={4}>
         This is a landing page v0.2,
-        don't judge, ok?
+        don &apos t judge, ok?
       </Text>
     </LandingLayout>
   )

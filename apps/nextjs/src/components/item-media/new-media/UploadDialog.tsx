@@ -15,7 +15,7 @@ type Props = {
 }
 export const UploadDialog = ({ itemId, disclosure, onUploaded, onUpdated }: Props) => {
   const router = useRouter()
-  const { isOpen, onOpen, onClose } = disclosure
+  const { isOpen, onClose } = disclosure
   const [directUpload, setDirectUpload] = useState<DirectUploadUrlResult | null>(null)
   const [uploading, setUploading] = useState<boolean>(false)
   const [uploadedImage, setUploadedImage] = useState<ItemImage | null>(null)

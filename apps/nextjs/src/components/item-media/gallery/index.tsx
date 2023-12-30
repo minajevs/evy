@@ -4,7 +4,7 @@ import { type ItemImage } from "@evy/db"
 type Props = {
   images: ItemImage[]
 }
-export const Gallery = () => {
+export const Gallery = ({ }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (

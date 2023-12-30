@@ -5,14 +5,9 @@ import type {
 import { getProviders, signIn } from "next-auth/react"
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@evy/auth"
-import { Stack, Flex, Heading, VStack, useColorModeValue, FormControl, FormLabel, Input, Checkbox, Button, Link, Text, Divider, Icon } from "@chakra-ui/react"
+import { Stack, Flex, Heading, VStack, FormControl, FormLabel, Input, Checkbox, Button, Link, Text, Divider, Icon } from "@chakra-ui/react"
 import { useBackgroundColor, useBackgroundPattern } from "@evy/styling"
 import { FiGithub } from "react-icons/fi"
-
-const adapterIcon = {
-  'github': FiGithub
-} as const
-
 
 export default function SignIn({
   providers,

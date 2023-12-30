@@ -10,7 +10,7 @@ import { ImageModal } from "~/components/item-media/ImageModal"
 import { ShareDialog } from "~/components/share-dialog/ShareDialog"
 import Layout from "~/layout"
 import { type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
-import { FiShare, FiShare2 } from "react-icons/fi"
+import { FiShare2 } from "react-icons/fi"
 
 type Props = {
   item: Item & { collection: Collection & { user: User } } & { images: ItemImage[] }
@@ -68,7 +68,7 @@ const ItemPage: NextPage<Props> = ({ layout, item }) => {
 }
 
 const paramsSchema = z.object({ username: z.string(), itemSlug: z.string(), collectionSlug: z.string() })
-export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, params }) => {
+export const getServerSideProps: GetServerSideProps<Props> = async ({ params }) => {
   const { username, itemSlug, collectionSlug } = paramsSchema.parse(params)
 
   const currentItem = await prisma.item.findFirst({

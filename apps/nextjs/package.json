@@ -7,7 +7,7 @@
     "clean": "git clean -xdf .next .turbo node_modules",
     "dev": "npm run with-env next dev",
     "lint": "dotenv -v SKIP_ENV_VALIDATION=1 next lint",
-    "lint:fix": "npm lint --fix",
+    "lint:fix": "eslint . --fix",
     "start": "npm run with-env next start -- --hostname 0.0.0.0",
     "type-check": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
@@ -49,6 +49,7 @@
     "autoprefixer": "^10.4.15",
     "dotenv-cli": "^7.3.0",
     "eslint": "^8.48.0",
+    "eslint-plugin-unused-imports": "^3.0.0",
     "postcss": "^8.4.28",
     "typescript": "^5.2.2"
   },

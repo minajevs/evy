@@ -7,12 +7,14 @@ const config = {
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'prettier',
   ],
+  plugins: ['unused-imports'],
   rules: {
     '@typescript-eslint/require-await': 'warn',
     '@typescript-eslint/no-misused-promises': 'off',
     '@next/next/no-html-link-for-pages': 'off',
     '@typescript-eslint/restrict-template-expressions': 'off',
-    '@typescript-eslint/no-unused-vars': [
+    'unused-imports/no-unused-imports': 'error',
+    'unused-imports/no-unused-vars': [
       'warn',
       {
         argsIgnorePattern: '^_',
@@ -20,6 +22,7 @@ const config = {
         caughtErrorsIgnorePattern: '^_',
       },
     ],
+    '@typescript-eslint/no-unused-vars': 'off',
     '@typescript-eslint/consistent-type-imports': [
       'error',
       { prefer: 'type-imports', fixStyle: 'inline-type-imports' },

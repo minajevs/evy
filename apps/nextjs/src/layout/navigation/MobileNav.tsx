@@ -1,8 +1,8 @@
-import { Flex, IconButton, type FlexProps, Text, HStack, Menu, MenuButton, Avatar, VStack, MenuList, useColorModeValue, MenuItem, MenuDivider, Heading, Icon, useColorMode, Button } from "@chakra-ui/react"
+import { Flex, type FlexProps, HStack, Heading, Icon, useColorMode, Button } from "@chakra-ui/react"
 import { useBackgroundColor } from "@evy/styling";
 import { Link } from "@chakra-ui/next-js"
 import { signIn, signOut, useSession } from "next-auth/react"
-import { FiMoon, FiSearch, FiSun } from "react-icons/fi"
+import { FiMoon, FiSun } from "react-icons/fi"
 
 type MobileProps = FlexProps
 

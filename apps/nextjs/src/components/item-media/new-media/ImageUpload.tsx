@@ -1,6 +1,5 @@
-import { Box, Flex, Icon, InputGroup, Link, Stack, Text, VStack, VisuallyHidden } from "@chakra-ui/react"
-import { type ReactNode, useRef, useCallback } from "react"
-import { type UseFormRegisterReturn } from "react-hook-form"
+import { Box, Flex, Icon, Link, Stack, Text, VStack, VisuallyHidden } from "@chakra-ui/react"
+import { type ReactNode, useRef } from "react"
 import { useDropzone } from 'react-dropzone'
 
 type FileUploadProps = {
@@ -11,7 +10,7 @@ type FileUploadProps = {
 
 const accept = 'image/*'
 
-export const ImageUpload = ({ onDrop, multiple = false, children }: FileUploadProps) => {
+export const ImageUpload = ({ onDrop, multiple = false }: FileUploadProps) => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {

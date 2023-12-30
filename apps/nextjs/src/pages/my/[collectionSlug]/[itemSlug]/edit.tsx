@@ -1,6 +1,6 @@
 import { Icon } from "@chakra-ui/react"
 import { Link } from "@chakra-ui/next-js"
-import { Button, ButtonGroup, FormControl, Flex, FormErrorMessage, Heading, Text, useBoolean, forwardRef, type InputProps, type As, Input, FormLabel, Textarea, VStack, Box, InputGroup, InputLeftAddon, useColorModeValue, InputRightElement, Spinner } from "@chakra-ui/react"
+import { Button, ButtonGroup, FormControl, Flex, FormErrorMessage, Heading, Text, useBoolean, Input, FormLabel, Textarea, VStack, Box, InputGroup, InputLeftAddon, useColorModeValue, InputRightElement, Spinner } from "@chakra-ui/react"
 import { getServerSession } from "@evy/auth"
 import { type Collection, prisma, type Item, type User } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
@@ -27,7 +27,7 @@ const EditItemPage: NextPage<Props> = ({ layout, item }) => {
   const {
     handleSubmit,
     register,
-    formState: { errors, isDirty, isValid },
+    formState: { errors, isValid },
     watch
   } = useZodForm({
     schema: editItemSchema, defaultValues: {

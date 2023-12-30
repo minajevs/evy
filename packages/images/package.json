@@ -7,7 +7,7 @@
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
     "lint": "eslint .",
-    "lint:fix": "pnpm lint --fix",
+    "lint:fix": "eslint . --fix",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
@@ -20,6 +20,7 @@
   "devDependencies": {
     "@evy/eslint-config": "^0.1.0",
     "eslint": "^8.48.0",
+    "eslint-plugin-unused-imports": "^3.0.0",
     "typescript": "^5.2.2"
   }
 }

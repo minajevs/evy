@@ -1,4 +1,4 @@
-import { Box, Flex, type BoxProps, CloseButton, Stack, Button, useColorMode, Text, Divider, VStack, Heading, Avatar, HStack } from "@chakra-ui/react"
+import { Box, type BoxProps, Button, useColorMode, Text, Divider, VStack, Heading, HStack } from "@chakra-ui/react"
 import { NavItemBase, NavItemLink } from "./NavItem"
 import { useBackgroundColor } from "@evy/styling"
 import { Icon } from '@chakra-ui/react'
@@ -20,9 +20,6 @@ export const Sidebar = ({ linkItems, ...rest }: SidebarProps) => {
   const { colorMode, toggleColorMode } = useColorMode()
   const bg = useBackgroundColor('navigation')
   const session = useSession()
-
-  const username = session.data?.user.name ?? ''
-  const userimage = session.data?.user.image ?? ''
 
   return (
     <Box

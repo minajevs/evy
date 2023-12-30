@@ -1,4 +1,4 @@
-import { Input, type InputProps, Text, EditableInput, type EditableInputProps, Editable, EditablePreview, useEditableState, useEditable } from "@chakra-ui/react"
+import { EditableInput, type EditableInputProps, Editable, EditablePreview, useEditableState } from "@chakra-ui/react"
 import { useEffect } from "react"
 
 type Props = {
@@ -7,9 +7,9 @@ type Props = {
   inputProps?: EditableInputProps
 }
 
-export const EditText = ({ edit, defaultValue, inputProps = {} }: Props) => {
+export const EditText = ({ edit, defaultValue }: Props) => {
   const { onEdit, onSubmit } = useEditableState()
-  useEffect(() => edit ? onEdit() : onSubmit(), [edit])
+  useEffect(() => edit ? onEdit() : onSubmit(), [edit, onEdit, onSubmit])
 
   return <Editable value={defaultValue} isPreviewFocusable={false} startWithEditView={edit}>
     <EditablePreview />

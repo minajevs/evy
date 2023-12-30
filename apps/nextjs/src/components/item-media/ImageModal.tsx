@@ -1,4 +1,4 @@
-import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, type UseDisclosureReturn, ModalBody, Box, Card, CardBody, Text, Stack, VStack, FormControl, FormErrorMessage, FormLabel, Input, Textarea, Button, ButtonGroup, CardFooter, useBoolean, useEditable, useStatStyles } from "@chakra-ui/react"
+import { Modal, ModalOverlay, ModalContent, type UseDisclosureReturn, Card, CardBody, Text, VStack } from "@chakra-ui/react"
 import { ImageDisplay } from "./image-display"
 import { type ItemImage } from "@evy/db"
 

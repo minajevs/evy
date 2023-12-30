@@ -57,7 +57,7 @@ const ItemList = ({ username, items }: ItemListProps) => {
 }
 
 const paramsSchema = z.object({ username: z.string(), collectionSlug: z.string() })
-export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, params }) => {
+export const getServerSideProps: GetServerSideProps<Props> = async ({ params }) => {
   const { username, collectionSlug } = paramsSchema.parse(params)
 
   const currentCollection = await prisma.collection.findFirst({

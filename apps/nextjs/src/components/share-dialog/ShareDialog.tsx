@@ -1,8 +1,8 @@
 import { Icon } from "@chakra-ui/react"
 import { Link } from "@chakra-ui/next-js"
-import { Button, type ButtonProps, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure, Input, InputGroup, InputRightAddon, InputRightElement, useClipboard, useBoolean } from "@chakra-ui/react"
+import { Button, type ButtonProps, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure, Input, InputGroup, InputRightElement, useClipboard } from "@chakra-ui/react"
 import { env } from "~/env.mjs"
-import { FiCheck, FiCheckSquare } from "react-icons/fi"
+import { FiCheckSquare } from "react-icons/fi"
 
 type Props = {
   buttonProps: Omit<ButtonProps, 'onClick'>

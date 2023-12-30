@@ -1,14 +1,6 @@
 import Head from "next/head"
-import { Box, Button, Container, Drawer, Flex, HStack, Heading, Icon, IconButton, type LinkProps, Menu, MenuButton, Stack, Text, useColorMode, useColorModeValue, useDisclosure, useToken, Divider, VStack } from "@chakra-ui/react"
+import { Box } from "@chakra-ui/react"
 import { useBackgroundColor, useBackgroundPattern } from "@evy/styling"
-import { Sidebar, type LinkItem } from "./navigation/Sidebar"
-import { type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
-import { BottomNavigation } from "./navigation/BottomNavigation"
-import { MobileNav } from "./navigation/MobileNav"
-import { Link } from "@chakra-ui/next-js"
-import { FiChevronDown, FiColumns, FiMenu, FiMoon, FiSun, FiX } from "react-icons/fi"
-import { signIn, signOut, useSession } from "next-auth/react"
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { Navbar } from "~/components/landing/navbar"
 import { Footer } from "~/components/landing/footer"
 

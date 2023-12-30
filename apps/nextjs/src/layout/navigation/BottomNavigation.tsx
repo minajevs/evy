@@ -1,8 +1,7 @@
-import { Flex, IconButton, type FlexProps, HStack, Heading, Icon, Text, VStack } from "@chakra-ui/react"
+import { Flex, type FlexProps, Icon, Text, VStack } from "@chakra-ui/react"
 import { useBackgroundColor } from "@evy/styling";
 import { Link } from "@chakra-ui/next-js"
-import { FiInbox, FiSearch, FiUser } from "react-icons/fi";
-import { NavItemLink } from "./NavItem";
+import { FiInbox, FiUser } from "react-icons/fi";
 
 type Props = FlexProps
 

@@ -125,7 +125,7 @@ const EditProfile: NextPage<Props> = ({ user, layout }) => {
   )
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, params }) => {
+export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res }) => {
   const auth = await getServerSession({ req, res })
   if (!auth) {
     return { redirect: { destination: '/', permanent: false } }

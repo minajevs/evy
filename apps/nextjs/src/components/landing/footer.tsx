@@ -1,5 +1,5 @@
 import { Link } from "@chakra-ui/next-js"
-import { Box, Container, Divider, HStack, Heading, Text, VStack, useColorModeValue } from "@chakra-ui/react"
+import { Box, HStack, Heading, Text, VStack, useColorModeValue } from "@chakra-ui/react"
 import { useBackgroundColor } from "@evy/styling"
 
 

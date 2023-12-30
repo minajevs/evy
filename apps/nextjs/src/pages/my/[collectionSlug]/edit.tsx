@@ -12,7 +12,7 @@ import { useRouter } from "next/router"
 import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 import { env } from "~/env.mjs"
 import { useVerifyValue } from "~/utils/useVerifyValue"
-import { FiCheck, FiClock, FiSave, FiX, FiXCircle } from "react-icons/fi"
+import { FiCheck, FiSave, FiX } from "react-icons/fi"
 import { editCollectionSchema } from "@evy/api/schemas"
 
 type Props = {
@@ -27,7 +27,7 @@ const CollectionEditPage: NextPage<Props> = ({ layout, collection }) => {
   const {
     handleSubmit,
     register,
-    formState: { errors, isDirty, isValid },
+    formState: { errors, isValid },
     watch
   } = useZodForm({ schema: editCollectionSchema, defaultValues: { id: collection.id, name: collection.name, slug: collection.slug, description: collection.description ?? undefined } })
 

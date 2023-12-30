@@ -1,5 +1,4 @@
-import { Image as ChakraImage } from "@chakra-ui/next-js"
-import Image, { ImageProps } from "next/image";
+import Image from "next/image";
 import { Box, type BoxProps } from "@chakra-ui/react"
 import { type ItemImage } from "@evy/db"
 import { getDataFromThumbhash, imageSrc } from "@evy/images"

@@ -9,7 +9,7 @@ import { ItemMedia } from "~/components/item-media"
 import { ShareDialog } from "~/components/share-dialog/ShareDialog"
 import Layout from "~/layout"
 import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
-import { FiEdit, FiEdit2, FiPlus, FiShare2 } from "react-icons/fi"
+import { FiEdit, FiPlus, FiShare2 } from "react-icons/fi"
 
 type Props = {
   item: Item & { collection: Collection & { user: User } } & { images: ItemImage[] }

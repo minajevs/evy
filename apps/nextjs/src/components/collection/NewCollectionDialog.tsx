@@ -2,7 +2,6 @@ import { Button, type ButtonProps, FormControl, FormErrorMessage, FormLabel, Ico
 import { useZodForm } from "../forms"
 import { api } from "~/utils/api"
 import { useRouter } from "next/router"
-import { NavItemBase } from "~/layout/navigation/NavItem"
 import { FiPlus } from "react-icons/fi"
 import { newCollectionSchema } from "@evy/api/schemas"
 

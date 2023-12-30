@@ -1,5 +1,5 @@
 import { Icon } from "@chakra-ui/react"
-import { HStack, Heading, Button, Text, Avatar, Box, Divider, SimpleGrid, Card, CardBody, VStack } from "@chakra-ui/react";
+import { HStack, Heading, Button, Text, Avatar, Box, Divider, SimpleGrid, VStack } from "@chakra-ui/react";
 import { getServerSession } from "@evy/auth";
 import { type Collection, prisma, type User, type Item } from "@evy/db";
 import type { GetServerSideProps, NextPage } from "next"
@@ -58,7 +58,7 @@ const Profile: NextPage<Props> = ({ user, layout }) => {
   )
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, params }) => {
+export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res }) => {
   const auth = await getServerSession({ req, res })
   if (!auth) {
     return { redirect: { destination: '/', permanent: false } }

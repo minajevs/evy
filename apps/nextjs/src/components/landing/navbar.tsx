@@ -1,5 +1,5 @@
-import { Box, Button, Container, Divider, Flex, HStack, Heading, Icon, IconButton, Link, type LinkProps, Stack, Text, VStack, useColorMode, useColorModeValue, useDisclosure } from "@chakra-ui/react"
-import { useBackgroundColor, useBackgroundPattern } from "@evy/styling"
+import { Box, Button, Divider, Flex, HStack, Heading, Icon, IconButton, Link, type LinkProps, Stack, VStack, useColorMode, useColorModeValue, useDisclosure } from "@chakra-ui/react"
+import { useBackgroundColor } from "@evy/styling"
 import { useAutoAnimate } from "@formkit/auto-animate/react"
 import { FiMoon, FiSun, FiX, FiMenu } from "react-icons/fi"
 import { signIn } from "next-auth/react"
@@ -8,6 +8,10 @@ export const Navbar = () => {
   const { colorMode, toggleColorMode } = useColorMode()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [parent] = useAutoAnimate({ easing: 'ease-in-out' })
+
+  const boldBorder = useBackgroundColor('bold-border')
+  const navigation = useBackgroundColor('navigation')
+  const page = useBackgroundColor('page')
 
   return <Box ref={parent}>
     <Flex maxW='1440' height={100} px={{ base: 4, md: 8 }} py={6} mx="auto">
@@ -29,8 +33,8 @@ export const Navbar = () => {
             py={4}
             borderRadius={40}
             borderWidth={2}
-            borderColor={useBackgroundColor('bold-border')}
-            bg={useBackgroundColor('navigation')}>
+            borderColor={boldBorder}
+            bg={navigation}>
             <NavLink name="Features" href="/" />
             <NavLink name="About" href="/" />
             <NavLink name="Pricing" href="/" />
@@ -63,9 +67,9 @@ export const Navbar = () => {
       <Box
         p={4}
         display={{ base: 'inherit', md: 'none' }}
-        bg={useBackgroundColor('page')}
+        bg={page}
         borderWidth={2}
-        borderColor={useBackgroundColor('bold-border')}
+        borderColor={boldBorder}
         borderX={0}
       >
         <Stack

@@ -1,5 +1,5 @@
 import { Link } from "@chakra-ui/next-js"
-import { Button, type ButtonProps, Flex, type FlexProps, Text } from "@chakra-ui/react"
+import { Button, type ButtonProps } from "@chakra-ui/react"
 
 type BaseNavItemProps = {
   children: React.ReactNode
