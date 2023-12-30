@@ -1,11 +1,14 @@
 import z from 'zod'
 
+// alphanumeric characters, single hyphen, underscore, dot
+export const urlSafeRegex = /^[a-zA-Z0-9]([-_.]?[a-zA-Z0-9])*$/
+
 export const editUserSchema = z.object({
   username: z
     .string()
     .min(5, 'Username must contain at least 5 characters')
     .regex(
-      /^[a-zA-Z0-9]([-_]?[a-zA-Z0-9])*$/,
+      urlSafeRegex,
       'Username may only contain alphanumeric characters, single hyphen or underscore, and cannot begin or end with a hyphen or underscore',
     ),
   name: z.string(),
@@ -16,7 +19,7 @@ export const verifyUsernameSchema = z.object({
     .string()
     .min(5)
     .regex(
-      /^[a-zA-Z0-9]([-_]?[a-zA-Z0-9])*$/,
+      urlSafeRegex,
       'Username may only contain alphanumeric characters, single hyphen or underscore, and cannot begin or end with a hyphen or underscore',
     ),
 })
@@ -28,7 +31,7 @@ export const editCollectionSchema = z.object({
     .string()
     .min(1, 'Collection slug is required')
     .regex(
-      /^[a-zA-Z0-9]([-_]?[a-zA-Z0-9])*$/,
+      urlSafeRegex,
       'Slug may only contain alphanumeric characters, single hyphen or underscore, and cannot begin or end with a hyphen or underscore',
     ),
   description: z.string(),
@@ -42,7 +45,7 @@ export const verifyCollectionSlugSchema = z.object({
     .string()
     .min(1, 'Collection slug is required')
     .regex(
-      /^[a-zA-Z0-9]([-_]?[a-zA-Z0-9])*$/,
+      urlSafeRegex,
       'Slug may only contain alphanumeric characters, single hyphen or underscore, and cannot begin or end with a hyphen or underscore',
     ),
 })
