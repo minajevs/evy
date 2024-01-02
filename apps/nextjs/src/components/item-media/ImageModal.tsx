@@ -1,6 +1,6 @@
 import { Modal, ModalOverlay, ModalContent, type UseDisclosureReturn, Card, CardBody, Text, VStack } from "@chakra-ui/react"
-import { ImageDisplay } from "./image-display"
 import { type ItemImage } from "@evy/db"
+import { ImageDisplay } from "../common/ImageDisplay"
 
 type Props = {
   image: ItemImage

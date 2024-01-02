@@ -1,7 +1,6 @@
-import Image from "next/image";
 import { Box, type BoxProps } from "@chakra-ui/react"
 import { type ItemImage } from "@evy/db"
-import { getDataFromThumbhash, imageSrc } from "@evy/images"
+import { CustomImage } from "~/components/common/CustomImage"
 
 type Props = {
   image: ItemImage
@@ -30,14 +29,7 @@ export const ImageDisplay = ({ image, fit, height, width, ...rest }: Props) => {
       //   filter: 'blur(15px)',
       // }}
       key={image.id}>
-      <Image
-        src={imageSrc(image.externalImageId)}
-        alt='img'
-        fill={true}
-        objectFit={fit ?? 'cover'}
-        placeholder="blur"
-        blurDataURL={getDataFromThumbhash(image.thumbhash)}
-      />
+      <CustomImage image={image} objectFit={fit ?? 'cover'} />
     </Box>
   </Box>
 }

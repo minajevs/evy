@@ -1,6 +1,6 @@
 import { Box, Button, ButtonGroup, HStack, Heading, SimpleGrid, Text } from "@chakra-ui/react"
 import { getServerSession } from "@evy/auth"
-import { type Collection, prisma, type Item, type User } from "@evy/db"
+import { type Collection, prisma, type Item, type User, type ItemImage } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
 import { z } from "zod"
 import { NewItem } from "~/components/new-item"
@@ -12,8 +12,10 @@ import { ShareDialog } from "~/components/share-dialog/ShareDialog"
 import { ItemCard } from "~/components/item/ItemCard"
 import { FiEdit, FiShare2 } from "react-icons/fi"
 
+type ItemProp = Item & { collection: Collection } & { images: ItemImage[] }
+
 type Props = {
-  collection: Collection & { items: (Item & { collection: Collection })[] } & { user: User }
+  collection: Collection & { items: ItemProp[] } & { user: User }
 } & LayoutServerSideProps
 
 const CollectionPage: NextPage<Props> = ({ layout, collection }) => {
@@ -49,7 +51,7 @@ const CollectionPage: NextPage<Props> = ({ layout, collection }) => {
 }
 
 type ItemListProps = {
-  items: (Item & { collection: Collection })[]
+  items: ItemProp[]
 }
 const ItemList = ({ items }: ItemListProps) => {
   if (items.length === 0) {
@@ -58,7 +60,7 @@ const ItemList = ({ items }: ItemListProps) => {
       <Text>{'Click "Add" to add a first item'}</Text>
     </Box>
   }
-  return <SimpleGrid columns={{ sm: 2, md: 4 }} spacing='8'>
+  return <SimpleGrid columns={{ sm: 2, md: 3, lg: 4, xl: 5 }} spacing='8'>
     {items.map(item => <ItemCard key={item.id} item={item} />)}
   </SimpleGrid>
 }
@@ -81,7 +83,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
       user: true,
       items: {
         include: {
-          collection: true
+          collection: true,
+          images: true
         }
       }
     }

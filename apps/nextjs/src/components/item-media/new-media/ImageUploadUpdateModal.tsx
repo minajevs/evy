@@ -2,10 +2,10 @@ import { Button, ModalBody, ModalFooter, useBoolean } from "@chakra-ui/react"
 import { useZodForm } from "../../forms"
 import { api } from "~/utils/api"
 import { type ItemImage } from "@evy/db"
-import { ImageDisplay } from "../image-display"
 import { FormProvider } from "react-hook-form"
 import { ImageUpdateForm } from "../image-update/ImageUpdateForm"
 import { updateImageSchema } from "@evy/api/schemas"
+import { ImageDisplay } from "~/components/common/ImageDisplay"
 
 type Props = {
   image: ItemImage

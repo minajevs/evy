@@ -1,5 +1,4 @@
 import { Modal, ModalOverlay, ModalContent, type UseDisclosureReturn, Card, CardBody, Text, VStack, Button, CardFooter, useBoolean } from "@chakra-ui/react"
-import { ImageDisplay } from "../image-display"
 import { type ItemImage } from "@evy/db"
 import { Icon } from '@chakra-ui/react'
 import { useConfirm } from "~/utils/confirm"
@@ -10,6 +9,7 @@ import { FormProvider } from "react-hook-form"
 import { useEffect, useState } from "react"
 import { FiEdit, FiTrash2 } from "react-icons/fi"
 import { updateImageSchema } from "@evy/api/schemas"
+import { ImageDisplay } from "~/components/common/ImageDisplay"
 
 type Props = {
   image: ItemImage

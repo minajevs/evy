@@ -1,6 +1,6 @@
 import { type ItemImage } from "@evy/db"
-import { ImageDisplay } from "../image-display"
 import { Box } from "@chakra-ui/react"
+import { ImageDisplay } from "~/components/common/ImageDisplay"
 
 type Props = {
   image: ItemImage
