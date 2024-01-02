@@ -10,8 +10,10 @@ import Layout from "~/layout"
 import { type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 import { getServerSession } from "@evy/auth"
 
+type ItemProp = Item & { collection: Collection & { user: User } } & { images: ItemImage[] }
+
 type Props = {
-  item: Item & { collection: Collection & { user: User } } & { images: ItemImage[] }
+  item: ItemProp
 } & LayoutServerSideProps
 
 const ItemPage: NextPage<Props> = ({ layout, item }) => {

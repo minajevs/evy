@@ -1,5 +1,5 @@
 import { Box, HStack, Heading, SimpleGrid, Text } from "@chakra-ui/react"
-import { type Collection, prisma, type Item, type User } from "@evy/db"
+import { type Collection, prisma, type Item, type User, type ItemImage } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
 import { z } from "zod"
 import Layout from "~/layout"
@@ -7,8 +7,10 @@ import { type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 import { ItemCard } from "~/components/item/ItemCard"
 import { getServerSession } from "@evy/auth"
 
+type ItemProp = Item & { collection: Collection } & { images: ItemImage[] }
+
 type Props = {
-  collection: Collection & { items: (Item & { collection: Collection })[] } & { user: User }
+  collection: Collection & { items: ItemProp[] } & { user: User }
 } & LayoutServerSideProps
 
 const UserCollectionPage: NextPage<Props> = ({ layout, collection }) => {
@@ -34,7 +36,7 @@ const UserCollectionPage: NextPage<Props> = ({ layout, collection }) => {
 
 type ItemListProps = {
   username: string
-  items: (Item & { collection: Collection })[]
+  items: ItemProp[]
 }
 const ItemList = ({ username, items }: ItemListProps) => {
   if (items.length === 0) {
@@ -67,7 +69,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
       },
       items: {
         include: {
-          collection: true
+          collection: true,
+          images: true
         }
       }
     }
