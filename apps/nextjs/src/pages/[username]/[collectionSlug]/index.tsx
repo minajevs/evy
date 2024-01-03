@@ -4,7 +4,7 @@ import type { GetServerSideProps, NextPage } from "next"
 import { z } from "zod"
 import Layout from "~/layout"
 import { type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
-import { ItemCard } from "~/components/item/ItemCard"
+import { ItemCard } from "~/components/items/ItemCard"
 import { getServerSession } from "@evy/auth"
 
 type ItemProp = Item & { collection: Collection } & { images: ItemImage[] }

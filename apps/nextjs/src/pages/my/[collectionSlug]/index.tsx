@@ -1,4 +1,4 @@
-import { Box, Button, ButtonGroup, HStack, Heading, SimpleGrid, Text } from "@chakra-ui/react"
+import { Box, Button, ButtonGroup, HStack, Heading, IconButton, Menu, MenuButton, MenuItem, MenuList, Text } from "@chakra-ui/react"
 import { getServerSession } from "@evy/auth"
 import { type Collection, prisma, type Item, type User, type ItemImage } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
@@ -9,16 +9,46 @@ import { Link } from "@chakra-ui/next-js"
 import { Icon } from "@chakra-ui/react"
 import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 import { ShareDialog } from "~/components/share-dialog/ShareDialog"
-import { ItemCard } from "~/components/item/ItemCard"
-import { FiEdit, FiShare2 } from "react-icons/fi"
+import { FiArrowDown, FiArrowUp, FiEdit, FiGrid, FiList, FiShare2 } from "react-icons/fi"
+import { type SortingDirection } from "~/utils/sorting/types"
+import { ItemGrid } from "~/components/items/ItemGrid"
+import { useState } from "react"
+import { useRouter } from "next/router"
+import { ItemTable } from "~/components/items/ItemTable"
+
+type Sorting = 'name' | 'date'
 
 type ItemProp = Item & { collection: Collection } & { images: ItemImage[] }
 
 type Props = {
-  collection: Collection & { items: ItemProp[] } & { user: User }
+  collection: Collection & { items: ItemProp[] } & { user: User },
+  sorting: Sorting,
+  sortingDirection: SortingDirection
 } & LayoutServerSideProps
 
-const CollectionPage: NextPage<Props> = ({ layout, collection }) => {
+const CollectionPage: NextPage<Props> = ({ layout, collection, sorting, sortingDirection }) => {
+  const router = useRouter()
+  const [currentView, setView] = useState<'grid' | 'table'>('grid')
+
+  const updateSorting = async (sorting: Sorting, direction: SortingDirection) => {
+    await router.push({
+      pathname: router.asPath.split('?')[0],
+      query: {
+        orderBy: `${sorting} ${direction}`
+      } as z.infer<typeof querySchema>,
+    })
+  }
+
+  const itemView = collection.items.length === 0
+    ? <Box>
+      <Text>No items in this collection yet</Text>
+      <Text>{'Click "Add" to add a first item'}</Text>
+    </Box>
+    : currentView === 'grid'
+      ? <ItemGrid items={collection.items} />
+      : <ItemTable items={collection.items} />
+
+
   return <>
     <Layout title="Collection" layout={layout}>
       <HStack width='100%' justifyContent='space-between'>
@@ -42,37 +72,76 @@ const CollectionPage: NextPage<Props> = ({ layout, collection }) => {
           : null
       }
       <HStack width='100%' justifyContent='space-between' mb='4'>
-        <Heading size="md">Items</Heading>
-        <NewItem collectionId={collection.id} />
+        <HStack alignItems='baseline' spacing={8}>
+          <Heading size="md">Items</Heading>
+          <HStack>
+            <Text color='gray' whiteSpace='nowrap'>Sort by:</Text>
+            <Menu>
+              <ButtonGroup isAttached variant='outline'>
+                <MenuButton as={Button}>
+                  {sorting === 'name' ? 'Name' : 'Date added'}
+                </MenuButton>
+                <IconButton
+                  onClick={() => updateSorting(sorting, sortingDirection === 'desc' ? 'asc' : 'desc')}
+                  aria-label='Add to friends'
+                  icon={
+                    sortingDirection === 'desc'
+                      ? <Icon as={FiArrowDown} />
+                      : <Icon as={FiArrowUp} />
+                  }
+                />
+              </ButtonGroup>
+              <MenuList>
+                <MenuItem onClick={() => updateSorting('name', sortingDirection)}>Name</MenuItem>
+                <MenuItem onClick={() => updateSorting('date', sortingDirection)}>Date added</MenuItem>
+              </MenuList>
+            </Menu>
+          </HStack>
+        </HStack>
+        <HStack>
+          <ButtonGroup isAttached variant='outline'>
+            <IconButton
+              aria-label="grid view"
+              icon={<Icon as={FiGrid} />}
+              isActive={currentView === 'grid'}
+              onClick={() => setView('grid')}
+            />
+            <IconButton
+              aria-label="table view"
+              icon={<Icon as={FiList} />}
+              isActive={currentView === 'table'}
+              onClick={() => setView('table')}
+            />
+          </ButtonGroup>
+          <NewItem collectionId={collection.id} />
+        </HStack>
       </HStack>
-      <ItemList items={collection.items} />
-    </Layout>
+      {itemView}
+    </Layout >
   </>
 }
 
-type ItemListProps = {
-  items: ItemProp[]
-}
-const ItemList = ({ items }: ItemListProps) => {
-  if (items.length === 0) {
-    return <Box>
-      <Text>No items in this collection yet</Text>
-      <Text>{'Click "Add" to add a first item'}</Text>
-    </Box>
-  }
-  return <SimpleGrid columns={{ sm: 2, md: 3, lg: 4, xl: 5 }} spacing='8'>
-    {items.map(item => <ItemCard key={item.id} item={item} />)}
-  </SimpleGrid>
-}
-
+const orderBySchema = z.enum([
+  'name asc', 'name desc',
+  'date asc', 'date desc'
+])
+const querySchema = z.object({ page: z.number().optional(), orderBy: orderBySchema.optional() })
 const paramsSchema = z.object({ collectionSlug: z.string() })
-export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, params }) => {
+
+export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, params, query }) => {
   const auth = await getServerSession({ req, res })
   if (!auth) {
     return { redirect: { destination: '/', permanent: false } }
   }
 
   const { collectionSlug } = paramsSchema.parse(params)
+  const queryResult = querySchema.safeParse(query)
+
+  const page = (queryResult.success ? queryResult.data.page : null) ?? 1
+  const order = (queryResult.success ? queryResult.data.orderBy : null) ?? 'date desc'
+  const [orderBy, direction] = order.split(' ') as [Sorting, SortingDirection]
+
+  console.log(page, orderBy, direction)
 
   const currentCollection = await prisma.collection.findFirst({
     where: {
@@ -85,6 +154,10 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
         include: {
           collection: true,
           images: true
+        },
+        orderBy: {
+          ...(orderBy === 'name' ? { name: direction } : {}),
+          ...(orderBy === 'date' ? { createdAt: direction } : {})
         }
       }
     }
@@ -97,6 +170,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
   return {
     props: {
       collection: currentCollection,
+      sorting: orderBy,
+      sortingDirection: direction,
       ...await getLayoutProps(auth.user.id)
     }
   }

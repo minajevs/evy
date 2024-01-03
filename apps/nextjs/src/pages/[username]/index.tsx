@@ -3,7 +3,7 @@ import { getServerSession } from "@evy/auth"
 import { prisma, type Collection, type Item, type User } from "@evy/db"
 import { type GetServerSideProps, type NextPage } from "next"
 import { z } from "zod"
-import { CollectionCard } from "~/components/collection/CollectionCard"
+import { CollectionCard } from "~/components/collections/CollectionCard"
 import Layout from "~/layout"
 import { type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 

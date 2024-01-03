@@ -5,7 +5,7 @@ import { Icon } from '@chakra-ui/react'
 import { FiInbox, FiMoon, FiSun, FiUser } from 'react-icons/fi'
 import { Link } from "@chakra-ui/next-js"
 import { signIn, signOut, useSession } from "next-auth/react"
-import NewCollectionDialog from "~/components/collection/NewCollectionDialog"
+import NewCollectionDialog from "~/components/collections/NewCollectionDialog"
 
 export type LinkItem = {
   name: string

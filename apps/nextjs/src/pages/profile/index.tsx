@@ -5,7 +5,7 @@ import { type Collection, prisma, type User, type Item } from "@evy/db";
 import type { GetServerSideProps, NextPage } from "next"
 import Link from "next/link";
 import { FiEdit } from "react-icons/fi";
-import { CollectionCard } from "~/components/collection/CollectionCard";
+import { CollectionCard } from "~/components/collections/CollectionCard";
 import Layout from "~/layout"
 import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps";
 
