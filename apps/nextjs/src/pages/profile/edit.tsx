@@ -3,7 +3,6 @@ import { editUserSchema } from "@evy/api/schemas"
 import { getServerSession } from "@evy/auth";
 import { prisma, type User } from "@evy/db";
 import type { GetServerSideProps, NextPage } from "next"
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { FiCheck, FiSave, FiX } from "react-icons/fi";
 import { useZodForm } from "~/components/forms";
@@ -62,7 +61,7 @@ const EditProfile: NextPage<Props> = ({ user, layout }) => {
             </Button>
             {
               !loading ?
-                <Button variant='solid' as={Link} href={`/profile`}>
+                <Button variant='solid' onClick={() => router.back()}>
                   Cancel
                 </Button>
                 : null

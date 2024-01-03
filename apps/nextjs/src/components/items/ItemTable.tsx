@@ -1,12 +1,14 @@
-import { VStack, HStack, useColorModeValue, Box, Divider, Heading, Icon } from "@chakra-ui/react"
-import { type Collection, type Item, type ItemImage } from "@evy/db"
+import { VStack, HStack, useColorModeValue, Box, Divider, Heading, Icon, ButtonGroup, Button } from "@chakra-ui/react"
+import { type User, type Collection, type Item, type ItemImage } from "@evy/db"
 import { Fragment } from "react"
 import { ImageDisplay } from "../common/ImageDisplay"
-import { FiImage } from "react-icons/fi"
+import { FiEdit, FiImage, FiShare2 } from "react-icons/fi"
+import { ShareDialog } from "../share-dialog/ShareDialog"
+import { Link } from "@chakra-ui/next-js"
 
 const imageSize = 16
 
-type ItemProp = Item & { collection: Collection } & { images: ItemImage[] }
+type ItemProp = Item & { collection: Collection & { user: User } } & { images: ItemImage[] }
 
 type Props = {
   items: ItemProp[]
@@ -25,11 +27,22 @@ export const ItemTable = ({ items }: Props) => {
             />
             : <NoImage />}
         </Box>
-        <Box>
+        <Box flex={1}>
           <Heading fontSize='lg'>
             {item.name}
           </Heading>
         </Box>
+        <ButtonGroup mx={4}>
+          <ShareDialog
+            buttonProps={{ leftIcon: <Icon as={FiShare2} />, variant: 'ghost' }}
+            username={item.collection.user.username}
+            collectionSlug={item.collection.slug}
+            itemSlug={item.slug}
+          />
+          <Button leftIcon={<Icon as={FiEdit} />} variant='ghost' as={Link} href={`/my/${item.collection.slug}/${item.slug}/edit`}>
+            Edit
+          </Button>
+        </ButtonGroup>
       </HStack>
       {items.length - 1 !== i && <Divider m={0} />}
     </Fragment>)}

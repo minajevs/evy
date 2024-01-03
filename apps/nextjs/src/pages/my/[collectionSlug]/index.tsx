@@ -18,7 +18,7 @@ import { ItemTable } from "~/components/items/ItemTable"
 
 type Sorting = 'name' | 'date'
 
-type ItemProp = Item & { collection: Collection } & { images: ItemImage[] }
+type ItemProp = Item & { collection: Collection & { user: User } } & { images: ItemImage[] }
 
 type Props = {
   collection: Collection & { items: ItemProp[] } & { user: User },
@@ -152,7 +152,11 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
       user: true,
       items: {
         include: {
-          collection: true,
+          collection: {
+            include: {
+              user: true
+            }
+          },
           images: true
         },
         orderBy: {

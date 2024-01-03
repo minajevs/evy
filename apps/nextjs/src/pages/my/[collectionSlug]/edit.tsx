@@ -5,7 +5,6 @@ import type { GetServerSideProps, NextPage } from "next"
 import { z } from "zod"
 import Layout from "~/layout"
 import { api } from "~/utils/api"
-import { Link } from "@chakra-ui/next-js"
 import { Icon } from "@chakra-ui/react"
 import { useZodForm } from "~/components/forms"
 import { useRouter } from "next/router"
@@ -60,7 +59,7 @@ const CollectionEditPage: NextPage<Props> = ({ layout, collection }) => {
             </Button>
             {
               !loading ?
-                <Button variant='solid' as={Link} href={`/my/${collection.slug}`}>
+                <Button variant='solid' onClick={() => router.back()}>
                   Cancel
                 </Button>
                 : null
