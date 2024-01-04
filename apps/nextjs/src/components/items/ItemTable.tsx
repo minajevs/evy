@@ -1,4 +1,4 @@
-import { VStack, HStack, useColorModeValue, Box, Divider, Heading, Icon, ButtonGroup, Button, Card } from "@chakra-ui/react"
+import { VStack, HStack, useColorModeValue, Box, Divider, Icon, ButtonGroup, Button, Card, Text } from "@chakra-ui/react"
 import { type User, type Collection, type Item, type ItemImage } from "@evy/db"
 import { Fragment } from "react"
 import { ImageDisplay } from "../common/ImageDisplay"
@@ -14,7 +14,7 @@ type Props = {
   items: ItemProp[]
 }
 export const ItemTable = ({ items }: Props) => {
-  const hover = useColorModeValue('gray.200', 'gray.600')
+  const hover = useColorModeValue('gray.100', 'gray.600')
   return <Card boxShadow='sm'>
     <VStack border='0' rounded="md" spacing={0} overflow='hidden'>
       {items.map((item, i) => <Fragment key={item.id}>
@@ -29,9 +29,9 @@ export const ItemTable = ({ items }: Props) => {
               : <NoImage />}
           </Box>
           <Box flex={1}>
-            <Heading fontSize='lg'>
+            <Text fontWeight={600}>
               {item.name}
-            </Heading>
+            </Text>
           </Box>
           <ButtonGroup mx={4}>
             <ShareDialog
@@ -52,8 +52,9 @@ export const ItemTable = ({ items }: Props) => {
 }
 
 const NoImage = () => {
-  const bg = useColorModeValue('gray.300', 'gray.600')
+  const bg = useColorModeValue('gray.200', 'gray.600')
+  const ic = useColorModeValue('gray.500', 'gray.300')
   return <Box bg={bg} boxSize={imageSize} display='flex' alignItems='center' justifyContent='center'>
-    <Icon as={FiImage} boxSize={8} />
+    <Icon color={ic} as={FiImage} boxSize={8} />
   </Box>
 }

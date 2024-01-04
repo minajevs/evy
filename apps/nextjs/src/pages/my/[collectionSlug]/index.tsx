@@ -16,10 +16,12 @@ import { useState } from "react"
 import { useRouter } from "next/router"
 import { ItemTable } from "~/components/items/ItemTable"
 import { useCookies } from "react-cookie"
+import { Pagination } from "~/components/common/Paginations"
 
 type Sorting = 'name' | 'date'
 type View = 'grid' | 'table'
 const viewCookieName = 'preference:item-view'
+const pageSize = 30
 
 type ItemProp = Item & { collection: Collection & { user: User } } & { images: ItemImage[] }
 
@@ -27,10 +29,12 @@ type Props = {
   collection: Collection & { items: ItemProp[] } & { user: User },
   view: View,
   sorting: Sorting,
-  sortingDirection: SortingDirection
+  sortingDirection: SortingDirection,
+  page: number,
+  totalItems: number
 } & LayoutServerSideProps
 
-const CollectionPage: NextPage<Props> = ({ layout, collection, view, sorting, sortingDirection }) => {
+const CollectionPage: NextPage<Props> = ({ layout, collection, view, sorting, sortingDirection, page, totalItems }) => {
   const router = useRouter()
   const [cookies, setCookie] = useCookies([viewCookieName]);
   const [currentView, setView] = useState<View>(view)
@@ -38,6 +42,17 @@ const CollectionPage: NextPage<Props> = ({ layout, collection, view, sorting, so
   const updateView = (view: 'grid' | 'table') => {
     setCookie(viewCookieName, view, { path: '/', sameSite: 'strict' })
     setView(view)
+  }
+
+  const changePage = async (page: number) => {
+    const orderBy = router.query['orderBy']
+    await router.push({
+      pathname: router.asPath.split('?')[0],
+      query: {
+        page,
+        ...orderBy === undefined ? {} : { orderBy },
+      } as z.infer<typeof querySchema>,
+    })
   }
 
   const updateSorting = async (sorting: Sorting, direction: SortingDirection) => {
@@ -93,7 +108,7 @@ const CollectionPage: NextPage<Props> = ({ layout, collection, view, sorting, so
                 </MenuButton>
                 <IconButton
                   onClick={() => updateSorting(sorting, sortingDirection === 'desc' ? 'asc' : 'desc')}
-                  aria-label='Add to friends'
+                  aria-label='sorting direction'
                   icon={
                     sortingDirection === 'desc'
                       ? <Icon as={FiArrowDown} />
@@ -127,6 +142,7 @@ const CollectionPage: NextPage<Props> = ({ layout, collection, view, sorting, so
         </HStack>
       </HStack>
       {itemView}
+      <Pagination currentPage={page} totalItems={totalItems} pageSize={pageSize} changePage={changePage} mt={4} />
     </Layout >
   </>
 }
@@ -135,7 +151,7 @@ const orderBySchema = z.enum([
   'name asc', 'name desc',
   'date asc', 'date desc'
 ])
-const querySchema = z.object({ page: z.number().optional(), orderBy: orderBySchema.optional() })
+const querySchema = z.object({ page: z.coerce.number().optional(), orderBy: orderBySchema.optional() })
 const paramsSchema = z.object({ collectionSlug: z.string() })
 
 export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, params, query }) => {
@@ -153,31 +169,47 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
 
   const view = req.cookies[viewCookieName] as View | undefined ?? 'grid'
 
+  if (!queryResult.success) console.log(queryResult.error.message)
   console.log(view, page, orderBy, direction)
 
-  const currentCollection = await prisma.collection.findFirst({
-    where: {
-      userId: auth.user.id,
-      slug: collectionSlug,
-    },
-    include: {
-      user: true,
-      items: {
-        include: {
-          collection: {
-            include: {
-              user: true
-            }
+  const skip = (page - 1) * pageSize
+  const take = pageSize
+
+  const [currentCollection, itemCount] = await prisma.$transaction([
+    prisma.collection.findFirst({
+      where: {
+        userId: auth.user.id,
+        slug: collectionSlug,
+      },
+      include: {
+        user: true,
+        items: {
+          skip,
+          take,
+          include: {
+            collection: {
+              include: {
+                user: true
+              }
+            },
+            images: true
           },
-          images: true
-        },
-        orderBy: {
-          ...(orderBy === 'name' ? { name: direction } : {}),
-          ...(orderBy === 'date' ? { createdAt: direction } : {})
+          orderBy: {
+            ...(orderBy === 'name' ? { name: direction } : {}),
+            ...(orderBy === 'date' ? { createdAt: direction } : {})
+          }
         }
       }
-    }
-  })
+    }),
+    prisma.item.count({
+      where: {
+        collection: {
+          userId: auth.user.id,
+          slug: collectionSlug,
+        }
+      }
+    })
+  ])
 
   if (currentCollection === null) {
     return { redirect: { destination: '/my', permanent: false } }
@@ -189,6 +221,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
       view: view,
       sorting: orderBy,
       sortingDirection: direction,
+      page,
+      totalItems: itemCount,
       ...await getLayoutProps(auth.user.id)
     }
   }

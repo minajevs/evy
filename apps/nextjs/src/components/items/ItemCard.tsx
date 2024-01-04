@@ -45,7 +45,8 @@ export const ItemCard = ({ linkPrefix, item }: Props) => {
 }
 
 const NoImage = () => {
-  const bg = useColorModeValue('gray.300', 'gray.600')
+  const bg = useColorModeValue('gray.200', 'gray.600')
+  const ic = useColorModeValue('gray.500', 'gray.300')
   return <Box
     width='full'
     height='full'
@@ -58,6 +59,7 @@ const NoImage = () => {
       paddingTop='50%'
     >
       <Icon
+        color={ic}
         as={FiImage}
         left="50%"
         top="50%"
