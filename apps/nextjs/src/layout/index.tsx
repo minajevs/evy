@@ -36,7 +36,7 @@ const Layout = ({ children, layout, title }: Props) => {
     </Head>
     <Box minH="100vh" bg={bg}>
       {authContent}
-      <Box ml={{ base: 0, md: 60 }} p="8">
+      <Box ml={{ base: 0, md: 60 }} p={{ base: 4, sm: 8 }}>
         {children}
       </Box>
       <BottomNavigation display={{ base: 'flex', md: 'none' }} />

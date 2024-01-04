@@ -1,4 +1,4 @@
-import { Box, Button, ButtonGroup, HStack, Heading, IconButton, Menu, MenuButton, MenuItem, MenuList, Text } from "@chakra-ui/react"
+import { Box, Button, ButtonGroup, HStack, Heading, Text } from "@chakra-ui/react"
 import { getServerSession } from "@evy/auth"
 import { type Collection, prisma, type Item, type User, type ItemImage } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
@@ -9,7 +9,7 @@ import { Link } from "@chakra-ui/next-js"
 import { Icon } from "@chakra-ui/react"
 import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 import { ShareDialog } from "~/components/share-dialog/ShareDialog"
-import { FiArrowDown, FiArrowUp, FiEdit, FiGrid, FiList, FiShare2 } from "react-icons/fi"
+import { FiEdit, FiShare2 } from "react-icons/fi"
 import { type SortingDirection } from "~/utils/sorting/types"
 import { ItemGrid } from "~/components/items/ItemGrid"
 import { useState } from "react"
@@ -17,9 +17,9 @@ import { useRouter } from "next/router"
 import { ItemTable } from "~/components/items/ItemTable"
 import { useCookies } from "react-cookie"
 import { Pagination } from "~/components/common/Paginations"
+import { ItemSorting, type Sorting } from "~/components/items/ItemSorting"
+import { ItemViewSelector, type View } from "~/components/items/ItemViewSelector"
 
-type Sorting = 'name' | 'date'
-type View = 'grid' | 'table'
 const viewCookieName = 'preference:item-view'
 const pageSize = 30
 
@@ -99,47 +99,30 @@ const CollectionPage: NextPage<Props> = ({ layout, collection, view, sorting, so
       <HStack width='100%' justifyContent='space-between' mb='4'>
         <HStack alignItems='baseline' spacing={8}>
           <Heading size="md">Items</Heading>
-          <HStack>
-            <Text color='gray' whiteSpace='nowrap'>Sort by:</Text>
-            <Menu>
-              <ButtonGroup isAttached variant='outline'>
-                <MenuButton as={Button}>
-                  {sorting === 'name' ? 'Name' : 'Date added'}
-                </MenuButton>
-                <IconButton
-                  onClick={() => updateSorting(sorting, sortingDirection === 'desc' ? 'asc' : 'desc')}
-                  aria-label='sorting direction'
-                  icon={
-                    sortingDirection === 'desc'
-                      ? <Icon as={FiArrowDown} />
-                      : <Icon as={FiArrowUp} />
-                  }
-                />
-              </ButtonGroup>
-              <MenuList>
-                <MenuItem onClick={() => updateSorting('name', sortingDirection)}>Name</MenuItem>
-                <MenuItem onClick={() => updateSorting('date', sortingDirection)}>Date added</MenuItem>
-              </MenuList>
-            </Menu>
-          </HStack>
+          <ItemSorting
+            display={{ base: 'none', lg: 'flex' }}
+            sorting={sorting}
+            sortingDirection={sortingDirection}
+            updateSorting={updateSorting} />
         </HStack>
         <HStack>
-          <ButtonGroup isAttached variant='outline'>
-            <IconButton
-              aria-label="grid view"
-              icon={<Icon as={FiGrid} />}
-              isActive={currentView === 'grid'}
-              onClick={() => updateView('grid')}
-            />
-            <IconButton
-              aria-label="table view"
-              icon={<Icon as={FiList} />}
-              isActive={currentView === 'table'}
-              onClick={() => updateView('table')}
-            />
-          </ButtonGroup>
+          <ItemViewSelector
+            display={{ base: 'none', lg: 'flex' }}
+            currentView={currentView}
+            updateView={updateView}
+          />
           <NewItem collectionId={collection.id} />
         </HStack>
+      </HStack>
+      <HStack mb={4} display={{ base: 'flex', lg: 'none' }} justifyContent='space-between'>
+        <ItemSorting
+          sorting={sorting}
+          sortingDirection={sortingDirection}
+          updateSorting={updateSorting} />
+        <ItemViewSelector
+          currentView={currentView}
+          updateView={updateView}
+        />
       </HStack>
       {itemView}
       <Pagination currentPage={page} totalItems={totalItems} pageSize={pageSize} changePage={changePage} mt={4} />
