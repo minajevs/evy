@@ -78,8 +78,8 @@ const CollectionPage: NextPage<Props> = ({ layout, collection, view, sorting, so
       </HStack>
       {
         collection.description !== null && collection.description.length > 0
-          ? <Text mb='8'>{collection.description}</Text>
-          : null
+          ? <Text mb={8}>{collection.description}</Text>
+          : <Text mb={8} />
       }
       <HStack width='100%' justifyContent='space-between' mb='4'>
         <HStack alignItems='baseline' spacing={8}>
