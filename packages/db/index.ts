@@ -4,6 +4,8 @@ export * from '@prisma/client'
 
 const globalForPrisma = globalThis as { prisma?: PrismaClient }
 
+const logQueries = false
+
 const logPrisma = new PrismaClient({
   log:
     process.env.NODE_ENV === 'development'
@@ -12,6 +14,7 @@ const logPrisma = new PrismaClient({
 })
 
 logPrisma.$on('query', (e) => {
+  if (!logQueries) return
   console.log(`[${e.duration}ms] ${e.query}`)
 })
 

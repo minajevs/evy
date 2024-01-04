@@ -15,20 +15,30 @@ import { ItemGrid } from "~/components/items/ItemGrid"
 import { useState } from "react"
 import { useRouter } from "next/router"
 import { ItemTable } from "~/components/items/ItemTable"
+import { useCookies } from "react-cookie"
 
 type Sorting = 'name' | 'date'
+type View = 'grid' | 'table'
+const viewCookieName = 'preference:item-view'
 
 type ItemProp = Item & { collection: Collection & { user: User } } & { images: ItemImage[] }
 
 type Props = {
   collection: Collection & { items: ItemProp[] } & { user: User },
+  view: View,
   sorting: Sorting,
   sortingDirection: SortingDirection
 } & LayoutServerSideProps
 
-const CollectionPage: NextPage<Props> = ({ layout, collection, sorting, sortingDirection }) => {
+const CollectionPage: NextPage<Props> = ({ layout, collection, view, sorting, sortingDirection }) => {
   const router = useRouter()
-  const [currentView, setView] = useState<'grid' | 'table'>('grid')
+  const [cookies, setCookie] = useCookies([viewCookieName]);
+  const [currentView, setView] = useState<View>(view)
+
+  const updateView = (view: 'grid' | 'table') => {
+    setCookie(viewCookieName, view, { path: '/', sameSite: 'strict' })
+    setView(view)
+  }
 
   const updateSorting = async (sorting: Sorting, direction: SortingDirection) => {
     await router.push({
@@ -104,13 +114,13 @@ const CollectionPage: NextPage<Props> = ({ layout, collection, sorting, sortingD
               aria-label="grid view"
               icon={<Icon as={FiGrid} />}
               isActive={currentView === 'grid'}
-              onClick={() => setView('grid')}
+              onClick={() => updateView('grid')}
             />
             <IconButton
               aria-label="table view"
               icon={<Icon as={FiList} />}
               isActive={currentView === 'table'}
-              onClick={() => setView('table')}
+              onClick={() => updateView('table')}
             />
           </ButtonGroup>
           <NewItem collectionId={collection.id} />
@@ -141,7 +151,9 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
   const order = (queryResult.success ? queryResult.data.orderBy : null) ?? 'date desc'
   const [orderBy, direction] = order.split(' ') as [Sorting, SortingDirection]
 
-  console.log(page, orderBy, direction)
+  const view = req.cookies[viewCookieName] as View | undefined ?? 'grid'
+
+  console.log(view, page, orderBy, direction)
 
   const currentCollection = await prisma.collection.findFirst({
     where: {
@@ -174,6 +186,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
   return {
     props: {
       collection: currentCollection,
+      view: view,
       sorting: orderBy,
       sortingDirection: direction,
       ...await getLayoutProps(auth.user.id)
