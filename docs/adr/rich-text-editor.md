@@ -39,11 +39,15 @@ Based on prosemirror project, which other editors target as well
 
 ### [Lexical](https://lexical.dev/)
 
-Used by cal.com. Seems to be the most modern solution, made and supported by Meta/Facebook. Supports iOS in React Native
+Used by cal.com. Seems to be the most modern solution, made and supported by Meta/Facebook. Supports iOS in React Native.
+
+Might be the best solution, considering it provides a lot of stuff out-of-the-box.
 
 ### [Slatejs](https://www.slatejs.org/examples/markdown-preview)
 
 Modern, but beta editor. Supports markdown + html very well.
+
+Tried to implement it: Nothing comes out of the box. Slate is very powerful, but requires developing everything manually, from scratch.
 
 ## Worse options
 
