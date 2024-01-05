@@ -1,4 +1,4 @@
-import { Button, Container, Heading, Text, VStack } from "@chakra-ui/react"
+import { Button, Container, Heading, Highlight, Text, VStack } from "@chakra-ui/react"
 import { useBackgroundPattern } from "@evy/styling"
 import { signIn } from "next-auth/react"
 
@@ -11,7 +11,14 @@ export const Hero = () => {
     backgroundImage={pattern}
   >
     <Heading fontSize='5xl' mt={12} mb={8} textAlign='center'>
-      Keep track of your collections
+      <Highlight
+        query='everyone'
+        // teal.100 - rgb(178, 245, 234)
+        // cyan.200 - rgb(157, 236, 249)
+        styles={{ px: 2, pt: 0, pb: 1, rounded: 'full', bgGradient: 'linear(to-br, rgb(178, 245, 234, 0.6), rgb(157, 236, 249, 0.6))' }}
+      >
+        Collection management for everyone
+      </Highlight>
     </Heading>
     <Container textAlign='center'>
       <Text fontSize='xl'>
