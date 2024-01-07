@@ -70,7 +70,7 @@ export const NewCollectionDialog = ({ as, ...rest }: Props) => {
                     ref={(el) => field.ref(el)}
                     name={field.name}
                     onValueChange={field.onChange}
-                    value={field.value}
+                    value={null}
                   />
                 )}
               />

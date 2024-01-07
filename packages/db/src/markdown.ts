@@ -22,14 +22,14 @@ purify.addHook('afterSanitizeAttributes', function (node) {
 })
 
 marked.use({
-  breaks: true,
+  breaks: false,
 })
 
 export const markdownToSafeHTML = (value: string) => {
-  const html = marked.parse(value.replaceAll(/\n(?=\n)/g, '<p><br></p>'), {
+  const html = marked.parse(value, {
     async: false,
   }) as string
   const sanitizedHtml = purify.sanitize(html)
 
-  return sanitizedHtml.replaceAll('<p><br></p><br>', '<p><br></p>')
+  return sanitizedHtml
 }

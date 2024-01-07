@@ -1,7 +1,8 @@
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext"
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from "@lexical/link"
 import { mergeRegister } from "@lexical/utils"
-import { $getSelection, $isRangeSelection, SELECTION_CHANGE_COMMAND, FORMAT_TEXT_COMMAND } from "lexical"
+import { $generateNodesFromDOM } from "@lexical/html"
+import { $getSelection, $isRangeSelection, SELECTION_CHANGE_COMMAND, FORMAT_TEXT_COMMAND, $getRoot, $insertNodes } from "lexical"
 import { useCallback, useEffect, useState } from "react"
 import { ButtonGroup, type ButtonProps, Icon, IconButton, useColorModeValue } from "@chakra-ui/react"
 import { FiBold, FiItalic, FiLink } from "react-icons/fi"
@@ -10,7 +11,10 @@ import { createPortal } from "react-dom"
 import { FloatingLinkEditor } from "./FloatingLinkEditor"
 import { type IconType } from "react-icons"
 
-export const ToolbarPlugin = () => {
+type Props = {
+  value: string
+}
+export const ToolbarPlugin = ({ value }: Props) => {
   const [editor] = useLexicalComposerContext()
   const [isBold, setIsBold] = useState(false)
   const [isItalic, setIsItalic] = useState(false)
@@ -36,19 +40,31 @@ export const ToolbarPlugin = () => {
     return mergeRegister(
       editor.registerUpdateListener(({ editorState }) => {
         editorState.read(() => {
-          updateToolbar();
+          updateToolbar()
         });
       }),
       editor.registerCommand(
         SELECTION_CHANGE_COMMAND,
         (_payload, _newEditor) => {
-          updateToolbar();
-          return false;
+          updateToolbar()
+          return false
         },
         LOW_PRIORITY
       )
-    );
+    )
   }, [editor, updateToolbar])
+
+  useEffect(() => {
+    editor.update(() => {
+      const parser = new DOMParser()
+      const dom = parser.parseFromString(value, "text/html")
+
+      const nodes = $generateNodesFromDOM(editor, dom);
+
+      $getRoot().clear().select()
+      $insertNodes(nodes)
+    })
+  }, [editor, value])
 
   const insertLink = useCallback(() => {
     console.log('link!')

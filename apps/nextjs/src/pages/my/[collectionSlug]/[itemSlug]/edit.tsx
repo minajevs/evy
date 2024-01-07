@@ -18,7 +18,7 @@ import { Controller } from "react-hook-form"
 import { Editor } from "~/components/editor"
 
 type Props = {
-  item: Item & { collection: Collection & { user: User } }
+  item: Item & { collection: Collection & { user: User } } & { htmlDescription: string | null }
 } & LayoutServerSideProps
 
 const EditItemPage: NextPage<Props> = ({ layout, item }) => {
@@ -101,7 +101,7 @@ const EditItemPage: NextPage<Props> = ({ layout, item }) => {
                     ref={(el) => field.ref(el)}
                     name={field.name}
                     onValueChange={field.onChange}
-                    value={field.value}
+                    value={item.htmlDescription}
                   />
                 )}
               />

@@ -6,15 +6,51 @@ import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { AutoLinkNode, LinkNode } from "@lexical/link"
 import { forwardRef, useEffect, useState } from 'react'
-import { type EditorState } from 'lexical'
+import { ParagraphNode, type EditorState, type SerializedParagraphNode, $createParagraphNode, type LexicalEditor, TextNode } from 'lexical'
 import { Box, Textarea } from '@chakra-ui/react'
 import { ToolbarPlugin } from './ToolbarPlugin'
 import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin"
 import { CustomAutoLinkPlugin } from './AutoLinkPlugin'
 import { Prose } from '@nikolovlazar/chakra-ui-prose'
+import { $generateHtmlFromNodes } from "@lexical/html"
 
+import turndown from './turndown'
+import { CustomTextNode } from './customTextNode'
 
-import { convertFromMarkdownString, convertToMarkdownString } from './transformMarkdown'
+export class CustomParagraphNode extends ParagraphNode {
+  static getType() {
+    return "custom-paragraph";
+  }
+
+  static clone(node: ParagraphNode) {
+    return new CustomParagraphNode(node.__key);
+  }
+
+  static importJSON(serializedNode: SerializedParagraphNode) {
+    const node = $createParagraphNode();
+    node.setFormat(serializedNode.format);
+    node.setIndent(serializedNode.indent);
+    node.setDirection(serializedNode.direction);
+    return node;
+  }
+
+  exportJSON() {
+    return {
+      ...super.exportJSON(),
+      type: 'custom-paragraph',
+      version: 1,
+    };
+  }
+
+  exportDOM(editor: LexicalEditor) {
+    const { element } = super.exportDOM(editor);
+
+    return {
+      element,
+    };
+  }
+}
+
 
 const config: InitialConfigType = {
   namespace: 'Editor',
@@ -24,7 +60,14 @@ const config: InitialConfigType = {
   },
   nodes: [
     AutoLinkNode,
-    LinkNode
+    LinkNode,
+    CustomTextNode,
+    {
+      replace: TextNode,
+      with: (node) => {
+        return new CustomTextNode(node.__text);
+      }
+    }
   ]
 }
 
@@ -40,12 +83,15 @@ const EditorCapturePlugin = forwardRef((props: any, ref: any) => {
   return null;
 })
 
-function OnChangePlugin({ onChange }: { onChange: (state: EditorState) => void }) {
+function OnChangePlugin({ onChange }: { onChange: (state: [EditorState, string]) => void }) {
   const [editor] = useLexicalComposerContext();
 
   useEffect(() => {
     return editor.registerUpdateListener(({ editorState }) => {
-      onChange(editorState)
+      editorState.read(() => {
+        const html = $generateHtmlFromNodes(editor).replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+        onChange([editorState, html])
+      })
     })
   }, [editor, onChange])
 
@@ -62,21 +108,17 @@ type Props = {
 export const Editor = forwardRef(({ name, value, onValueChange }: Props, ref) => {
   const [editorState, setEditorState] = useState<EditorState>()
 
-  function onChange(editorState: EditorState) {
+  function onChange([editorState, html]: [EditorState, string]) {
     setEditorState(editorState)
-    editorState.read(() => {
-      const markdown = convertToMarkdownString()
-      console.log(markdown)
-      onValueChange(markdown)
-    })
+    onValueChange(turndown(html))
+    console.log(turndown(html))
   }
 
   return (
     <LexicalComposer initialConfig={{
       ...config,
-      editorState: () => value !== null && value !== undefined ? convertFromMarkdownString(value) : null
     }}>
-      <ToolbarPlugin />
+      <ToolbarPlugin value={value ?? ''} />
       <RichTextPlugin
         contentEditable={
           <Prose>

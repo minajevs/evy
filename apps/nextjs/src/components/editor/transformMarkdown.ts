@@ -1,5 +1,4 @@
 import {
-  $convertToMarkdownString,
   $convertFromMarkdownString,
   TRANSFORMERS,
   type ElementTransformer,
@@ -22,8 +21,6 @@ export const LINE_BREAK_FIX: ElementTransformer = {
 
 const transformers = [LINE_BREAK_FIX, ...TRANSFORMERS]
 
-export const convertToMarkdownString = () =>
-  $convertToMarkdownString(transformers).replaceAll(/\n{2}/gm, '\n')
-
-export const convertFromMarkdownString = (value: string) =>
-  $convertFromMarkdownString(value, transformers)
+export const convertFromMarkdownString = (value: string) => {
+  return $convertFromMarkdownString(value, transformers)
+}
