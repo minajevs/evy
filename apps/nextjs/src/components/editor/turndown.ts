@@ -29,7 +29,12 @@ service.addRule('ignoreEmphasized', {
 })
 
 export const turndown = (html: string) => {
-  const result = service.turndown(html)
+  const result = service
+    .turndown(html)
+    // replace multiple linebreaks with one
+    .replace(/(?:<p><br><\/p>\s*){2,}/g, '<p><br></p>\n\n')
+
+  console.log(result)
 
   return result
 }
