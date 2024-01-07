@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, FormControl, HStack, Heading, Input, Text, useBoolean, FormErrorMessage, FormLabel, Textarea, VStack, Box, InputGroup, InputLeftAddon, useColorModeValue, InputRightElement, Spinner } from "@chakra-ui/react"
+import { Button, ButtonGroup, FormControl, HStack, Heading, Input, Text, useBoolean, FormErrorMessage, FormLabel, VStack, Box, InputGroup, InputLeftAddon, useColorModeValue, InputRightElement, Spinner } from "@chakra-ui/react"
 import { getServerSession } from "@evy/auth"
 import { type Collection, prisma, type Item, type User } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
@@ -13,6 +13,8 @@ import { env } from "~/env.mjs"
 import { useVerifyValue } from "~/utils/useVerifyValue"
 import { FiCheck, FiSave, FiX } from "react-icons/fi"
 import { editCollectionSchema } from "@evy/api/schemas"
+import { Editor } from "~/components/editor"
+import { Controller } from "react-hook-form"
 
 type Props = {
   collection: Collection & { items: Item[] } & { user: User }
@@ -24,6 +26,7 @@ const CollectionEditPage: NextPage<Props> = ({ layout, collection }) => {
   const { debounceSettled, shouldVerify, verifyValue, onChange } = useVerifyValue(collection.slug)
 
   const {
+    control,
     handleSubmit,
     register,
     formState: { errors, isValid },
@@ -80,11 +83,19 @@ const CollectionEditPage: NextPage<Props> = ({ layout, collection }) => {
           <Box width='full'>
             <FormControl isInvalid={errors.description !== undefined} mt={4} isDisabled={loading}>
               <FormLabel>Collection description</FormLabel>
-              <Textarea
-                {...register('description')}
-                placeholder='Placeholder'
-                resize='vertical'
+              <Controller
+                name='description'
+                control={control}
+                render={({ field }) => (
+                  <Editor
+                    ref={(el) => field.ref(el)}
+                    name={field.name}
+                    onValueChange={field.onChange}
+                    value={field.value}
+                  />
+                )}
               />
+
               <FormErrorMessage>
                 {errors.description?.message}
               </FormErrorMessage>

@@ -14,9 +14,13 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@prisma/client": "^5.7.1"
+    "@prisma/client": "^5.7.1",
+    "dompurify": "^3.0.8",
+    "jsdom": "^23.1.0"
   },
   "devDependencies": {
+    "@types/dompurify": "^3.0.5",
+    "@types/jsdom": "^21.1.6",
     "dotenv-cli": "^7.3.0",
     "prisma": "^5.4.2",
     "typescript": "^5.2.2"

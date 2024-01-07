@@ -1,4 +1,5 @@
 import { type ThemeConfig, extendTheme, type Colors } from '@chakra-ui/react'
+import { withProse } from '@nikolovlazar/chakra-ui-prose'
 
 const colors: Colors = {
   brand: {
@@ -18,7 +19,19 @@ const config: ThemeConfig = {
   useSystemColorMode: true,
 }
 
-export const theme = extendTheme({
-  colors,
-  config,
-})
+export const theme = extendTheme(
+  {
+    colors,
+    config,
+  },
+  withProse({
+    baseStyle: {
+      p: {
+        margin: 0,
+      },
+      a: {
+        textDecoration: 'underline',
+      },
+    },
+  }),
+)

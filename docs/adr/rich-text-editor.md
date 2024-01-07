@@ -25,6 +25,10 @@ Cal.com uses [`lexical`](https://lexical.dev/) as an editor and saves data as ma
 <div dangerouslySetInnerHTML={{ __html: event.description }} />
 ```
 
+For chakra-ui there exists ready package:
+
+https://github.com/nikolovlazar/chakra-ui-prose
+
 This approach makes it easier to choose an editor, because it can be anything, which can then process result into HTML
 
 ## Options

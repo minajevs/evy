@@ -19,6 +19,7 @@ import { useCookies } from "react-cookie"
 import { Pagination } from "~/components/common/Paginations"
 import { ItemSorting, type Sorting } from "~/components/items/ItemSorting"
 import { ItemViewSelector, type View } from "~/components/items/ItemViewSelector"
+import { HtmlView } from "~/components/common/HtmlView"
 
 const viewCookieName = 'preference:item-view'
 const pageSize = 30
@@ -26,7 +27,7 @@ const pageSize = 30
 type ItemProp = Item & { collection: Collection & { user: User } } & { images: ItemImage[] }
 
 type Props = {
-  collection: Collection & { items: ItemProp[] } & { user: User },
+  collection: Collection & { items: ItemProp[] } & { user: User } & { htmlDescription: string | null },
   view: View,
   sorting: Sorting,
   sortingDirection: SortingDirection,
@@ -91,11 +92,7 @@ const CollectionPage: NextPage<Props> = ({ layout, collection, view, sorting, so
           </Button>
         </ButtonGroup>
       </HStack>
-      {
-        collection.description !== null && collection.description.length > 0
-          ? <Text mb={8}>{collection.description}</Text>
-          : <Text mb={8} />
-      }
+      <HtmlView mb={8} value={collection.htmlDescription} />
       <HStack width='100%' justifyContent='space-between' mb='4'>
         <HStack alignItems='baseline' spacing={8}>
           <Heading size="md">Items</Heading>
