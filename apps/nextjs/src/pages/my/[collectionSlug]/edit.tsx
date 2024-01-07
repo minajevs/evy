@@ -95,7 +95,6 @@ const CollectionEditPage: NextPage<Props> = ({ layout, collection }) => {
                   />
                 )}
               />
-
               <FormErrorMessage>
                 {errors.description?.message}
               </FormErrorMessage>

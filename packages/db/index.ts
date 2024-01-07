@@ -19,20 +19,35 @@ logPrisma.$on('query', (e) => {
   console.log(`[${e.duration}ms] ${e.query}`)
 })
 
-const extendedPrisma = logPrisma.$extends({
-  result: {
-    collection: {
-      htmlDescription: {
-        needs: { description: true },
-        compute(data) {
-          return data.description !== null
-            ? markdownToSafeHTML(data.description)
-            : null
+const extendedPrisma = logPrisma
+  .$extends({
+    result: {
+      collection: {
+        htmlDescription: {
+          needs: { description: true },
+          compute(data) {
+            return data.description !== null
+              ? markdownToSafeHTML(data.description)
+              : null
+          },
         },
       },
     },
-  },
-})
+  })
+  .$extends({
+    result: {
+      item: {
+        htmlDescription: {
+          needs: { description: true },
+          compute(data) {
+            return data.description !== null
+              ? markdownToSafeHTML(data.description)
+              : null
+          },
+        },
+      },
+    },
+  })
 
 export const prisma = globalForPrisma.prisma || extendedPrisma
 

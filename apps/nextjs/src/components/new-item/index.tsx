@@ -1,4 +1,4 @@
-import { Button, FormControl, FormErrorMessage, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Textarea, useDisclosure } from "@chakra-ui/react"
+import { Button, FormControl, FormErrorMessage, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure } from "@chakra-ui/react"
 import { useZodForm } from "../forms"
 import { useCallback, useEffect } from "react"
 import { api } from "~/utils/api"
@@ -6,6 +6,8 @@ import { useRouter } from "next/router"
 import { Icon } from "@chakra-ui/react"
 import { FiPlus } from "react-icons/fi"
 import { newItemSchema } from "@evy/api/schemas"
+import { Controller } from "react-hook-form"
+import { Editor } from "../editor"
 
 type Props = {
   collectionId: string
@@ -16,6 +18,7 @@ export const NewItem = ({ collectionId }: Props) => {
   const router = useRouter()
 
   const {
+    control,
     handleSubmit,
     register,
     formState: { errors, isDirty, isValid },
@@ -70,10 +73,17 @@ export const NewItem = ({ collectionId }: Props) => {
 
             <FormControl isInvalid={errors.description !== undefined} mt={4}>
               <FormLabel>Item description</FormLabel>
-              <Textarea
-                {...register('description')}
-                placeholder='Placeholder'
-                resize='vertical'
+              <Controller
+                name='description'
+                control={control}
+                render={({ field }) => (
+                  <Editor
+                    ref={(el) => field.ref(el)}
+                    name={field.name}
+                    onValueChange={field.onChange}
+                    value={field.value}
+                  />
+                )}
               />
               <FormErrorMessage>
                 {errors.description?.message}

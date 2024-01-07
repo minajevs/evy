@@ -9,8 +9,9 @@ import { ImageModal } from "~/components/item-media/ImageModal"
 import Layout from "~/layout"
 import { type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 import { getServerSession } from "@evy/auth"
+import { HtmlView } from "~/components/common/HtmlView"
 
-type ItemProp = Item & { collection: Collection & { user: User } } & { images: ItemImage[] }
+type ItemProp = Item & { collection: Collection & { user: User } } & { images: ItemImage[] } & { htmlDescription: string | null }
 
 type Props = {
   item: ItemProp
@@ -34,11 +35,7 @@ const ItemPage: NextPage<Props> = ({ layout, item }) => {
           <Text display='inline' pl='1'>{item.name}</Text>
         </Heading>
       </HStack>
-      {
-        item.description !== null && item.description.length > 0
-          ? <Text mb='8'>{item.description}</Text>
-          : null
-      }
+      <HtmlView mb={8} value={item.htmlDescription} />
       <HStack width='100%' justifyContent='space-between' mb={2}>
         <Heading size='md'>Media</Heading>
       </HStack>

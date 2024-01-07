@@ -10,9 +10,10 @@ import { ShareDialog } from "~/components/share-dialog/ShareDialog"
 import Layout from "~/layout"
 import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 import { FiEdit, FiPlus, FiShare2 } from "react-icons/fi"
+import { HtmlView } from "~/components/common/HtmlView"
 
 type Props = {
-  item: Item & { collection: Collection & { user: User } } & { images: ItemImage[] }
+  item: Item & { collection: Collection & { user: User } } & { images: ItemImage[] } & { htmlDescription: string | null }
 } & LayoutServerSideProps
 
 const ItemPage: NextPage<Props> = ({ layout, item }) => {
@@ -38,11 +39,7 @@ const ItemPage: NextPage<Props> = ({ layout, item }) => {
           </Button>
         </ButtonGroup>
       </HStack>
-      {
-        item.description !== null && item.description.length > 0
-          ? <Text mb='8'>{item.description}</Text>
-          : null
-      }
+      <HtmlView mb={8} value={item.htmlDescription} />
       <HStack width='100%' justifyContent='space-between' mb={2}>
         <Heading size='md'>Media</Heading>
         <Button leftIcon={<Icon as={FiPlus} />} variant='solid' onClick={uploadDisclosure.onOpen}>

@@ -1,9 +1,11 @@
-import { Button, type ButtonProps, FormControl, FormErrorMessage, FormLabel, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Textarea, useDisclosure } from "@chakra-ui/react"
+import { Button, type ButtonProps, FormControl, FormErrorMessage, FormLabel, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure } from "@chakra-ui/react"
 import { useZodForm } from "../forms"
 import { api } from "~/utils/api"
 import { useRouter } from "next/router"
 import { FiPlus } from "react-icons/fi"
 import { newCollectionSchema } from "@evy/api/schemas"
+import { Controller } from "react-hook-form"
+import { Editor } from "../editor"
 
 type Props = {
   as?: React.ElementType
@@ -14,6 +16,7 @@ export const NewCollectionDialog = ({ as, ...rest }: Props) => {
   const router = useRouter()
 
   const {
+    control,
     handleSubmit,
     register,
     formState: { errors, isDirty, isValid },
@@ -59,10 +62,17 @@ export const NewCollectionDialog = ({ as, ...rest }: Props) => {
 
             <FormControl isInvalid={errors.description !== undefined} mt={4}>
               <FormLabel>Collection description</FormLabel>
-              <Textarea
-                {...register('description')}
-                placeholder='Placeholder'
-                resize='vertical'
+              <Controller
+                name='description'
+                control={control}
+                render={({ field }) => (
+                  <Editor
+                    ref={(el) => field.ref(el)}
+                    name={field.name}
+                    onValueChange={field.onChange}
+                    value={field.value}
+                  />
+                )}
               />
               <FormErrorMessage>
                 {errors.description?.message}

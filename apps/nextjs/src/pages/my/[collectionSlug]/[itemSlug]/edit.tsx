@@ -1,6 +1,6 @@
 import { Icon } from "@chakra-ui/react"
 import { Link } from "@chakra-ui/next-js"
-import { Button, ButtonGroup, FormControl, Flex, FormErrorMessage, Heading, Text, useBoolean, Input, FormLabel, Textarea, VStack, Box, InputGroup, InputLeftAddon, useColorModeValue, InputRightElement, Spinner } from "@chakra-ui/react"
+import { Button, ButtonGroup, FormControl, Flex, FormErrorMessage, Heading, Text, useBoolean, Input, FormLabel, VStack, Box, InputGroup, InputLeftAddon, useColorModeValue, InputRightElement, Spinner } from "@chakra-ui/react"
 import { getServerSession } from "@evy/auth"
 import { type Collection, prisma, type Item, type User } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
@@ -14,6 +14,8 @@ import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServer
 import { useVerifyValue } from "~/utils/useVerifyValue"
 import { FiCheck, FiSave, FiX } from "react-icons/fi"
 import { editItemSchema } from "@evy/api/schemas"
+import { Controller } from "react-hook-form"
+import { Editor } from "~/components/editor"
 
 type Props = {
   item: Item & { collection: Collection & { user: User } }
@@ -25,6 +27,7 @@ const EditItemPage: NextPage<Props> = ({ layout, item }) => {
   const { debounceSettled, shouldVerify, verifyValue, onChange } = useVerifyValue(item.slug)
 
   const {
+    control,
     handleSubmit,
     register,
     formState: { errors, isValid },
@@ -90,10 +93,17 @@ const EditItemPage: NextPage<Props> = ({ layout, item }) => {
           <Box width='full'>
             <FormControl isInvalid={errors.description !== undefined} isDisabled={loading}>
               <FormLabel>Item description</FormLabel>
-              <Textarea
-                {...register('description')}
-                placeholder='Placeholder'
-                resize='vertical'
+              <Controller
+                name='description'
+                control={control}
+                render={({ field }) => (
+                  <Editor
+                    ref={(el) => field.ref(el)}
+                    name={field.name}
+                    onValueChange={field.onChange}
+                    value={field.value}
+                  />
+                )}
               />
               <FormErrorMessage>
                 {errors.description?.message}

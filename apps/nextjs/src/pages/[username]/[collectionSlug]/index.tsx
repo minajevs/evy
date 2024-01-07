@@ -6,11 +6,12 @@ import Layout from "~/layout"
 import { type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 import { ItemCard } from "~/components/items/ItemCard"
 import { getServerSession } from "@evy/auth"
+import { HtmlView } from "~/components/common/HtmlView"
 
 type ItemProp = Item & { collection: Collection } & { images: ItemImage[] }
 
 type Props = {
-  collection: Collection & { items: ItemProp[] } & { user: User }
+  collection: Collection & { items: ItemProp[] } & { user: User } & { htmlDescription: string | null }
 } & LayoutServerSideProps
 
 const UserCollectionPage: NextPage<Props> = ({ layout, collection }) => {
@@ -21,11 +22,7 @@ const UserCollectionPage: NextPage<Props> = ({ layout, collection }) => {
           <Text>{collection.name}</Text>
         </Heading>
       </HStack>
-      {
-        collection.description !== null && collection.description.length > 0
-          ? <Text mb='8'>{collection.description}</Text>
-          : null
-      }
+      <HtmlView mb={8} value={collection.htmlDescription} />
       <HStack width='100%' justifyContent='space-between' mb='4'>
         <Heading size="md">Items</Heading>
       </HStack>

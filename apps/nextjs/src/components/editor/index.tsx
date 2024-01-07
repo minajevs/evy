@@ -7,7 +7,7 @@ import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext
 import { AutoLinkNode, LinkNode } from "@lexical/link"
 import { forwardRef, useEffect, useState } from 'react'
 import { type EditorState } from 'lexical'
-import { Textarea } from '@chakra-ui/react'
+import { Box, Textarea } from '@chakra-ui/react'
 import { ToolbarPlugin } from './ToolbarPlugin'
 import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin"
 import { CustomAutoLinkPlugin } from './AutoLinkPlugin'
@@ -56,7 +56,7 @@ EditorCapturePlugin.displayName = 'EditorCapturePlugin'
 
 type Props = {
   name: string
-  value: string
+  value: string | null | undefined
   onValueChange: (value: string) => void
 }
 export const Editor = forwardRef(({ name, value, onValueChange }: Props, ref) => {
@@ -74,7 +74,7 @@ export const Editor = forwardRef(({ name, value, onValueChange }: Props, ref) =>
   return (
     <LexicalComposer initialConfig={{
       ...config,
-      editorState: () => convertFromMarkdownString(value)
+      editorState: () => value !== null && value !== undefined ? convertFromMarkdownString(value) : null
     }}>
       <ToolbarPlugin />
       <RichTextPlugin
@@ -83,14 +83,15 @@ export const Editor = forwardRef(({ name, value, onValueChange }: Props, ref) =>
             <Textarea
               as={ContentEditable}
               height='auto'
-              minHeight='100px'
+              minHeight='7rem'
               borderTopLeftRadius={0}
-              resize='vertical'
               name={name}
-              overflowY="scroll" />
+              overflowY="scroll"
+              placeholder='Description'
+            />
           </Prose>
         }
-        placeholder={<div>Enter some text...</div>}
+        placeholder={<Box pointerEvents='none' mt='-6.5rem' pl='1rem' pb='5rem' color='chakra-placeholder-color' opacity={0.5}>Enter some text...</Box>}
         ErrorBoundary={LexicalErrorBoundary}
       />
       <EditorCapturePlugin ref={ref} />

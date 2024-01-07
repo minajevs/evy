@@ -7,9 +7,6 @@ type CollectionCardProps = {
   collection: Collection & { items: Item[] }
 }
 export const CollectionCard = ({ collection, linkPrefix }: CollectionCardProps) => {
-  const description = collection.description === null || collection.description.length === 0
-    ? <Text as='i'>No description</Text>
-    : <Text>{collection.description}</Text>
   return <Link href={`/${linkPrefix ?? 'my'}/${collection.slug}`}>
     <Card
       _hover={{
@@ -28,7 +25,6 @@ export const CollectionCard = ({ collection, linkPrefix }: CollectionCardProps) 
         <HStack justifyContent='space-between'>
           <Box>
             <Heading size='md'>{collection.name}</Heading>
-            {description}
           </Box>
           <Box>
             <Text>Items: {collection.items.length}</Text>
