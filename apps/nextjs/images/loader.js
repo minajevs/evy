@@ -9,7 +9,6 @@ export default function cloudflareLoader(
     quality,
   },
 ) {
-  console.log('sup img', src)
   const params = [`width=${width}`]
   if (quality) {
     params.push(`quality=${quality}`)

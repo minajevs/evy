@@ -111,7 +111,6 @@ export const Editor = forwardRef(({ name, value, onValueChange }: Props, ref) =>
   function onChange([editorState, html]: [EditorState, string]) {
     setEditorState(editorState)
     onValueChange(turndown(html))
-    console.log(turndown(html))
   }
 
   return (

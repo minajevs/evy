@@ -67,7 +67,6 @@ export const ToolbarPlugin = ({ value }: Props) => {
   }, [editor, value])
 
   const insertLink = useCallback(() => {
-    console.log('link!')
     if (!isLink) {
       editor.dispatchCommand(TOGGLE_LINK_COMMAND, "https://");
     } else {

@@ -149,9 +149,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
 
   const view = req.cookies[viewCookieName] as View | undefined ?? 'grid'
 
-  if (!queryResult.success) console.log(queryResult.error.message)
-  console.log(view, page, orderBy, direction)
-
   const skip = (page - 1) * pageSize
   const take = pageSize
 
