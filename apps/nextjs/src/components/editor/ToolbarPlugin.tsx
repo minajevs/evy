@@ -2,8 +2,8 @@ import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from "@lexical/link"
 import { mergeRegister } from "@lexical/utils"
 import { $generateNodesFromDOM } from "@lexical/html"
-import { $getSelection, $isRangeSelection, SELECTION_CHANGE_COMMAND, FORMAT_TEXT_COMMAND, $getRoot, $insertNodes } from "lexical"
-import { useCallback, useEffect, useState } from "react"
+import { $getSelection, $isRangeSelection, SELECTION_CHANGE_COMMAND, FORMAT_TEXT_COMMAND, $getRoot, $insertNodes, $setSelection } from "lexical"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { ButtonGroup, type ButtonProps, Icon, IconButton, useColorModeValue } from "@chakra-ui/react"
 import { FiBold, FiItalic, FiLink } from "react-icons/fi"
 import { LOW_PRIORITY, getSelectedNode } from "./utils"
@@ -19,6 +19,7 @@ export const ToolbarPlugin = ({ value }: Props) => {
   const [isBold, setIsBold] = useState(false)
   const [isItalic, setIsItalic] = useState(false)
   const [isLink, setIsLink] = useState(false)
+  const firstRender = useRef(true)
 
   const updateToolbar = useCallback(() => {
     const selection = $getSelection()
@@ -41,7 +42,7 @@ export const ToolbarPlugin = ({ value }: Props) => {
       editor.registerUpdateListener(({ editorState }) => {
         editorState.read(() => {
           updateToolbar()
-        });
+        })
       }),
       editor.registerCommand(
         SELECTION_CHANGE_COMMAND,
@@ -55,6 +56,9 @@ export const ToolbarPlugin = ({ value }: Props) => {
   }, [editor, updateToolbar])
 
   useEffect(() => {
+    if (!firstRender.current) return
+
+    firstRender.current = false
     editor.update(() => {
       const parser = new DOMParser()
       const dom = parser.parseFromString(value, "text/html")
@@ -63,6 +67,7 @@ export const ToolbarPlugin = ({ value }: Props) => {
 
       $getRoot().clear().select()
       $insertNodes(nodes)
+      $setSelection(null)
     })
   }, [editor, value])
 

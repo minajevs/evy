@@ -5,7 +5,7 @@ import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { AutoLinkNode, LinkNode } from "@lexical/link"
-import { forwardRef, useEffect, useState } from 'react'
+import { forwardRef, useEffect, useRef, useState } from 'react'
 import { ParagraphNode, type EditorState, type SerializedParagraphNode, $createParagraphNode, type LexicalEditor, TextNode } from 'lexical'
 import { Box, Textarea } from '@chakra-ui/react'
 import { ToolbarPlugin } from './ToolbarPlugin'
@@ -72,22 +72,27 @@ const config: InitialConfigType = {
 }
 
 const EditorCapturePlugin = forwardRef((props: any, ref: any) => {
-  const [editor] = useLexicalComposerContext();
+  const [editor] = useLexicalComposerContext()
+
   useEffect(() => {
-    ref.current = editor;
+    ref.current = editor
     return () => {
-      ref.current = null;
-    };
-  }, [editor, ref]);
+      ref.current = null
+    }
+  }, [editor, ref])
 
   return null;
 })
 
 function OnChangePlugin({ onChange }: { onChange: (state: [EditorState, string]) => void }) {
-  const [editor] = useLexicalComposerContext();
+  const [editor] = useLexicalComposerContext()
+  const firstRender = useRef(true)
 
   useEffect(() => {
-    return editor.registerUpdateListener(({ editorState }) => {
+    if (!firstRender.current) return
+
+    firstRender.current = false
+    editor.registerUpdateListener(({ editorState, prevEditorState }) => {
       editorState.read(() => {
         const html = $generateHtmlFromNodes(editor).replace(/&lt;/g, "<").replace(/&gt;/g, ">")
         onChange([editorState, html])

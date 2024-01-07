@@ -34,8 +34,6 @@ export const turndown = (html: string) => {
     // replace multiple linebreaks with one
     .replace(/(?:<p><br><\/p>\s*){2,}/g, '<p><br></p>\n\n')
 
-  console.log(result)
-
   return result
 }
 
