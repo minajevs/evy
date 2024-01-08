@@ -12,7 +12,7 @@ import Layout from "~/layout"
 import { api } from "~/utils/api"
 import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 import { useVerifyValue } from "~/utils/useVerifyValue"
-import { FiCheck, FiSave, FiX } from "react-icons/fi"
+import { Check, Save, X } from "lucide-react"
 import { editItemSchema } from "@evy/api/schemas"
 import { Controller } from "react-hook-form"
 import { Editor } from "~/components/editor"
@@ -67,7 +67,7 @@ const EditItemPage: NextPage<Props> = ({ layout, item }) => {
             <Text display='inline' pl='1'>{watch('name')}</Text>
           </Heading>
           <ButtonGroup isAttached>
-            <Button leftIcon={<Icon as={FiSave} />} variant='solid' isLoading={loading} isDisabled={saveDisabled} type="submit">
+            <Button leftIcon={<Icon as={Save} />} variant='solid' isLoading={loading} isDisabled={saveDisabled} type="submit">
               Save
             </Button>
             {
@@ -128,8 +128,8 @@ const EditItemPage: NextPage<Props> = ({ layout, item }) => {
                       : verifyItemSlugQuery.isLoading
                         ? <Spinner />
                         : slugAvailable
-                          ? <Icon as={FiCheck} color='green.500' />
-                          : <Icon as={FiX} color='red.500' />
+                          ? <Icon as={Check} color='green.500' />
+                          : <Icon as={X} color='red.500' />
                   }
                 </InputRightElement>
               </InputGroup>

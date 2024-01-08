@@ -4,7 +4,7 @@ import { useCallback, useEffect } from "react"
 import { api } from "~/utils/api"
 import { useRouter } from "next/router"
 import { Icon } from "@chakra-ui/react"
-import { FiPlus } from "react-icons/fi"
+import { Plus } from "lucide-react"
 import { newItemSchema } from "@evy/api/schemas"
 import { Controller } from "react-hook-form"
 import { Editor } from "../editor"
@@ -45,7 +45,7 @@ export const NewItem = ({ collectionId }: Props) => {
 
   return <>
     <Button
-      leftIcon={<Icon as={FiPlus} />}
+      leftIcon={<Icon as={Plus} />}
       variant='solid'
       onClick={onOpen}>
       Add

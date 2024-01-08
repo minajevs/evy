@@ -7,7 +7,7 @@ import { ImageUpdateForm } from "./ImageUpdateForm"
 import { useZodForm } from "~/components/forms"
 import { FormProvider } from "react-hook-form"
 import { useEffect, useState } from "react"
-import { FiEdit, FiTrash2 } from "react-icons/fi"
+import { Edit, Trash2 } from "lucide-react"
 import { updateImageSchema } from "@evy/api/schemas"
 import { ImageDisplay } from "~/components/common/ImageDisplay"
 
@@ -94,10 +94,10 @@ export const ImageUpdateModal = ({ image, onDeleted, disclosure: { isOpen, onClo
       </Button>
     </>
     : <>
-      <Button flex='1' variant='ghost' leftIcon={<Icon as={FiEdit} />} onClick={() => on()}>
+      <Button flex='1' variant='ghost' leftIcon={<Icon as={Edit} />} onClick={() => on()}>
         Edit
       </Button>
-      <Button flex='1' variant='ghost' leftIcon={<Icon as={FiTrash2} />} colorScheme='red' onClick={handleDelete}>
+      <Button flex='1' variant='ghost' leftIcon={<Icon as={Trash2} />} colorScheme='red' onClick={handleDelete}>
         Delete
       </Button>
     </>

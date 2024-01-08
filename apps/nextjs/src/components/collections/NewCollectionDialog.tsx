@@ -2,7 +2,7 @@ import { Button, type ButtonProps, FormControl, FormErrorMessage, FormLabel, Ico
 import { useZodForm } from "../forms"
 import { api } from "~/utils/api"
 import { useRouter } from "next/router"
-import { FiPlus } from "react-icons/fi"
+import { Plus } from "lucide-react"
 import { newCollectionSchema } from "@evy/api/schemas"
 import { Controller } from "react-hook-form"
 import { Editor } from "../editor"
@@ -34,7 +34,7 @@ export const NewCollectionDialog = ({ as, ...rest }: Props) => {
 
   return <>
     <ButtonComponent
-      leftIcon={<Icon as={FiPlus} />}
+      leftIcon={<Icon as={Plus} />}
       onClick={onOpen}
       {...rest}>
       Add new

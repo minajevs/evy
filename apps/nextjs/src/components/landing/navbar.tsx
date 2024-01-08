@@ -1,7 +1,7 @@
 import { Box, Button, Divider, Flex, HStack, Heading, Icon, IconButton, Link, type LinkProps, Stack, VStack, useColorMode, useColorModeValue, useDisclosure } from "@chakra-ui/react"
 import { useBackgroundColor } from "@evy/styling"
 import { useAutoAnimate } from "@formkit/auto-animate/react"
-import { FiMoon, FiSun, FiX, FiMenu } from "react-icons/fi"
+import { Moon, Sun, X, Menu } from "lucide-react"
 import { signIn } from "next-auth/react"
 
 export const Navbar = () => {
@@ -43,7 +43,7 @@ export const Navbar = () => {
           {/* Buttons */}
           <HStack w={150} justifyContent='end'>
             <Button onClick={toggleColorMode}>
-              {colorMode === 'light' ? <Icon as={FiMoon} /> : <Icon as={FiSun} />}
+              {colorMode === 'light' ? <Icon as={Moon} /> : <Icon as={Sun} />}
             </Button>
             <Button
               display={{ base: 'none', md: 'inherit' }}
@@ -53,7 +53,7 @@ export const Navbar = () => {
             </Button>
             <IconButton
               size="md"
-              icon={isOpen ? <Icon as={FiX} /> : <Icon as={FiMenu} />}
+              icon={isOpen ? <Icon as={X} /> : <Icon as={Menu} />}
               aria-label="Open Menu"
               display={{ base: 'inherit', md: 'none' }}
               onClick={isOpen ? onClose : onOpen}

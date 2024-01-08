@@ -1,13 +1,13 @@
 import { Icon } from "@chakra-ui/react"
-import { HStack, Heading, Button, Text, Avatar, Box, Divider, SimpleGrid, VStack } from "@chakra-ui/react";
+import { HStack, Heading, Button, Text, Avatar, Box, Divider, SimpleGrid, VStack } from "@chakra-ui/react"
 import { getServerSession } from "@evy/auth";
-import { type Collection, prisma, type User, type Item } from "@evy/db";
+import { type Collection, prisma, type User, type Item } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
-import Link from "next/link";
-import { FiEdit } from "react-icons/fi";
-import { CollectionCard } from "~/components/collections/CollectionCard";
+import Link from "next/link"
+import { Edit } from "lucide-react"
+import { CollectionCard } from "~/components/collections/CollectionCard"
 import Layout from "~/layout"
-import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps";
+import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 
 type Props = {
   user: User & { collections: (Collection & { items: Item[] })[] }
@@ -33,7 +33,7 @@ const Profile: NextPage<Props> = ({ user, layout }) => {
         <Heading size="lg" mb="4">
           <Text>Profile</Text>
         </Heading>
-        <Button leftIcon={<Icon as={FiEdit} />} variant='solid' as={Link} href={`/profile/edit`}>
+        <Button leftIcon={<Icon as={Edit} />} variant='solid' as={Link} href={`/profile/edit`}>
           Edit
         </Button>
       </HStack>

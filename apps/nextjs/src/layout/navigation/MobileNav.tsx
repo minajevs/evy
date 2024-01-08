@@ -2,7 +2,7 @@ import { Flex, type FlexProps, HStack, Heading, Icon, useColorMode, Button } fro
 import { useBackgroundColor } from "@evy/styling";
 import { Link } from "@chakra-ui/next-js"
 import { signIn, signOut, useSession } from "next-auth/react"
-import { FiMoon, FiSun } from "react-icons/fi"
+import { Moon, Sun } from "lucide-react"
 
 type MobileProps = FlexProps
 
@@ -37,7 +37,7 @@ export const MobileNav = ({ ...rest }: MobileProps) => {
         /> */}
         <HStack spacing='0'>
           <Button variant='ghost' onClick={toggleColorMode}>
-            {colorMode === 'light' ? <Icon as={FiMoon} /> : <Icon as={FiSun} />}
+            {colorMode === 'light' ? <Icon as={Moon} /> : <Icon as={Sun} />}
           </Button>
           <Button justifyContent='flex-start' textAlign='left' variant='ghost' onClick={session.status === 'authenticated' ? () => void signOut() : () => void signIn()}>
             {session.status === 'authenticated' ? "Sign out" : "Sign in"}

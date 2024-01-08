@@ -11,7 +11,7 @@ import { useRouter } from "next/router"
 import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 import { env } from "~/env.mjs"
 import { useVerifyValue } from "~/utils/useVerifyValue"
-import { FiCheck, FiSave, FiX } from "react-icons/fi"
+import { Check, Save, X } from "lucide-react"
 import { editCollectionSchema } from "@evy/api/schemas"
 import { Editor } from "~/components/editor"
 import { Controller } from "react-hook-form"
@@ -57,7 +57,7 @@ const CollectionEditPage: NextPage<Props> = ({ layout, collection }) => {
             <Text>{watch('name')}</Text>
           </Heading>
           <ButtonGroup isAttached>
-            <Button leftIcon={<Icon as={FiSave} />} variant='solid' isLoading={loading} isDisabled={saveDisabled} type="submit">
+            <Button leftIcon={<Icon as={Save} />} variant='solid' isLoading={loading} isDisabled={saveDisabled} type="submit">
               Save
             </Button>
             {
@@ -118,8 +118,8 @@ const CollectionEditPage: NextPage<Props> = ({ layout, collection }) => {
                       : verifySlugAvailableQuery.isLoading
                         ? <Spinner />
                         : slugAvailable
-                          ? <Icon as={FiCheck} color='green.500' />
-                          : <Icon as={FiX} color='red.500' />
+                          ? <Icon as={Check} color='green.500' />
+                          : <Icon as={X} color='red.500' />
                   }
                 </InputRightElement>
               </InputGroup>

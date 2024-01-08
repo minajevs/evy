@@ -1,5 +1,5 @@
 import { ButtonGroup, type ButtonGroupProps, Icon, IconButton } from "@chakra-ui/react"
-import { FiGrid, FiList } from "react-icons/fi"
+import { Grid, Rows4 } from "lucide-react"
 
 export type View = 'grid' | 'table'
 
@@ -11,13 +11,13 @@ export const ItemViewSelector = ({ currentView, updateView, ...rest }: Props) =>
   return <ButtonGroup isAttached variant='outline' {...rest}>
     <IconButton
       aria-label="grid view"
-      icon={<Icon as={FiGrid} />}
+      icon={<Icon as={Grid} />}
       isActive={currentView === 'grid'}
       onClick={() => updateView('grid')}
     />
     <IconButton
       aria-label="table view"
-      icon={<Icon as={FiList} />}
+      icon={<Icon as={Rows4} />}
       isActive={currentView === 'table'}
       onClick={() => updateView('table')}
     />

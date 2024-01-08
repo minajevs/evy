@@ -2,7 +2,7 @@ import { Box, type BoxProps, Button, useColorMode, Text, Divider, VStack, Headin
 import { NavItemBase, NavItemLink } from "./NavItem"
 import { useBackgroundColor } from "@evy/styling"
 import { Icon } from '@chakra-ui/react'
-import { FiInbox, FiMoon, FiSun, FiUser } from 'react-icons/fi'
+import { Inbox, Moon, Sun, User } from 'lucide-react'
 import { Link } from "@chakra-ui/next-js"
 import { signIn, signOut, useSession } from "next-auth/react"
 import NewCollectionDialog from "~/components/collections/NewCollectionDialog"
@@ -44,7 +44,7 @@ export const Sidebar = ({ linkItems, ...rest }: SidebarProps) => {
         <Box py='4' width='100%'>
           <NavItemLink href='/my' alignItems='center' flexDirection='row'>
             <HStack color='teal'>
-              <Icon as={FiInbox} />
+              <Icon as={Inbox} />
               <Text fontWeight='600'>
                 Collections
               </Text>
@@ -62,7 +62,7 @@ export const Sidebar = ({ linkItems, ...rest }: SidebarProps) => {
           <Divider />
           <NavItemLink href='/profile' alignItems='center' flexDirection='row'>
             <HStack color='teal'>
-              <Icon as={FiUser} />
+              <Icon as={User} />
               <Text fontWeight='600'>
                 Profile
               </Text>
@@ -74,7 +74,7 @@ export const Sidebar = ({ linkItems, ...rest }: SidebarProps) => {
               {session.status === 'authenticated' ? "Sign out" : "Sign in"}
             </Button>
             <Button width='100%' variant='ghost' onClick={toggleColorMode}>
-              {colorMode === 'light' ? <Icon as={FiMoon} /> : <Icon as={FiSun} />}
+              {colorMode === 'light' ? <Icon as={Moon} /> : <Icon as={Sun} />}
             </Button>
           </HStack>
         </Box>

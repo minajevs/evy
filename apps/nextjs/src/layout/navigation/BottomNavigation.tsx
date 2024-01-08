@@ -1,7 +1,7 @@
 import { Flex, type FlexProps, Icon, Text, VStack } from "@chakra-ui/react"
 import { useBackgroundColor } from "@evy/styling";
 import { Link } from "@chakra-ui/next-js"
-import { FiInbox, FiUser } from "react-icons/fi";
+import { Inbox, User } from "lucide-react";
 
 type Props = FlexProps
 
@@ -24,7 +24,7 @@ export const BottomNavigation = ({ ...rest }: Props) => {
       {...rest}>
       <Link href='/my'>
         <VStack color='teal' spacing={0}>
-          <Icon as={FiInbox} boxSize={6} />
+          <Icon as={Inbox} boxSize={6} />
           <Text fontWeight='600'>
             Collections
           </Text>
@@ -32,7 +32,7 @@ export const BottomNavigation = ({ ...rest }: Props) => {
       </Link>
       <Link href='/profile'>
         <VStack color='teal' spacing={0}>
-          <Icon as={FiUser} boxSize={6} />
+          <Icon as={User} boxSize={6} />
           <Text fontWeight='600'>
             Profile
           </Text>

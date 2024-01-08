@@ -4,8 +4,8 @@ import { getServerSession } from "@evy/auth";
 import { prisma, type User } from "@evy/db";
 import type { GetServerSideProps, NextPage } from "next"
 import { useRouter } from "next/router";
-import { FiCheck, FiSave, FiX } from "react-icons/fi";
-import { useZodForm } from "~/components/forms";
+import { Check, Save, X } from "lucide-react"
+import { useZodForm } from "~/components/forms"
 import Layout from "~/layout"
 import { api } from "~/utils/api";
 import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps";
@@ -56,7 +56,7 @@ const EditProfile: NextPage<Props> = ({ user, layout }) => {
             <Text>Profile</Text>
           </Heading>
           <ButtonGroup isAttached>
-            <Button leftIcon={<Icon as={FiSave} />} variant='solid' isLoading={loading} isDisabled={saveDisabled} type="submit">
+            <Button leftIcon={<Icon as={Save} />} variant='solid' isLoading={loading} isDisabled={saveDisabled} type="submit">
               Save
             </Button>
             {
@@ -97,8 +97,8 @@ const EditProfile: NextPage<Props> = ({ user, layout }) => {
                       : verifyUsernameAvailableQuery.isLoading
                         ? <Spinner />
                         : usernameAvailable
-                          ? <Icon as={FiCheck} color='green.500' />
-                          : <Icon as={FiX} color='red.500' />
+                          ? <Icon as={Check} color='green.500' />
+                          : <Icon as={X} color='red.500' />
                   }
                 </InputRightElement>
               </InputGroup>

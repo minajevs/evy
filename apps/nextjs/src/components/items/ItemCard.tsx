@@ -2,7 +2,7 @@ import { Box, Card, CardBody, Icon, Stack, Text, useColorModeValue } from "@chak
 import type { Collection, Item, ItemImage } from "@evy/db"
 import Link from "next/link"
 import { ImageDisplay } from "../common/ImageDisplay"
-import { FiImage } from "react-icons/fi"
+import { Image } from "lucide-react"
 
 type Props = {
   linkPrefix?: string
@@ -60,7 +60,7 @@ const NoImage = () => {
     >
       <Icon
         color={ic}
-        as={FiImage}
+        as={Image}
         left="50%"
         top="50%"
         transform='translate(-50%, -1.25rem)'

@@ -9,7 +9,7 @@ import { ItemMedia } from "~/components/item-media"
 import { ShareDialog } from "~/components/share-dialog/ShareDialog"
 import Layout from "~/layout"
 import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
-import { FiEdit, FiPlus, FiShare2 } from "react-icons/fi"
+import { Edit, Plus, Share2 } from "lucide-react"
 import { HtmlView } from "~/components/common/HtmlView"
 
 type Props = {
@@ -29,12 +29,12 @@ const ItemPage: NextPage<Props> = ({ layout, item }) => {
         </Heading>
         <ButtonGroup>
           <ShareDialog
-            buttonProps={{ leftIcon: <Icon as={FiShare2} /> }}
+            buttonProps={{ leftIcon: <Icon as={Share2} /> }}
             username={item.collection.user.username}
             collectionSlug={item.collection.slug}
             itemSlug={item.slug}
           />
-          <Button leftIcon={<Icon as={FiEdit} />} variant='solid' as={Link} href={`/my/${item.collection.slug}/${item.slug}/edit`}>
+          <Button leftIcon={<Icon as={Edit} />} variant='solid' as={Link} href={`/my/${item.collection.slug}/${item.slug}/edit`}>
             Edit
           </Button>
         </ButtonGroup>
@@ -42,7 +42,7 @@ const ItemPage: NextPage<Props> = ({ layout, item }) => {
       <HtmlView mb={8} value={item.htmlDescription} />
       <HStack width='100%' justifyContent='space-between' mb={2}>
         <Heading size='md'>Media</Heading>
-        <Button leftIcon={<Icon as={FiPlus} />} variant='solid' onClick={uploadDisclosure.onOpen}>
+        <Button leftIcon={<Icon as={Plus} />} variant='solid' onClick={uploadDisclosure.onOpen}>
           Add
         </Button>
       </HStack>

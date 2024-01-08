@@ -9,7 +9,7 @@ import { Link } from "@chakra-ui/next-js"
 import { Icon } from "@chakra-ui/react"
 import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 import { ShareDialog } from "~/components/share-dialog/ShareDialog"
-import { FiEdit, FiShare2 } from "react-icons/fi"
+import { Edit, Share2 } from "lucide-react"
 import { type SortingDirection } from "~/utils/sorting/types"
 import { ItemGrid } from "~/components/items/ItemGrid"
 import { useState } from "react"
@@ -83,11 +83,11 @@ const CollectionPage: NextPage<Props> = ({ layout, collection, view, sorting, so
         </Heading>
         <ButtonGroup isAttached>
           <ShareDialog
-            buttonProps={{ leftIcon: <Icon as={FiShare2} /> }}
+            buttonProps={{ leftIcon: <Icon as={Share2} /> }}
             username={collection.user.username}
             collectionSlug={collection.slug}
           />
-          <Button leftIcon={<Icon as={FiEdit} />} variant='solid' as={Link} href={`/my/${collection.slug}/edit`}>
+          <Button leftIcon={<Icon as={Edit} />} variant='solid' as={Link} href={`/my/${collection.slug}/edit`}>
             Edit
           </Button>
         </ButtonGroup>

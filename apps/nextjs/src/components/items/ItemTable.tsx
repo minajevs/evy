@@ -1,7 +1,7 @@
 import { VStack, HStack, useColorModeValue, Box, Divider, Icon, ButtonGroup, Card, Text, IconButton, Menu, MenuButton, MenuList, Button } from "@chakra-ui/react"
 import { type User, type Collection, type Item, type ItemImage } from "@evy/db"
 import { ImageDisplay } from "../common/ImageDisplay"
-import { FiEdit, FiExternalLink, FiImage, FiMoreHorizontal, FiShare2 } from "react-icons/fi"
+import { Edit, ExternalLink, Image, MoreHorizontal, Share2 } from "lucide-react"
 import { ShareDialog } from "../share-dialog/ShareDialog"
 import { Link } from "@chakra-ui/next-js"
 import { Fragment } from "react"
@@ -35,10 +35,10 @@ export const ItemTable = ({ items }: Props) => {
           </Box>
           <ButtonGroup mx={4} flexShrink={0}>
             <Menu>
-              <MenuButton variant='ghost' as={IconButton} icon={<Icon as={FiMoreHorizontal} />} />
+              <MenuButton variant='ghost' as={IconButton} icon={<Icon as={MoreHorizontal} />} />
               <MenuList p={0} minWidth='4xs'>
                 <ShareDialog
-                  buttonProps={{ leftIcon: <Icon as={FiShare2} />, variant: 'ghost', width: '100%', borderRadius: 0 }}
+                  buttonProps={{ leftIcon: <Icon as={Share2} />, variant: 'ghost', width: '100%', borderRadius: 0 }}
                   username={item.collection.user.username}
                   collectionSlug={item.collection.slug}
                   itemSlug={item.slug}
@@ -46,7 +46,7 @@ export const ItemTable = ({ items }: Props) => {
                 <Button
                   width='100%'
                   borderRadius={0}
-                  leftIcon={<Icon as={FiEdit} />}
+                  leftIcon={<Icon as={Edit} />}
                   variant='ghost'
                   as={Link}
                   href={`/my/${item.collection.slug}/${item.slug}/edit`}>
@@ -57,7 +57,7 @@ export const ItemTable = ({ items }: Props) => {
             <IconButton
               aria-label='open item'
               variant='ghost'
-              icon={<Icon as={FiExternalLink} />}
+              icon={<Icon as={ExternalLink} />}
               as={Link}
               href={`/my/${item.collection.slug}/${item.slug}`} />
           </ButtonGroup>
@@ -72,6 +72,6 @@ const NoImage = () => {
   const bg = useColorModeValue('gray.200', 'gray.600')
   const ic = useColorModeValue('gray.500', 'gray.300')
   return <Box bg={bg} boxSize={imageSize} display='flex' alignItems='center' justifyContent='center'>
-    <Icon color={ic} as={FiImage} boxSize={8} />
+    <Icon color={ic} as={Image} boxSize={8} />
   </Box>
 }

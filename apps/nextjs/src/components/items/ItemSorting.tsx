@@ -1,5 +1,5 @@
 import { HStack, Menu, ButtonGroup, MenuButton, Button, IconButton, Icon, MenuList, MenuItem, Text, type StackProps } from "@chakra-ui/react"
-import { FiArrowDown, FiArrowUp } from "react-icons/fi"
+import { ArrowUp, ArrowDown } from "lucide-react"
 import { type SortingDirection } from "~/utils/sorting/types"
 
 export type Sorting = 'name' | 'date'
@@ -22,8 +22,8 @@ export const ItemSorting = ({ sorting, sortingDirection, updateSorting, ...rest 
           aria-label='sorting direction'
           icon={
             sortingDirection === 'desc'
-              ? <Icon as={FiArrowDown} />
-              : <Icon as={FiArrowUp} />
+              ? <Icon as={ArrowDown} />
+              : <Icon as={ArrowUp} />
           }
         />
       </ButtonGroup>

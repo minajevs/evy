@@ -2,7 +2,7 @@ import { Icon } from "@chakra-ui/react"
 import { Link } from "@chakra-ui/next-js"
 import { Button, type ButtonProps, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure, Input, InputGroup, InputRightElement, useClipboard } from "@chakra-ui/react"
 import { env } from "~/env.mjs"
-import { FiCheckSquare } from "react-icons/fi"
+import { CheckSquare } from "lucide-react"
 
 type Props = {
   buttonProps: Omit<ButtonProps, 'onClick'>
@@ -42,7 +42,7 @@ export const ShareDialog = ({ username, collectionSlug, itemSlug, buttonProps }:
               <Input isReadOnly value={url} onFocus={e => e.target.select()} />
               <InputRightElement width='8rem' justifyContent='end' pr='1.5'>
                 <Button h='1.75rem' size='md' onClick={handleCopy}>
-                  {hasCopied ? <><Icon as={FiCheckSquare} color='green.500' mr='1' />Copied</> : 'Copy'}
+                  {hasCopied ? <><Icon as={CheckSquare} color='green.500' mr='1' />Copied</> : 'Copy'}
                 </Button>
               </InputRightElement>
             </InputGroup>

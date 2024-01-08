@@ -1,5 +1,5 @@
 import { Text, type FlexProps, Flex, Button, ButtonGroup, Icon } from "@chakra-ui/react"
-import { FiChevronsLeft, FiChevronsRight } from "react-icons/fi"
+import { ChevronsLeft, ChevronsRight } from "lucide-react"
 
 type Props = {
   currentPage: number
@@ -26,10 +26,10 @@ export const Pagination = ({ currentPage, pageSize = 10, totalItems, changePage,
     <ButtonGroup isAttached variant='outline'>
       {buttons.map((x, i) => {
         if (x === 'first') {
-          return <Button key={i} leftIcon={<Icon boxSize={4} as={FiChevronsLeft} />} onClick={() => changePage(1)}>1</Button>
+          return <Button key={i} leftIcon={<Icon boxSize={4} as={ChevronsLeft} />} onClick={() => changePage(1)}>1</Button>
         }
         if (x === 'last') {
-          return <Button key={i} rightIcon={<Icon boxSize={4} as={FiChevronsRight} />} onClick={() => changePage(totalPages)}>{totalPages}</Button>
+          return <Button key={i} rightIcon={<Icon boxSize={4} as={ChevronsRight} />} onClick={() => changePage(totalPages)}>{totalPages}</Button>
         }
 
         return <Button key={i} onClick={() => currentPage !== x ? changePage(+x) : void 0} isActive={currentPage === x}>{x}</Button>

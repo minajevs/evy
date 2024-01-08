@@ -7,7 +7,7 @@ import { getServerSession } from "next-auth/next"
 import { authOptions } from "@evy/auth"
 import { Stack, Flex, Heading, VStack, FormControl, FormLabel, Input, Checkbox, Button, Link, Text, Divider, Icon } from "@chakra-ui/react"
 import { useBackgroundColor, useBackgroundPattern } from "@evy/styling"
-import { FiGithub } from "react-icons/fi"
+import { Github } from "lucide-react"
 
 export default function SignIn({
   providers,
@@ -65,7 +65,7 @@ export default function SignIn({
         <VStack w="100%">
           {Object.values(providers).map((provider) => (
             <Button w='100%' variant='outline' key={provider.id} onClick={() => signIn(provider.id)}>
-              <Icon as={FiGithub} mr={4} /> Sign in with {provider.name}
+              <Icon as={Github} mr={4} /> Sign in with {provider.name}
             </Button>
           ))}
         </VStack>

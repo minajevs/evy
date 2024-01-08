@@ -5,11 +5,10 @@ import { $generateNodesFromDOM } from "@lexical/html"
 import { $getSelection, $isRangeSelection, SELECTION_CHANGE_COMMAND, FORMAT_TEXT_COMMAND, $getRoot, $insertNodes, $setSelection } from "lexical"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { ButtonGroup, type ButtonProps, Icon, IconButton, useColorModeValue } from "@chakra-ui/react"
-import { FiBold, FiItalic, FiLink } from "react-icons/fi"
+import { Bold, Italic, Link, type LucideIcon } from "lucide-react"
 import { LOW_PRIORITY, getSelectedNode } from "./utils"
 import { createPortal } from "react-dom"
 import { FloatingLinkEditor } from "./FloatingLinkEditor"
-import { type IconType } from "react-icons"
 
 type Props = {
   value: string
@@ -83,20 +82,20 @@ export const ToolbarPlugin = ({ value }: Props) => {
     <ToolbarButton
       label="bold"
       isActive={isBold}
-      icon={FiBold}
+      icon={Bold}
       onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold')}
       borderBottomLeftRadius={0}
     />
     <ToolbarButton
       label="italic"
       isActive={isItalic}
-      icon={FiItalic}
+      icon={Italic}
       onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic')}
     />
     <ToolbarButton
       label="link"
       isActive={isLink}
-      icon={FiLink}
+      icon={Link}
       onClick={insertLink}
       borderBottomRightRadius={0}
     />
@@ -108,7 +107,7 @@ type ToolbarButtonProps = {
   label: string
   isActive: boolean
   onClick: () => void
-  icon: IconType
+  icon: LucideIcon
 } & ButtonProps
 const ToolbarButton = ({ label, isActive, onClick, icon, ...rest }: ToolbarButtonProps) => (
   <IconButton
