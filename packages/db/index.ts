@@ -1,25 +1,31 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient as PrismaClientWithoutExtension } from '@prisma/client'
 import { markdownToSafeHTML } from './src/markdown'
 
 export * from '@prisma/client'
 
-const globalForPrisma = globalThis as { prisma?: typeof extendedPrisma }
+const globalForPrisma = globalThis as unknown as {
+  prisma: typeof extendedPrisma
+  prismaWithoutClientExtensions: PrismaClientWithoutExtension
+}
 
 const logQueries = false
 
-const logPrisma = new PrismaClient({
+const customPrisma = new PrismaClientWithoutExtension({
   log:
     process.env.NODE_ENV === 'development'
       ? [{ emit: 'event', level: 'query' }, 'error', 'warn']
       : ['error'],
 })
 
-logPrisma.$on('query', (e) => {
+customPrisma.$on('query', (e) => {
   if (!logQueries) return
   console.log(`[${e.duration}ms] ${e.query}`)
 })
 
-const extendedPrisma = logPrisma
+const prismaWithoutClientExtensions =
+  globalForPrisma.prismaWithoutClientExtensions ?? customPrisma
+
+const extendedPrisma = prismaWithoutClientExtensions
   .$extends({
     result: {
       collection: {
@@ -49,6 +55,13 @@ const extendedPrisma = logPrisma
     },
   })
 
-export const prisma = globalForPrisma.prisma || extendedPrisma
+export const prisma = globalForPrisma.prisma ?? extendedPrisma
 
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
+if (process.env.NODE_ENV !== 'production') {
+  globalForPrisma.prisma = prisma
+  globalForPrisma.prismaWithoutClientExtensions = prismaWithoutClientExtensions
+}
+
+type CustomPrisma = typeof prisma
+export type PrismaClient = CustomPrisma
+export default prisma
