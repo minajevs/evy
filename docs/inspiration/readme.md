@@ -40,4 +40,8 @@ Clean and straight to the point
 - Integration with External Sources:
   - Integrate your application with external data sources such as online auctions or item catalogs, allowing users to easily add new items to their collections
 - Mobile Application:
+
   - Develop a mobile application for convenient use on smartphones and tablets.
+
+- Print item information, display labels
+  - Print beautiful card for an item. Useful for exhibitions, meetups
