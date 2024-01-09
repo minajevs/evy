@@ -1,5 +1,6 @@
 import { env } from '../env.mjs'
 import { prisma } from '@evy/db'
+import { type PrismaClient } from '@prisma/client'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import { type DefaultSession, type NextAuthOptions } from 'next-auth'
 import GitHubProvider, { type GithubProfile } from 'next-auth/providers/github'
@@ -27,7 +28,7 @@ declare module 'next-auth' {
   }
 }
 
-const prismaAdapter = PrismaAdapter(prisma)
+const prismaAdapter = PrismaAdapter(prisma as unknown as PrismaClient)
 
 /**
  * Options for NextAuth.js used to configure
