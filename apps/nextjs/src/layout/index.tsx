@@ -30,7 +30,7 @@ const Layout = ({ children, layout, title }: Props) => {
   }
   return <>
     <Head>
-      <title>{`📚 Evy ${title !== undefined ? `| ${title}` : ''}`}</title>
+      <title>{`Evy ${title !== undefined ? `| ${title}` : ''}`}</title>
       <meta name="description" content="Amazing Evy app!" />
       <link rel="icon" href="/favicon.ico" />
     </Head>

@@ -6,6 +6,7 @@ import { Inbox, Moon, Sun, User } from 'lucide-react'
 import { Link } from "@chakra-ui/next-js"
 import { signIn, signOut, useSession } from "next-auth/react"
 import NewCollectionDialog from "~/components/collections/NewCollectionDialog"
+import { EvyLogo } from "~/components/logo/EvyLogo"
 
 export type LinkItem = {
   name: string
@@ -35,8 +36,10 @@ export const Sidebar = ({ linkItems, ...rest }: SidebarProps) => {
         {/* Heading */}
         <Box pt='8' pb='4' w='100%'>
           <Heading size="lg" mx='8' mb='4' justifyContent='flex-start'>
-            <Link href="/">
-              Evy ⚡️
+            <Link href='/' _hover={{
+              textDecoration: 'none'
+            }}>
+              <EvyLogo />
             </Link>
           </Heading>
         </Box>

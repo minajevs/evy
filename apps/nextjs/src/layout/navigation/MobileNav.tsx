@@ -3,6 +3,7 @@ import { useBackgroundColor } from "@evy/styling";
 import { Link } from "@chakra-ui/next-js"
 import { signIn, signOut, useSession } from "next-auth/react"
 import { Moon, Sun } from "lucide-react"
+import { EvyLogo } from "~/components/logo/EvyLogo";
 
 type MobileProps = FlexProps
 
@@ -23,8 +24,8 @@ export const MobileNav = ({ ...rest }: MobileProps) => {
       h={16}
       {...rest}>
       <Heading size="lg" mx='4' justifyContent='flex-start'>
-        <Link href="/">
-          Evy ⚡️
+        <Link href="/" _hover={{ textDecoration: 'none' }}>
+          <EvyLogo />
         </Link>
       </Heading>
 

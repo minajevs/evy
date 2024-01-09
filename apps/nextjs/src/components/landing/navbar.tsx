@@ -3,6 +3,7 @@ import { useBackgroundColor } from "@evy/styling"
 import { useAutoAnimate } from "@formkit/auto-animate/react"
 import { Moon, Sun, X, Menu } from "lucide-react"
 import { signIn } from "next-auth/react"
+import { EvyLogo } from "../logo/EvyLogo"
 
 export const Navbar = () => {
   const { colorMode, toggleColorMode } = useColorMode()
@@ -19,8 +20,8 @@ export const Navbar = () => {
         <Flex h={12} alignItems="center" justifyContent="space-between" mx="auto">
           {/* Heading */}
           <Heading size="lg" justifyContent='flex-start' w={150}>
-            <Link href="/">
-              Evy ⚡️
+            <Link href="/" _hover={{ textDecoration: 'none' }}>
+              <EvyLogo />
             </Link>
           </Heading>
 

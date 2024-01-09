@@ -4,6 +4,9 @@ import '@evy/auth/env.mjs'
 
 /** @type {import("next").NextConfig} */
 const config = {
+  experimental: {
+    swcPlugins: [['next-superjson-plugin', {}]],
+  },
   /** enable standalone deployment for docker */
   output: 'standalone',
   reactStrictMode: true,
