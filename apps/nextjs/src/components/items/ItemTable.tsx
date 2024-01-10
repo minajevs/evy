@@ -15,7 +15,7 @@ type Props = {
 }
 export const ItemTable = ({ items }: Props) => {
   const hover = useColorModeValue('gray.200', 'gray.600')
-  return <Card boxShadow='sm'>
+  return <Card boxShadow='md'>
     <VStack border='0' rounded="md" spacing={0} overflow='hidden'>
       {items.map((item, i) => <Fragment key={item.id}>
         <HStack width='100%' _hover={{ bg: hover }} spacing={4}>

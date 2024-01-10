@@ -1,5 +1,5 @@
 import { Icon } from "@chakra-ui/react"
-import { HStack, Heading, Button, Text, Avatar, Box, Divider, SimpleGrid, VStack } from "@chakra-ui/react"
+import { HStack, Heading, Button, Text, Box, Divider, SimpleGrid } from "@chakra-ui/react"
 import { getServerSession } from "@evy/auth";
 import { type Collection, prisma, type User, type Item } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
@@ -8,6 +8,7 @@ import { Edit } from "lucide-react"
 import { CollectionCard } from "~/components/collections/CollectionCard"
 import { MyLayout } from "~/layout"
 import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
+import { ProfileCard } from "~/components/profile/ProfileCard";
 
 type Props = {
   user: User & { collections: (Collection & { items: Item[] })[] }
@@ -15,10 +16,6 @@ type Props = {
 
 
 const Profile: NextPage<Props> = ({ user, layout }) => {
-  const userImage = user.image ?? ''
-
-  const nameEmpty = user.name === null || user.name.length === 0
-
   const collections = user.collections.length > 0
     ? <SimpleGrid columns={1} spacing='8'>
       {user.collections.map(collection => <CollectionCard key={collection.id} collection={collection} />)}
@@ -38,15 +35,8 @@ const Profile: NextPage<Props> = ({ user, layout }) => {
         </Button>
       </HStack>
 
-      <HStack mb='4'>
-        <Avatar bg='teal.500' name={user.name ?? user.username} src={userImage} />
-        <VStack alignItems='baseline' spacing={0}>
-          <Heading size='md'>{nameEmpty ? user.username : user.name}</Heading>
-          {!nameEmpty
-            ? <Text size="sm">{user.username}</Text>
-            : null}
-        </VStack>
-      </HStack>
+      <ProfileCard user={user} />
+
       <Box fontWeight={500} color='gray.500'>
         <Text display='inline'>Joined:</Text>
         <Text display='inline'>{user.createdAt.toLocaleDateString('en-GB')}</Text>

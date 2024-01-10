@@ -9,7 +9,6 @@ type Props = {
 } & Omit<ImageProps, 'src' | 'alt'>
 
 export const CustomImage = ({ image, fit, ...rest }: Props) => {
-  console.log(fit)
   return <Image
     as={NextImage}
     src={imageSrc(image.externalImageId)}

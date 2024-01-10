@@ -1,5 +1,5 @@
 import { Link } from "@chakra-ui/next-js"
-import { Box, Card, CardBody, Flex, Heading, Icon, IconButton, Text, VStack, useDisclosure } from "@chakra-ui/react"
+import { Box, Card, CardBody, Center, Divider, Flex, HStack, Heading, Icon, IconButton, Text, VStack, useDisclosure } from "@chakra-ui/react"
 import { type Collection, prisma, type Item, type ItemImage, type User } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
 import { useCallback, useRef, useState } from "react"
@@ -11,6 +11,7 @@ import { HtmlView } from "~/components/common/HtmlView"
 import { ImageDisplay } from "~/components/common/ImageDisplay"
 import { ArrowLeft, ArrowRight, Expand } from "lucide-react"
 import { useHasOverflow } from "~/utils/useHasOverflow"
+import { ProfileCard } from "~/components/profile/ProfileCard"
 
 type ItemProp = Item & { collection: Collection & { user: User } } & { images: ItemImage[] } & { htmlDescription: string | null }
 
@@ -30,13 +31,28 @@ const ItemPage: NextPage<Props> = ({ item }) => {
   </>
 }
 
-const ItemHeading = ({ item }: Props) => (
-  <Heading size="lg" mb="4">
-    <Link href={`/${item.collection.user.username}/${item.collection.slug}`}>{item.collection.name}</Link>
-    <Text display='inline' pl='1' fontWeight={200}>/</Text>
-    <Text display='inline' pl='1'>{item.name}</Text>
-  </Heading>
-)
+const ItemHeading = ({ item }: Props) => {
+  return <>
+    <Heading mb={4}>
+      <Text display='inline'>{item.name}</Text>
+    </Heading>
+    <HStack alignItems='top' spacing={4}>
+      <Link href={`/${item.collection.user.username}`} mb={4}>
+        <ProfileCard
+          user={item.collection.user}
+        />
+      </Link>
+      <Center height={12}>
+        <Divider opacity={1} orientation='vertical' />
+      </Center>
+      <Link href={`/${item.collection.user.username}/${item.collection.slug}`}>
+        <Heading fontWeight={400} size="md">
+          {item.collection.name}
+        </Heading>
+      </Link>
+    </HStack>
+  </>
+}
 
 const NoImageView = ({ item }: Props) => {
   return <>
@@ -59,6 +75,8 @@ const ImageView = ({ item }: Props) => {
     viewImageDisclosure.onOpen()
   }, [setOpenImage, viewImageDisclosure, viewImage])
 
+  const showImageDescription = (viewImage.name !== null && viewImage.name.length !== 0) || (viewImage.description !== null && viewImage.description.length !== 0)
+
   return <>
     <Flex
       height='100%'
@@ -69,9 +87,9 @@ const ImageView = ({ item }: Props) => {
       <Box width={{ base: '100%', md: '50%' }}>
         <ItemHeading item={item} />
         {item.description !== null && item.description.length > 0
-          ? <Card>
+          ? <Card boxShadow='xl' mb={4}>
             <CardBody>
-              <HtmlView mb={8} value={item.htmlDescription} />
+              <HtmlView value={item.htmlDescription} />
             </CardBody>
           </Card>
           : null
@@ -80,11 +98,14 @@ const ImageView = ({ item }: Props) => {
       <VStack
         height='100%'
         width={{ base: '100%', md: '50%' }}
+        minHeight='50vh'
         spacing={9}
       >
-        <VStack
+        <Card
           height='100%'
           width='100%'
+          overflow='hidden'
+          boxShadow='xl'
         >
           <Box
             position='relative'
@@ -94,7 +115,6 @@ const ImageView = ({ item }: Props) => {
             onClick={onClick}
           >
             <ImageDisplay
-              borderRadius={10}
               overflow='hidden'
               image={viewImage}
               fit={'cover'}
@@ -106,20 +126,22 @@ const ImageView = ({ item }: Props) => {
               position='absolute'
               top={2}
               right={2}
+              opacity={0.5}
+              _hover={{
+                opacity: 1
+              }}
               icon={<Icon as={Expand} />}
             />
           </Box>
           {
-            (viewImage.name !== null && viewImage.name.length !== 0) || (viewImage.description !== null && viewImage.description.length !== 0)
-              ? <Card width='100%'>
-                <CardBody>
-                  <Text as='b'>{viewImage.name}</Text>
-                  <Text>{viewImage.description}</Text>
-                </CardBody>
-              </Card>
+            showImageDescription
+              ? <CardBody>
+                <Text as='b'>{viewImage.name}</Text>
+                <Text>{viewImage.description}</Text>
+              </CardBody>
               : null
           }
-        </VStack>
+        </Card>
         <ScrollableItemList images={item.images} onImageClick={setViewImage} />
       </VStack>
     </Flex>
@@ -199,7 +221,11 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
           user: true
         }
       },
-      images: true
+      images: {
+        orderBy: {
+          createdAt: 'asc'
+        }
+      }
     }
   })
 

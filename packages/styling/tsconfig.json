@@ -1,4 +1,4 @@
 {
   "extends": "../../tsconfig.json",
-  "include": ["index.ts", "styling.d.ts"]
+  "include": ["index.ts", "src", "styling.d.ts"]
 }

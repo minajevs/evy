@@ -1,4 +1,9 @@
-import { type ThemeConfig, extendTheme, type Colors } from '@chakra-ui/react'
+import {
+  type ThemeConfig,
+  extendTheme,
+  type Colors,
+  type ThemeOverride,
+} from '@chakra-ui/react'
 import { withProse } from '@nikolovlazar/chakra-ui-prose'
 
 const colors: Colors = {
@@ -23,7 +28,8 @@ export const theme = extendTheme(
   {
     colors,
     config,
-  },
+    components: {},
+  } as ThemeOverride,
   withProse({
     baseStyle: {
       p: {
