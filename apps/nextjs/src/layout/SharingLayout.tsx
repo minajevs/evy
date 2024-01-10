@@ -8,15 +8,16 @@ import { Moon, Sun } from "lucide-react"
 
 type Props = {
   children: React.ReactNode
+  title?: string
 }
 
-export const SharingLayout = ({ children }: Props) => {
+export const SharingLayout = ({ title, children }: Props) => {
   const { colorMode, toggleColorMode } = useColorMode()
   const bg = useBackgroundColor('page')
 
   return <>
     <Head>
-      <title>{`⚡️ Evy`}</title>
+      <title>{title !== undefined ? `${title} | Evy.app` : `Evy.app`}</title>
       <meta name="description" content="Amazing Evy app!" />
       <link rel="icon" href="/favicon.ico" />
     </Head>
@@ -30,7 +31,7 @@ export const SharingLayout = ({ children }: Props) => {
           onClick={toggleColorMode}
         />
       </HStack>
-      <Box flex={1} px={{ base: 4, md: 8, lg: 16, xl: 32 }} py={{ base: 4, md: 8 }}>
+      <Box flex={1} px={{ base: 4, md: 8, lg: 16, xl: 32 }}>
         <Container maxW='container.xl' p={0} height='100%'>
           {children}
         </Container>

@@ -25,7 +25,7 @@ const ItemPage: NextPage<Props> = ({ item }) => {
     : NoImageView
 
   return <>
-    <SharingLayout>
+    <SharingLayout title={`${item.name} - ${item.collection.name} - ${item.collection.user.name ?? item.collection.user.username}`}>
       <View item={item} />
     </SharingLayout>
   </>

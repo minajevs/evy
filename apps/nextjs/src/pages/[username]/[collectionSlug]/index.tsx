@@ -19,7 +19,7 @@ const UserCollectionPage: NextPage<Props> = ({ collection }) => {
   const showDescription = collection.description !== null && collection.description.length !== 0
 
   return <>
-    <SharingLayout>
+    <SharingLayout title={`${collection.name} - ${collection.user.name ?? collection.user.username}`}>
       <HStack width='100%' justifyContent='space-between'>
         <Heading mb={4}>
           <Text>{collection.name}</Text>
