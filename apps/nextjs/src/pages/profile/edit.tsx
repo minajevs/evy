@@ -6,7 +6,7 @@ import type { GetServerSideProps, NextPage } from "next"
 import { useRouter } from "next/router";
 import { Check, Save, X } from "lucide-react"
 import { useZodForm } from "~/components/forms"
-import Layout from "~/layout"
+import { MyLayout } from "~/layout"
 import { api } from "~/utils/api";
 import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps";
 import { useVerifyValue } from "~/utils/useVerifyValue";
@@ -49,7 +49,7 @@ const EditProfile: NextPage<Props> = ({ user, layout }) => {
   })
 
   return (
-    <Layout layout={layout}>
+    <MyLayout layout={layout}>
       <form onSubmit={onSubmit}>
         <HStack width='100%' justifyContent='space-between'>
           <Heading size="lg" mb="4">
@@ -120,7 +120,7 @@ const EditProfile: NextPage<Props> = ({ user, layout }) => {
           </Box>
         </VStack>
       </form>
-    </Layout>
+    </MyLayout>
   )
 }
 

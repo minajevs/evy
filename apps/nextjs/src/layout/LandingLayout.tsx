@@ -9,7 +9,7 @@ type Props = {
   children: React.ReactNode
 }
 
-const LandingLayout = ({ children }: Props) => {
+export const LandingLayout = ({ children }: Props) => {
   const bg = useBackgroundColor('page')
   // Translate pattern by 100 pixels, where 100 is height of box
   const pattern = useBackgroundPattern({ translateY: 100 })

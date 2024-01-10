@@ -3,7 +3,7 @@ import { getServerSession } from "@evy/auth"
 import { type Collection, prisma, type Item, type User } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
 import { z } from "zod"
-import Layout from "~/layout"
+import { MyLayout } from "~/layout"
 import { api } from "~/utils/api"
 import { Icon } from "@chakra-ui/react"
 import { useZodForm } from "~/components/forms"
@@ -50,7 +50,7 @@ const CollectionEditPage: NextPage<Props> = ({ layout, collection }) => {
   })
 
   return <>
-    <Layout title="Collection" layout={layout}>
+    <MyLayout title="Collection" layout={layout}>
       <form onSubmit={onSubmit}>
         <HStack justifyContent='space-between'>
           <Heading size="lg" mb="4">
@@ -131,7 +131,7 @@ const CollectionEditPage: NextPage<Props> = ({ layout, collection }) => {
           </Box>
         </VStack>
       </form>
-    </Layout>
+    </MyLayout>
   </>
 }
 

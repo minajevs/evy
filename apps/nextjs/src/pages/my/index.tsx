@@ -4,7 +4,7 @@ import { type Collection, type Item, prisma } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
 import { CollectionCard } from "~/components/collections/CollectionCard"
 import NewCollectionDialog from "~/components/collections/NewCollectionDialog"
-import Layout from "~/layout"
+import { MyLayout } from "~/layout"
 import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 
 type Props = {
@@ -17,9 +17,9 @@ const MyPage: NextPage<Props> = ({
 
   if (collections.length === 0)
     return <>
-      <Layout title="My Collections" layout={layout}>
+      <MyLayout title="My Collections" layout={layout}>
         <NoCollections />
-      </Layout>
+      </MyLayout>
     </>
 
   const colllectionView = <SimpleGrid columns={1} spacing='8'>
@@ -27,13 +27,13 @@ const MyPage: NextPage<Props> = ({
   </SimpleGrid>
 
   return <>
-    <Layout title="My Collections" layout={layout}>
+    <MyLayout title="My Collections" layout={layout}>
       <HStack width='100%' justifyContent='space-between' mb='4'>
         <Heading size="md">Collections</Heading>
         <NewCollectionDialog />
       </HStack>
       {colllectionView}
-    </Layout>
+    </MyLayout>
   </>
 }
 

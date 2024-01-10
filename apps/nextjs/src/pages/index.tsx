@@ -2,7 +2,7 @@
 import { Text } from "@chakra-ui/react";
 import { getServerSession } from "@evy/auth";
 import type { GetServerSidePropsContext, NextPage } from "next"
-import LandingLayout from "~/layout/LandingLayout"
+import { LandingLayout } from "~/layout"
 import { Hero } from "~/components/landing/hero";
 
 const Home: NextPage = () => {

@@ -2,7 +2,7 @@ import { Box, HStack, Heading, SimpleGrid, Text } from "@chakra-ui/react"
 import { type Collection, prisma, type Item, type User, type ItemImage } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
 import { z } from "zod"
-import Layout from "~/layout"
+import { MyLayout } from "~/layout"
 import { type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 import { ItemCard } from "~/components/items/ItemCard"
 import { getServerSession } from "@evy/auth"
@@ -16,7 +16,7 @@ type Props = {
 
 const UserCollectionPage: NextPage<Props> = ({ layout, collection }) => {
   return <>
-    <Layout title="Collection" layout={layout}>
+    <MyLayout title="Collection" layout={layout}>
       <HStack width='100%' justifyContent='space-between'>
         <Heading size="lg" mb="4">
           <Text>{collection.name}</Text>
@@ -27,7 +27,7 @@ const UserCollectionPage: NextPage<Props> = ({ layout, collection }) => {
         <Heading size="md">Items</Heading>
       </HStack>
       <ItemList items={collection.items} username={collection.user.username} />
-    </Layout>
+    </MyLayout>
   </>
 }
 

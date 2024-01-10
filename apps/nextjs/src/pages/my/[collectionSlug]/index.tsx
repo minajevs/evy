@@ -4,7 +4,7 @@ import { type Collection, prisma, type Item, type User, type ItemImage } from "@
 import type { GetServerSideProps, NextPage } from "next"
 import { z } from "zod"
 import { NewItem } from "~/components/new-item"
-import Layout from "~/layout"
+import { MyLayout } from "~/layout"
 import { Link } from "@chakra-ui/next-js"
 import { Icon } from "@chakra-ui/react"
 import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
@@ -76,7 +76,7 @@ const CollectionPage: NextPage<Props> = ({ layout, collection, view, sorting, so
 
 
   return <>
-    <Layout title="Collection" layout={layout}>
+    <MyLayout title="Collection" layout={layout}>
       <HStack width='100%' justifyContent='space-between'>
         <Heading size="lg" mb="4">
           <Text>{collection.name}</Text>
@@ -123,7 +123,7 @@ const CollectionPage: NextPage<Props> = ({ layout, collection, view, sorting, so
       </HStack>
       {itemView}
       <Pagination currentPage={page} totalItems={totalItems} pageSize={pageSize} changePage={changePage} mt={4} />
-    </Layout >
+    </MyLayout >
   </>
 }
 

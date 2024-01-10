@@ -15,11 +15,11 @@ export const ImageModal = ({ image, disclosure: { isOpen, onClose } }: Props) =>
     </CardBody>
 
 
-  return <Modal size='5xl' isOpen={isOpen} onClose={onClose}>
+  return <Modal size='full' scrollBehavior="outside" isOpen={isOpen} onClose={onClose}>
     <ModalOverlay />
-    <ModalContent background='transparent' shadow='none' border='none' onClick={onClose}>
-      <VStack spacing={3} >
-        <ImageDisplay image={image} height='66vh' fit='contain' onClick={onClose} />
+    <ModalContent background='transparent' height='100%' shadow='none' border='none' onClick={onClose}>
+      <VStack spacing={3} height='100%' m={2}>
+        <ImageDisplay image={image} height='100%' fit='contain' onClick={onClose} />
         <Card width='sm' onClick={(e) => {
           // do not close modal on Card click
           e.stopPropagation()

@@ -16,20 +16,8 @@ export const ImageDisplay = ({ image, fit, height, width, ...rest }: Props) => {
       height={height}
       width={width}
       {...rest}
-      // _after={{
-      //   content: '""',
-      //   w: 'full',
-      //   h: 'full',
-      //   pos: 'absolute',
-      //   top: 5,
-      //   left: 0,
-      //   backgroundImage: getDataFromThumbhash(image.thumbhash),
-      //   backgroundSize: 'cover',
-      //   zIndex: -1,
-      //   filter: 'blur(15px)',
-      // }}
       key={image.id}>
-      <CustomImage image={image} objectFit={fit ?? 'cover'} />
+      <CustomImage image={image} fit={fit ?? 'cover'} />
     </Box>
   </Box>
 }

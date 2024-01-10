@@ -7,7 +7,7 @@ import type { GetServerSideProps, NextPage } from "next"
 import { z } from "zod"
 import { ItemMedia } from "~/components/item-media"
 import { ShareDialog } from "~/components/share-dialog/ShareDialog"
-import Layout from "~/layout"
+import { MyLayout } from "~/layout"
 import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 import { Edit, Plus, Share2 } from "lucide-react"
 import { HtmlView } from "~/components/common/HtmlView"
@@ -20,7 +20,7 @@ const ItemPage: NextPage<Props> = ({ layout, item }) => {
   const uploadDisclosure = useDisclosure()
 
   return <>
-    <Layout title="Collection" layout={layout}>
+    <MyLayout title="Collection" layout={layout}>
       <HStack width='100%' justifyContent='space-between'>
         <Heading size="lg" mb="4">
           <Link href={`/my/${item.collection.slug}`}>{item.collection.name}</Link>
@@ -47,7 +47,7 @@ const ItemPage: NextPage<Props> = ({ layout, item }) => {
         </Button>
       </HStack>
       <ItemMedia itemId={item.id} images={item.images} uploadDisclosure={uploadDisclosure} />
-    </Layout>
+    </MyLayout>
   </>
 }
 

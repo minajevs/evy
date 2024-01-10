@@ -1,18 +1,20 @@
 import { type ItemImage } from "@evy/db"
-import { Box } from "@chakra-ui/react"
+import { Box, type BoxProps } from "@chakra-ui/react"
 import { ImageDisplay } from "~/components/common/ImageDisplay"
 
 type Props = {
   image: ItemImage
   onClick: () => void
-}
-export const ImageCard = ({ image, onClick }: Props) => {
+} & BoxProps
+export const ImageCard = ({ image, onClick, ...rest }: Props) => {
   return <>
     <Box
       role='group'
       zIndex={1}
       cursor='pointer'
-      onClick={onClick}>
+      onClick={onClick}
+      {...rest}
+    >
       {/* width - full, heigh - full, paddingTop - 100% to achieve square */}
       {/* set paddingTop to change dimensions, eg. w = 100px, paddingTop = 33% => h == 33px  */}
       <ImageDisplay

@@ -8,7 +8,7 @@ import { useRouter } from "next/router"
 import { z } from "zod"
 import { useZodForm } from "~/components/forms"
 import { env } from "~/env.mjs"
-import Layout from "~/layout"
+import { MyLayout } from "~/layout"
 import { api } from "~/utils/api"
 import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 import { useVerifyValue } from "~/utils/useVerifyValue"
@@ -58,7 +58,7 @@ const EditItemPage: NextPage<Props> = ({ layout, item }) => {
   })
 
   return <>
-    <Layout title="Item" layout={layout}>
+    <MyLayout title="Item" layout={layout}>
       <form onSubmit={onSubmit}>
         <Flex justifyContent='space-between'>
           <Heading size="lg" mb="4">
@@ -141,7 +141,7 @@ const EditItemPage: NextPage<Props> = ({ layout, item }) => {
           </Box>
         </VStack>
       </form>
-    </Layout>
+    </MyLayout>
   </>
 }
 

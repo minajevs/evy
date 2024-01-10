@@ -6,7 +6,7 @@ import type { GetServerSideProps, NextPage } from "next"
 import Link from "next/link"
 import { Edit } from "lucide-react"
 import { CollectionCard } from "~/components/collections/CollectionCard"
-import Layout from "~/layout"
+import { MyLayout } from "~/layout"
 import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 
 type Props = {
@@ -28,7 +28,7 @@ const Profile: NextPage<Props> = ({ user, layout }) => {
     </Box>
 
   return (
-    <Layout layout={layout}>
+    <MyLayout layout={layout}>
       <HStack width='100%' justifyContent='space-between'>
         <Heading size="lg" mb="4">
           <Text>Profile</Text>
@@ -54,7 +54,7 @@ const Profile: NextPage<Props> = ({ user, layout }) => {
       <Divider my='4' />
       <Heading size='md' mb='4'>Collections</Heading>
       {collections}
-    </Layout>
+    </MyLayout>
   )
 }
 

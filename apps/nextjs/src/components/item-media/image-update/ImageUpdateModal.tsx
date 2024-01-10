@@ -103,12 +103,12 @@ export const ImageUpdateModal = ({ image, onDeleted, disclosure: { isOpen, onClo
     </>
 
   return <FormProvider {...form}>
-    <Modal size='5xl' isOpen={isOpen} onClose={handleClose}>
+    <Modal size='full' scrollBehavior="outside" isOpen={isOpen} onClose={handleClose}>
       <ModalOverlay />
-      <ModalContent background='transparent' shadow='none' border='none' onClick={onClose}>
-        <form onSubmit={onSubmit}>
-          <VStack spacing={3} >
-            <ImageDisplay image={image} height='66vh' fit='contain' onClick={handleClose} />
+      <ModalContent background='transparent' height='100%' padding={3} shadow='none' border='none' onClick={onClose}>
+        <form style={{ height: '100%' }} onSubmit={onSubmit}>
+          <VStack spacing={3} height='100%'>
+            <ImageDisplay image={image} height='100%' fit='contain' onClick={handleClose} />
             <Card width='sm' onClick={(e) => {
               // do not close modal on Card click
               e.stopPropagation()
