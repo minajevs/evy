@@ -32,7 +32,7 @@ export const MyLayout = ({ children, layout, title }: Props) => {
     <Head>
       <title>{`Evy ${title !== undefined ? `| ${title}` : ''}`}</title>
       <meta name="description" content="Amazing Evy app!" />
-      <link rel="icon" href="/favicon.ico" />
+      <link rel="icon" href="/favicon.svg" />
     </Head>
     <Box minH="100vh" bg={bg}>
       {authContent}

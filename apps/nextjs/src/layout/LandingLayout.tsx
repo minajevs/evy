@@ -18,7 +18,7 @@ export const LandingLayout = ({ children }: Props) => {
     <Head>
       <title>{`⚡️ Evy`}</title>
       <meta name="description" content="Amazing Evy app!" />
-      <link rel="icon" href="/favicon.ico" />
+      <link rel="icon" href="/favicon.svg" />
     </Head>
     <Box minH="100vh" bg={bg} display='flex' flexDirection='column'>
       <Box backgroundImage={pattern}>
