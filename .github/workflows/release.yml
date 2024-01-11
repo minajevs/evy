@@ -1,0 +1,46 @@
+name: Release app to production
+
+on:
+  workflow_dispatch:
+
+env:
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+  NEXT_PUBLIC_HOST: ${{ secrets.NEXT_PUBLIC_HOST }}
+  GITHUB_CLIENT_ID: ${{ secrets.SECRET_GITHUB_CLIENT_ID }}
+  GITHUB_CLIENT_SECRET: ${{ secrets.SECRET_GITHUB_CLIENT_SECRET }}
+  NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
+  NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+  NEXT_PUBLIC_CLOUDFLARE_ACCOUNT_ID: ${{ secrets.NEXT_PUBLIC_CLOUDFLARE_ACCOUNT_ID }}
+  NEXT_PUBLIC_CLOUDFLARE_ACCOUNT_HASH: ${{ secrets.NEXT_PUBLIC_CLOUDFLARE_ACCOUNT_HASH }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install
+        run: npm ci
+      - name: Build
+        run: npm run build
+      # - name: Lint
+      #  run: npm run lint
+
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install
+        run: npm ci
+      - name: Push db
+        run: npm run db:push
+
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main # Always checkout main even for tagged releases
+          fetch-depth: 0
+          token: ${{ secrets.GH_ACCESS_TOKEN }}
+      - run: git push origin +main:production
