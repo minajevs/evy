@@ -15,7 +15,7 @@ const MyApp: AppType = ({
   pageProps: { ...pageProps },
 }) => {
   return (
-    <PlausibleProvider domain={env.NEXT_PUBLIC_HOST} customDomain={`https://stats.${env.NEXT_PUBLIC_HOST}/js/script.js`} selfHosted={true}>
+    <PlausibleProvider domain={env.NEXT_PUBLIC_HOST} customDomain={`https://stats.${env.NEXT_PUBLIC_HOST}`} selfHosted={true}>
       <SessionProvider {...pageProps}>
         <ChakraProvider theme={theme}>
           <NextNProgress stopDelayMs={100} />
