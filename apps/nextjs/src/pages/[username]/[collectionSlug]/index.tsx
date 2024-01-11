@@ -25,7 +25,7 @@ const UserCollectionPage: NextPage<Props> = ({ collection }) => {
           <Text>{collection.name}</Text>
         </Heading>
       </HStack>
-      <Link href={`/${collection.user.username}`}>
+      <Link href={`/${collection.user.username}`} display='inline-block'>
         <ProfileCard
           mb={8}
           user={collection.user}
@@ -62,7 +62,8 @@ const ItemList = ({ username, items }: ItemListProps) => {
       <Text>No items in this collection yet</Text>
     </Box>
   }
-  return <SimpleGrid columns={4} spacing='8'>
+  // TODO: Align with common components/items/ItemGrid 
+  return <SimpleGrid columns={{ sm: 2, md: 3, lg: 4, xl: 5 }} spacing='8' width='100%'>
     {items.map(item => <ItemCard key={item.id} item={item} linkPrefix={username} />)}
   </SimpleGrid>
 }

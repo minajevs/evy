@@ -1,18 +1,17 @@
 import NextImage from "next/image"
-import { Image, type ImageProps } from "@chakra-ui/next-js"
+import { type ImageProps } from "@chakra-ui/next-js"
 import { type ItemImage } from "@evy/db"
 import { getDataFromThumbhash, imageSrc } from "@evy/images"
 
 type Props = {
   image: ItemImage
   fit: 'cover' | 'contain'
-} & Omit<ImageProps, 'src' | 'alt'>
+} & Omit<ImageProps, 'src' | 'alt' | 'placeholder'>
 
 export const CustomImage = ({ image, fit, ...rest }: Props) => {
-  return <Image
-    as={NextImage}
+  return <NextImage
     src={imageSrc(image.externalImageId)}
-    alt='img'
+    alt={image.name ?? image.description ?? 'image for an item'}
     fill={true}
     objectFit={fit}
     placeholder="blur"

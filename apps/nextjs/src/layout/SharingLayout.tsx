@@ -21,7 +21,7 @@ export const SharingLayout = ({ title, children }: Props) => {
       <meta name="description" content="Amazing Evy app!" />
       <link rel="icon" href="/favicon.ico" />
     </Head>
-    <Box minHeight="100vh" height='100vh' bg={bg} display='flex' flexDirection='column'>
+    <Box minHeight="100vh" height={{ base: '100%', md: '100vh' }} bg={bg} display='flex' flexDirection='column'>
       <HStack width='100%' justifyContent='flex-end'>
         <IconButton
           m={4}
@@ -31,7 +31,7 @@ export const SharingLayout = ({ title, children }: Props) => {
           onClick={toggleColorMode}
         />
       </HStack>
-      <Box flex={1} px={{ base: 4, md: 8, lg: 16, xl: 32 }}>
+      <Box flex={1} px={{ base: 4, md: 8, lg: 16, xl: 32 }} >
         <Container maxW='container.xl' p={0} height='100%'>
           {children}
         </Container>

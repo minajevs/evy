@@ -115,6 +115,7 @@ const ImageView = ({ item }: Props) => {
             onClick={onClick}
           >
             <ImageDisplay
+              minHeight='33vh'
               overflow='hidden'
               image={viewImage}
               fit={'cover'}
@@ -185,6 +186,8 @@ const ScrollableItemList = ({ images, onImageClick }: ScrollableItemListProps) =
         aspectRatio='1/1'
         key={image.id}>
         <ImageDisplay
+          minHeight='10vh'
+          aspectRatio='1/1'
           width='100%'
           height='100%'
           image={image}

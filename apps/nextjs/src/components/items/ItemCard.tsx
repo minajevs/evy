@@ -9,7 +9,6 @@ type Props = {
   item: Item & { collection: Collection } & { images: ItemImage[] }
 }
 export const ItemCard = ({ linkPrefix, item }: Props) => {
-  console.log(item.images)
   {/* width - full, heigh - full, paddingTop - 100% to achieve square */ }
   {/* set paddingTop to change dimensions, eg. w = 100px, paddingTop = 33% => h == 33px  */ }
   const image = item.images[0] !== undefined
