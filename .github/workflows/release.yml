@@ -27,6 +27,7 @@ jobs:
       #  run: npm run lint
 
   migrate:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -36,6 +37,7 @@ jobs:
         run: npm run db:push
 
   release:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
