@@ -13,7 +13,7 @@ export const CustomImage = ({ image, fit, ...rest }: Props) => {
     src={imageSrc(image.externalImageId)}
     alt={image.name ?? image.description ?? 'image for an item'}
     fill={true}
-    objectFit={fit}
+    style={{ objectFit: fit }}
     placeholder="blur"
     blurDataURL={getDataFromThumbhash(image.thumbhash)}
     {...rest}

@@ -12,6 +12,7 @@ export const editUserSchema = z.object({
   name: z.string(),
 })
 
+// TODO: Harmonize with signup username schema
 export const verifyUsernameSchema = z.object({
   username: z
     .string()

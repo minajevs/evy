@@ -1,25 +1,13 @@
 import { TRPCError } from '@trpc/server'
-import { createTRPCRouter, protectedProcedure } from '../../trpc/trpc'
-import { prisma } from '@evy/db'
-import blocklist from './username-blocklist'
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from '../../trpc/trpc'
 import { editUserSchema, verifyUsernameSchema } from './schemas'
 import { urlSafeRegex } from '../../utils/urlSafeRegex'
-
-const checkUsernameAvailable = async (username: string) => {
-  const existingUser = await prisma.user.findFirst({
-    where: {
-      username: {
-        equals: username,
-        mode: 'insensitive',
-      },
-    },
-  })
-  return existingUser === null
-}
-
-const checkUsernameBlocked = (username: string) => {
-  return blocklist.includes(username)
-}
+import { checkUsernameAvailable } from '../../lib/checkUsernameAvailable'
+import { checkUsernameBlocked } from '../../lib/checkUsernameBlocked'
 
 export const userRouter = createTRPCRouter({
   update: protectedProcedure
@@ -66,7 +54,7 @@ export const userRouter = createTRPCRouter({
         },
       })
     }),
-  verifyUsernameAvailable: protectedProcedure
+  verifyUsernameAvailable: publicProcedure
     .input(verifyUsernameSchema)
     .query(async ({ input: { username } }) => {
       const available = await checkUsernameAvailable(username)

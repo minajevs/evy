@@ -42,8 +42,8 @@ const EditItemPage: NextPage<Props> = ({ layout, item }) => {
   })
 
   const updateMutation = api.item.update.useMutation()
-  const verifyItemSlugQuery = api.item.verifyItemSlug.useQuery({ collectionId: item.collectionId, slug: verifyValue }, {
-    enabled: shouldVerify && errors.slug === undefined,
+  const verifyItemSlugQuery = api.item.verifyItemSlug.useQuery({ collectionId: item.collectionId, slug: verifyValue! }, {
+    enabled: shouldVerify && errors.slug === undefined && verifyValue !== null,
     cacheTime: 0
   })
 

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useDebounce } from './useDebounce'
 
-export const useVerifyValue = (defaultValue: string) => {
+export const useVerifyValue = (defaultValue: string | null) => {
   const [currentValue, setCurrentValue] = useState(defaultValue)
   const debounceValue = useDebounce(currentValue, 500)
 

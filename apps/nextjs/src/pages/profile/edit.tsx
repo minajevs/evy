@@ -33,8 +33,8 @@ const EditProfile: NextPage<Props> = ({ user, layout }) => {
   })
 
   const updateMutation = api.user.update.useMutation()
-  const verifyUsernameAvailableQuery = api.user.verifyUsernameAvailable.useQuery({ username: verifyValue }, {
-    enabled: shouldVerify && errors.username === undefined,
+  const verifyUsernameAvailableQuery = api.user.verifyUsernameAvailable.useQuery({ username: verifyValue! }, {
+    enabled: shouldVerify && errors.username === undefined && verifyValue !== null,
     cacheTime: 0
   })
 

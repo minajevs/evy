@@ -34,8 +34,8 @@ const CollectionEditPage: NextPage<Props> = ({ layout, collection }) => {
   } = useZodForm({ schema: editCollectionSchema, defaultValues: { id: collection.id, name: collection.name, slug: collection.slug, description: collection.description ?? undefined } })
 
   const updateMutation = api.collection.update.useMutation()
-  const verifySlugAvailableQuery = api.collection.verifyCollectionSlug.useQuery({ slug: verifyValue }, {
-    enabled: shouldVerify && errors.slug === undefined,
+  const verifySlugAvailableQuery = api.collection.verifyCollectionSlug.useQuery({ slug: verifyValue! }, {
+    enabled: shouldVerify && errors.slug === undefined && verifyValue !== null,
     cacheTime: 0
   })
 
