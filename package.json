@@ -13,6 +13,7 @@
     "db:push": "turbo db:push db:generate",
     "db:push-force": "turbo db:push-force",
     "db:migrate": "turbo db:migrate",
+    "db:migrate-deploy": "turbo db:migrate-deploy",
     "dev": "turbo dev --parallel",
     "dev:prisma": "turbo dev:prisma",
     "format": "prettier --write \"**/*.{js,cjs,mjs,ts,tsx,md,json}\" --ignore-path .gitignore",
