@@ -22,6 +22,10 @@
       "inputs": ["prisma/schema.prisma"],
       "cache": false
     },
+    "db:migrate-create": {
+      "inputs": ["prisma/schema.prisma"],
+      "cache": false
+    },
     "dev": {
       "persistent": true,
       "cache": false
@@ -63,6 +67,10 @@
     "SKIP_ENV_VALIDATION",
     "VERCEL",
     "VERCEL_URL",
-    "NEXT_PUBLIC_CLOUDFLARE_ACCOUNT_ID"
+    "NEXT_PUBLIC_CLOUDFLARE_ACCOUNT_ID",
+    "POSTMARK_API_TOKEN",
+    "SMTP_HOST",
+    "SMTP_PORT",
+    "SMTP_FROM"
   ]
 }

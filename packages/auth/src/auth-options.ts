@@ -1,8 +1,10 @@
 import { env } from '../env.mjs'
 import { type NextAuthOptions, type DefaultSession } from 'next-auth'
 import GitHubProvider, { type GithubProfile } from 'next-auth/providers/github'
+import EmailProvider from 'next-auth/providers/email'
 import { slugify } from './slugify'
 import { getAdapter } from './adapter'
+import { Client } from 'postmark'
 
 /**
  * Module augmentation for `next-auth` types
@@ -27,6 +29,7 @@ declare module 'next-auth' {
 }
 
 const adapter = getAdapter()
+const postmarkClient = new Client(env.POSTMARK_API_TOKEN)
 
 /**
  * Options for NextAuth.js used to configure
@@ -47,6 +50,34 @@ export const authOptions: NextAuthOptions = {
     },
   },
   providers: [
+    EmailProvider({
+      server: {
+        host: env.SMTP_HOST,
+        port: Number(env.SMTP_PORT),
+        auth: {
+          user: env.POSTMARK_API_TOKEN,
+          pass: env.POSTMARK_API_TOKEN,
+        },
+      },
+      from: env.SMTP_FROM,
+      sendVerificationRequest: async ({ identifier, url, provider }) => {
+        const result = await postmarkClient.sendEmailWithTemplate({
+          TemplateAlias: 'magic-link',
+          To: identifier,
+          From: provider.from,
+          TemplateModel: {
+            product_url: 'https://evy.app',
+            product_name: 'Evy.app',
+            action_url: url,
+            user_email: identifier,
+          },
+        })
+
+        if (result.ErrorCode) {
+          throw new Error(result.Message)
+        }
+      },
+    }),
     GitHubProvider({
       clientId: env.GITHUB_CLIENT_ID,
       clientSecret: env.GITHUB_CLIENT_SECRET,

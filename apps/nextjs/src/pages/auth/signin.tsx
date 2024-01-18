@@ -4,19 +4,17 @@ import type {
 } from "next"
 import { getProviders, signIn } from "next-auth/react"
 import { getServerSession } from "@evy/auth"
-import { Stack, Flex, Heading, VStack, FormControl, FormLabel, Input, Button, Text, Divider, Icon, Alert, AlertIcon, FormErrorMessage } from "@chakra-ui/react"
+import { Stack, Flex, Heading, VStack, FormControl, Input, Button, Text, Divider, Icon, Alert, AlertIcon, FormErrorMessage, Box, AbsoluteCenter, useBoolean } from "@chakra-ui/react"
 import { useBackgroundColor, useBackgroundPattern } from "@evy/styling"
-import { Github } from "lucide-react"
+import { ArrowLeft, Github, Inbox, Mail } from "lucide-react"
 import z from 'zod'
 import { usePlausible } from 'next-plausible'
 import { useZodForm } from "~/components/forms"
 import { useState } from "react"
-import { Link } from "@chakra-ui/next-js"
 import { useRouter } from "next/router"
 
 const signinFormSchema = z.object({
   email: z.string().min(1, "Email is required").email("Email is invalid"),
-  password: z.string().min(1, "Password is required")
 })
 
 export default function SignIn({
@@ -24,6 +22,8 @@ export default function SignIn({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const pattern = useBackgroundPattern({ fade: true })
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [loading, { on, off }] = useBoolean(false)
+  const [sent, { on: onSent, off: offSent }] = useBoolean(false)
   const router = useRouter()
 
   const {
@@ -37,26 +37,30 @@ export default function SignIn({
   const plausible = usePlausible()
 
 
-  // async function onSubmit(data: FormData) {
-  //   const signInResult = await signIn("email", {
-  //     email: data.email.toLowerCase(),
-  //     redirect: false,
-  //     callbackUrl: searchParams?.get("from") || "/dashboard",
-  //   })
+  const onSubmit = handleSubmit(async (data) => {
+    plausible('login', {
+      props: {
+        type: 'email'
+      }
+    })
+    setErrorMessage(null)
+    on()
 
-  //   if (!signInResult?.ok) {
-  //     return toast({
-  //       title: "Something went wrong.",
-  //       description: "Your sign in request failed. Please try again.",
-  //       variant: "destructive",
-  //     })
-  //   }
+    const signInResult = await signIn("email", {
+      email: data.email.toLowerCase(),
+      redirect: false,
+      callbackUrl: '/my',
+    })
 
-  //   return toast({
-  //     title: "Check your email",
-  //     description: "We sent you a login link. Be sure to check your spam too.",
-  //   })
-  // }
+    off()
+
+    if (!signInResult?.ok || signInResult.error) {
+      console.error(signInResult?.error)
+      return setErrorMessage('Something went wrong')
+    }
+
+    return onSent()
+  })
 
   return <Flex
     minH="100vh"
@@ -67,61 +71,81 @@ export default function SignIn({
     backgroundImage={pattern}
   >
     <Stack spacing={4}>
-      <Stack align="center">
+      <Stack align="center" opacity={sent ? 0 : 1}>
         <Heading fontSize="3xl">Welcome!</Heading>
         <Text fontSize="xl">Sign in to your account</Text>
       </Stack>
       <VStack
         as="form"
-        spacing={8}
         boxSize={{ base: 'xs', sm: 'sm', md: 'md' }}
         h="max-content !important"
         bg={useBackgroundColor('navigation')}
         rounded="lg"
         boxShadow="lg"
         p={{ base: 5, sm: 10 }}
-        onSubmit={handleSubmit(console.log)}
+        onSubmit={onSubmit}
       >
-        <VStack spacing={4} w="100%">
-          <FormControl id="email" isInvalid={errors.email !== undefined}>
-            <FormLabel>Email</FormLabel>
-            <Input {...register('email')} rounded="md" type="email" placeholder="john.doe@example.com" />
-            <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
-          </FormControl>
-          <FormControl id="password" isInvalid={errors.password !== undefined}>
-            <FormLabel>Password</FormLabel>
-            <Input {...register('password')} rounded="md" type="password" placeholder="•••••••••••••" />
-            <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
-            <Link href='/' fontSize={{ base: 'md', sm: 'md' }}>Forgot password?</Link>
-          </FormControl>
-        </VStack>
-        <VStack w="100%">
-          {
-            errorMessage !== null
-              ? <Alert status="error">
-                <AlertIcon />
-                {errorMessage}
-              </Alert>
-              : null
-          }
-          <Button
-            colorScheme="teal"
-            w="100%"
-            type='submit'
-          >
-            Sign in
-          </Button>
-        </VStack>
-        <Divider />
-        <VStack w="100%">
-          <Button w='100%' variant='outline' onClick={() => signIn('github')}>
-            <Icon as={Github} mr={4} /> Sign in with GitHub
-          </Button>
-        </VStack>
+        {
+          sent
+            ? <>
+              <Heading fontSize='2xl'>We've sent you a magic link!</Heading>
+              <Icon as={Inbox} boxSize='66' color='teal' />
+              <Text textAlign='center'>
+                Check your inbox for an email which contains a magic link that will log you in to your account.
+              </Text>
+              <Button mt={8} variant='ghost' leftIcon={<Icon as={ArrowLeft} />} onClick={offSent}> Back</Button>
+            </>
+            : <>
+              <VStack spacing={4} w="100%">
+                <FormControl id="email" isInvalid={errors.email !== undefined}>
+                  <Input
+                    {...register('email')}
+                    rounded="md"
+                    type="email"
+                    placeholder="john.doe@example.com"
+                    autoCapitalize="none"
+                    autoComplete="email"
+                    autoCorrect="off"
+                  />
+                  <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
+                </FormControl>
+              </VStack>
+              <VStack w="100%">
+                {
+                  errorMessage !== null
+                    ? <Alert status="error">
+                      <AlertIcon />
+                      {errorMessage}
+                    </Alert>
+                    : null
+                }
+                <Button
+                  colorScheme="teal"
+                  w="100%"
+                  type='submit'
+                >
+                  <Icon as={Mail} mr={4} /> Sign in with Email
+                </Button>
+              </VStack>
+              <Box position='relative' width='100%' my={4}>
+                <Divider />
+                <AbsoluteCenter px='4' bg={useBackgroundColor('navigation')}>
+                  or
+                </AbsoluteCenter>
+              </Box>
+              <VStack w="100%">
+                <Button w='100%' variant='outline' onClick={() => signIn('github')}>
+                  <Icon as={Github} mr={4} /> Sign in with GitHub
+                </Button>
+              </VStack>
+            </>
+        }
       </VStack>
+      {/*
       <Link href='/auth/signup'>
         Don&apos;t have an account? <Text as='span' color="teal">Sign up</Text>
       </Link>
+       */}
     </Stack>
   </Flex>
 }
