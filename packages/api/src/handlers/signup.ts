@@ -6,6 +6,7 @@ import { prisma } from '@evy/db'
 import { hashPassword } from '@evy/auth'
 import { isPasswordValid } from '@evy/auth/src/validatePassword'
 
+// TODO: Obsolete
 export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') {
     return res.status(405) // Method not allowed

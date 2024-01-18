@@ -11,7 +11,6 @@ import z from 'zod'
 import { usePlausible } from 'next-plausible'
 import { useZodForm } from "~/components/forms"
 import { useState } from "react"
-import { ErrorCodes } from "@evy/auth/src/errorCodes"
 import { Link } from "@chakra-ui/next-js"
 import { useRouter } from "next/router"
 
@@ -37,39 +36,27 @@ export default function SignIn({
 
   const plausible = usePlausible()
 
-  const onSubmit = async (values: z.infer<typeof signinFormSchema>) => {
-    setErrorMessage(null)
-    plausible('signin', {
-      props: {
-        email: values.email
-      }
-    })
-    const res = await signIn<"credentials">("credentials", {
-      ...values,
-      redirect: false,
-    })
 
-    if (!res) {
-      setErrorMessage("Something went wrong")
-      return
-    }
+  // async function onSubmit(data: FormData) {
+  //   const signInResult = await signIn("email", {
+  //     email: data.email.toLowerCase(),
+  //     redirect: false,
+  //     callbackUrl: searchParams?.get("from") || "/dashboard",
+  //   })
 
-    if (res.error === ErrorCodes.CredentialsMissing) {
-      setErrorMessage("Something went wrong")
-      return
-    }
-    if (res.error === ErrorCodes.IncorrectEmailPassword) {
-      setErrorMessage("Email or password is incorrect")
-      return
-    }
+  //   if (!signInResult?.ok) {
+  //     return toast({
+  //       title: "Something went wrong.",
+  //       description: "Your sign in request failed. Please try again.",
+  //       variant: "destructive",
+  //     })
+  //   }
 
-    if (res.error !== null || !res.ok) {
-      setErrorMessage("Something went wrong")
-      return
-    }
-
-    await router.push('/my')
-  };
+  //   return toast({
+  //     title: "Check your email",
+  //     description: "We sent you a login link. Be sure to check your spam too.",
+  //   })
+  // }
 
   return <Flex
     minH="100vh"
@@ -93,7 +80,7 @@ export default function SignIn({
         rounded="lg"
         boxShadow="lg"
         p={{ base: 5, sm: 10 }}
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(console.log)}
       >
         <VStack spacing={4} w="100%">
           <FormControl id="email" isInvalid={errors.email !== undefined}>

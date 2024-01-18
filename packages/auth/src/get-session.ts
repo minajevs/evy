@@ -13,9 +13,5 @@ type GetServerSessionContext =
     }
   | { req: NextApiRequest; res: NextApiResponse }
 export const getServerSession = (ctx: GetServerSessionContext) => {
-  return $getServerSession(
-    ctx.req,
-    ctx.res,
-    authOptions(ctx.req as NextApiRequest, ctx.res as NextApiResponse),
-  )
+  return $getServerSession(ctx.req, ctx.res, authOptions)
 }
