@@ -29,7 +29,7 @@ declare module 'next-auth' {
 }
 
 const adapter = getAdapter()
-const postmarkClient = new Client(env.POSTMARK_API_TOKEN)
+const postmarkClient = () => new Client(env.POSTMARK_API_TOKEN)
 
 /**
  * Options for NextAuth.js used to configure
@@ -61,7 +61,7 @@ export const authOptions: NextAuthOptions = {
       },
       from: env.SMTP_FROM,
       sendVerificationRequest: async ({ identifier, url, provider }) => {
-        const result = await postmarkClient.sendEmailWithTemplate({
+        const result = await postmarkClient().sendEmailWithTemplate({
           TemplateAlias: 'magic-link',
           To: identifier,
           From: provider.from,
