@@ -3,6 +3,9 @@ import { type NextAuthOptions, type DefaultSession } from 'next-auth'
 import GitHubProvider, { type GithubProfile } from 'next-auth/providers/github'
 import EmailProvider from 'next-auth/providers/email'
 import GoogleProvider, { type GoogleProfile } from 'next-auth/providers/google'
+import DiscordProvider, {
+  type DiscordProfile,
+} from 'next-auth/providers/discord'
 import { slugify } from './slugify'
 import { getAdapter } from './adapter'
 import { Client } from 'postmark'
@@ -110,6 +113,23 @@ export const authOptions: NextAuthOptions = {
           name: profile.name,
           email: profile.email,
           image: profile.picture,
+          createdAt: new Date(),
+        }
+      },
+    }),
+    DiscordProvider({
+      clientId: env.DISCORD_CLIENT_ID,
+      clientSecret: env.DISCORD_CLIENT_SECRET,
+      profile(profile: DiscordProfile) {
+        console.log(profile)
+        const username = slugify(profile.username ?? profile.email)
+        const fullUsername = `${username}-${profile.id}`
+        return {
+          id: profile.id,
+          username: fullUsername,
+          name: profile.username,
+          email: profile.email,
+          image: profile.image_url,
           createdAt: new Date(),
         }
       },

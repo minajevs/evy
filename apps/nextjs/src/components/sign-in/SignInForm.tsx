@@ -5,6 +5,7 @@ import { Mail } from "lucide-react"
 import { useBackgroundColor } from "@evy/styling"
 import { GithubProviderButton } from "./provider-buttons/GithubProviderButton"
 import { GoogleProviderButton } from "./provider-buttons/GoogleProviderButton"
+import { DiscordProviderButton } from "./provider-buttons/DiscordProviderButton"
 
 type Props = {
   errorMessage: string | null
@@ -18,6 +19,10 @@ export const SignInForm = ({ errorMessage, loading }: Props) => {
   } = useZodFormContext<typeof signinFormSchema>()
   const [loadingGitHub, { on: onGithub }] = useBoolean(false)
   const [loadingGoogle, { on: onGoogle }] = useBoolean(false)
+  const [loadingDiscord, { on: onDiscord }] = useBoolean(false)
+
+  const disableButtons = loading || loadingGitHub || loadingGoogle || loadingDiscord
+
   return <>
     <VStack spacing={4} w="100%">
       <FormControl id="email" isInvalid={errors.email !== undefined}>
@@ -47,7 +52,7 @@ export const SignInForm = ({ errorMessage, loading }: Props) => {
         w="100%"
         type='submit'
         isLoading={loading}
-        isDisabled={loading || loadingGitHub}
+        isDisabled={disableButtons}
       >
         <Icon as={Mail} mr={4} /> Sign in with Email
       </Button>
@@ -59,8 +64,9 @@ export const SignInForm = ({ errorMessage, loading }: Props) => {
       </AbsoluteCenter>
     </Box>
     <VStack w="100%">
-      <GithubProviderButton disabled={loading || loadingGitHub || loadingGoogle} onClick={onGithub} />
-      <GoogleProviderButton disabled={loading || loadingGitHub || loadingGoogle} onClick={onGoogle} />
+      <GithubProviderButton disabled={disableButtons} onClick={onGithub} />
+      <GoogleProviderButton disabled={disableButtons} onClick={onGoogle} />
+      <DiscordProviderButton disabled={disableButtons} onClick={onDiscord} />
     </VStack>
   </>
 }
