@@ -2,6 +2,7 @@ import { env } from '../env.mjs'
 import { type NextAuthOptions, type DefaultSession } from 'next-auth'
 import GitHubProvider, { type GithubProfile } from 'next-auth/providers/github'
 import EmailProvider from 'next-auth/providers/email'
+import GoogleProvider, { type GoogleProfile } from 'next-auth/providers/google'
 import { slugify } from './slugify'
 import { getAdapter } from './adapter'
 import { Client } from 'postmark'
@@ -93,6 +94,22 @@ export const authOptions: NextAuthOptions = {
           email: profile.email,
           image: profile.avatar_url,
           // custom props
+          createdAt: new Date(),
+        }
+      },
+    }),
+    GoogleProvider({
+      clientId: env.GOOGLE_CLIENT_ID,
+      clientSecret: env.GOOGLE_CLIENT_SECRET,
+      profile(profile: GoogleProfile) {
+        const username = slugify(profile.name ?? profile.login)
+        const fullUsername = `${username}-${profile.sub}`
+        return {
+          id: profile.sub,
+          username: fullUsername,
+          name: profile.name,
+          email: profile.email,
+          image: profile.picture,
           createdAt: new Date(),
         }
       },

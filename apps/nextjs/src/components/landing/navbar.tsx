@@ -65,6 +65,7 @@ export const Navbar = ({ signedIn }: Props) => {
                 ? <Button
                   as={StyledLink}
                   href='/my'
+                  display={{ base: 'none', md: 'inherit' }}
                   colorScheme="teal"
                 >
                   Go to app

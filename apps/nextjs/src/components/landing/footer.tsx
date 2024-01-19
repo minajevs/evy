@@ -1,19 +1,19 @@
 import { Link } from "@chakra-ui/next-js"
-import { Box, HStack, Heading, Text, VStack, useColorModeValue } from "@chakra-ui/react"
+import { Box, Flex, HStack, Heading, Text, VStack, useColorModeValue } from "@chakra-ui/react"
 import { useBackgroundColor } from "@evy/styling"
 
 
 export const Footer = () => {
   return <Box
     p={12}
-    m={12}
+    m={{ base: 4, md: 12 }}
     borderRadius={40}
     borderWidth={2}
     borderColor={useBackgroundColor('bold-border')}
     bg={useBackgroundColor('navigation')}
     boxShadow='lg'
   >
-    <HStack spacing={16} alignItems='start' justifyContent='start'>
+    <Flex direction={{ base: 'column', md: 'row' }} gap={{ base: 8, md: 16 }} alignItems='start' justifyContent='start'>
       <VStack alignItems='start'>
         <Heading size='md' mb={4}>Evy</Heading>
         <Text>
@@ -41,6 +41,6 @@ export const Footer = () => {
           <Link href="mailto:hello@evy.app">Contact us</Link>
         </VStack>
       </HStack>
-    </HStack>
+    </Flex>
   </Box>
 }

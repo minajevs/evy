@@ -9,20 +9,19 @@ export const BottomNavigation = ({ ...rest }: Props) => {
   const bg = useBackgroundColor('navigation')
   return (
     <Flex
-      position='absolute'
+      as='nav'
+      position='fixed'
       bottom={0}
       w='100vw'
       px={16}
-      py={10}
       alignItems="center"
       bg={bg}
       justifyContent='space-around'
       borderBottom="1px"
       borderBottomColor={useBackgroundColor('bold-border')}
       boxShadow='md'
-      h={16}
       {...rest}>
-      <Link href='/my'>
+      <Link href='/my' my={4}>
         <VStack color='teal' spacing={0}>
           <Icon as={Inbox} boxSize={6} />
           <Text fontWeight='600'>
@@ -30,7 +29,7 @@ export const BottomNavigation = ({ ...rest }: Props) => {
           </Text>
         </VStack>
       </Link>
-      <Link href='/profile'>
+      <Link href='/profile' my={4}>
         <VStack color='teal' spacing={0}>
           <Icon as={User} boxSize={6} />
           <Text fontWeight='600'>

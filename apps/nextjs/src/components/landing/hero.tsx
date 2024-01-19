@@ -1,9 +1,18 @@
-import { Button, Container, Heading, Highlight, Text, VStack } from "@chakra-ui/react"
+import { Button, Container, Heading, Highlight, Text, VStack, useColorModeValue } from "@chakra-ui/react"
 import { useBackgroundPattern } from "@evy/styling"
 import { signIn } from "next-auth/react"
 
 export const Hero = () => {
   const pattern = useBackgroundPattern({ fade: true })
+
+  // teal.100 - rgb(178, 245, 234)
+  // cyan.200 - rgb(157, 236, 249)
+  // teal darkmode = rgb(129, 230, 217)
+  // cyan darkmode = rgb(129, 230, 217)
+  const bgGradient = useColorModeValue(
+    'linear(to-br, rgba(178, 245, 234, 0.6), rgba(157, 236, 249, 0.6))',
+    'linear(to-br, rgba(129, 230, 217, 0.3), rgba(157, 236, 249, 0.3))'
+  )
 
   return <VStack
     justifyContent='center'
@@ -13,16 +22,15 @@ export const Hero = () => {
     <Heading fontSize='5xl' mt={12} mb={8} textAlign='center'>
       <Highlight
         query='everyone'
-        // teal.100 - rgb(178, 245, 234)
-        // cyan.200 - rgb(157, 236, 249)
         styles={{
           px: 2,
           pt: 0,
           pb: 1,
           rounded: 'full',
-          bgGradient: 'linear(to-br, rgb(178, 245, 234, 0.6), rgb(157, 236, 249, 0.6))',
+          bgGradient: bgGradient,
           transform: 'skew(20deg)',
           transformOrigin: 'top left',
+          color: useColorModeValue('rgb(26, 32, 44)', 'rgba(255, 255, 255, 0.92)')
         }}
       >
         Collection management for everyone

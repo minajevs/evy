@@ -4,6 +4,7 @@ import { type signinFormSchema } from "./FormCard"
 import { Mail } from "lucide-react"
 import { useBackgroundColor } from "@evy/styling"
 import { GithubProviderButton } from "./provider-buttons/GithubProviderButton"
+import { GoogleProviderButton } from "./provider-buttons/GoogleProviderButton"
 
 type Props = {
   errorMessage: string | null
@@ -15,7 +16,8 @@ export const SignInForm = ({ errorMessage, loading }: Props) => {
     formState: { errors },
     reset
   } = useZodFormContext<typeof signinFormSchema>()
-  const [loadingGitHub, { on, off }] = useBoolean(false)
+  const [loadingGitHub, { on: onGithub }] = useBoolean(false)
+  const [loadingGoogle, { on: onGoogle }] = useBoolean(false)
   return <>
     <VStack spacing={4} w="100%">
       <FormControl id="email" isInvalid={errors.email !== undefined}>
@@ -57,7 +59,8 @@ export const SignInForm = ({ errorMessage, loading }: Props) => {
       </AbsoluteCenter>
     </Box>
     <VStack w="100%">
-      <GithubProviderButton disabled={loading} onClick={on} />
+      <GithubProviderButton disabled={loading || loadingGitHub || loadingGoogle} onClick={onGithub} />
+      <GoogleProviderButton disabled={loading || loadingGitHub || loadingGoogle} onClick={onGoogle} />
     </VStack>
   </>
 }
