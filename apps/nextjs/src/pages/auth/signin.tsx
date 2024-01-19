@@ -4,7 +4,7 @@ import type {
 } from "next"
 import { getProviders, signIn } from "next-auth/react"
 import { getServerSession } from "@evy/auth"
-import { Stack, Flex, Heading, VStack, FormControl, Input, Button, Text, Divider, Icon, Alert, AlertIcon, FormErrorMessage, Box, AbsoluteCenter, useBoolean } from "@chakra-ui/react"
+import { Stack, Flex, Heading, VStack, FormControl, Input, Button, Text, Divider, Icon, Alert, AlertIcon, FormErrorMessage, Box, AbsoluteCenter, useBoolean, useColorMode } from "@chakra-ui/react"
 import { useBackgroundColor, useBackgroundPattern } from "@evy/styling"
 import { ArrowLeft, Github, Inbox, Mail } from "lucide-react"
 import z from 'zod'
@@ -12,6 +12,7 @@ import { usePlausible } from 'next-plausible'
 import { useZodForm } from "~/components/forms"
 import { useState } from "react"
 import { useRouter } from "next/router"
+import { Link } from "@chakra-ui/next-js"
 
 const signinFormSchema = z.object({
   email: z.string().min(1, "Email is required").email("Email is invalid"),
@@ -20,6 +21,7 @@ const signinFormSchema = z.object({
 export default function SignIn({
   providers,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const { colorMode, toggleColorMode } = useColorMode()
   const pattern = useBackgroundPattern({ fade: true })
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [loadingMagicLink, { on: onLink, off: offLink }] = useBoolean(false)
@@ -74,7 +76,7 @@ export default function SignIn({
     <Stack spacing={4}>
       <Stack align="center" opacity={sent ? 0 : 1}>
         <Heading fontSize="3xl">Welcome!</Heading>
-        <Text fontSize="xl">Sign in to your account</Text>
+        <Text fontSize="xl">Create an account or login</Text>
       </Stack>
       <VStack
         as="form"
@@ -146,11 +148,9 @@ export default function SignIn({
             </>
         }
       </VStack>
-      {/*
-      <Link href='/auth/signup'>
-        Don&apos;t have an account? <Text as='span' color="teal">Sign up</Text>
-      </Link>
-       */}
+      <Box>
+        By signing up you agree to our <Link href="/terms" color="teal">terms</Link> and <Link href="/privacy" color="teal">privacy</Link> policy.
+      </Box>
     </Stack>
   </Flex>
 }

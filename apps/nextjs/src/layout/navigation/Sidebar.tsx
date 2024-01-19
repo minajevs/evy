@@ -73,7 +73,7 @@ export const Sidebar = ({ linkItems, ...rest }: SidebarProps) => {
           </NavItemLink>
 
           <HStack width='100%' spacing='0'>
-            <Button width='100%' px='8' justifyContent='flex-start' textAlign='left' variant='ghost' onClick={session.status === 'authenticated' ? () => void signOut() : () => void signIn()}>
+            <Button width='100%' px='8' justifyContent='flex-start' textAlign='left' variant='ghost' onClick={session.status === 'authenticated' ? () => void signOut({ callbackUrl: '/' }) : () => void signIn()}>
               {session.status === 'authenticated' ? "Sign out" : "Sign in"}
             </Button>
             <Button width='100%' variant='ghost' onClick={toggleColorMode}>

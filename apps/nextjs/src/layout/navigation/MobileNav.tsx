@@ -40,7 +40,7 @@ export const MobileNav = ({ ...rest }: MobileProps) => {
           <Button variant='ghost' onClick={toggleColorMode}>
             {colorMode === 'light' ? <Icon as={Moon} /> : <Icon as={Sun} />}
           </Button>
-          <Button justifyContent='flex-start' textAlign='left' variant='ghost' onClick={session.status === 'authenticated' ? () => void signOut() : () => void signIn()}>
+          <Button justifyContent='flex-start' textAlign='left' variant='ghost' onClick={session.status === 'authenticated' ? () => void signOut({ callbackUrl: '/' }) : () => void signIn()}>
             {session.status === 'authenticated' ? "Sign out" : "Sign in"}
           </Button>
         </HStack>
