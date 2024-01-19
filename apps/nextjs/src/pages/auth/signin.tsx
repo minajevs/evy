@@ -22,7 +22,8 @@ export default function SignIn({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const pattern = useBackgroundPattern({ fade: true })
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const [loading, { on, off }] = useBoolean(false)
+  const [loadingMagicLink, { on: onLink, off: offLink }] = useBoolean(false)
+  const [loadingGitHub, { on: onGitHub, off: offGitHub }] = useBoolean(false)
   const [sent, { on: onSent, off: offSent }] = useBoolean(false)
   const router = useRouter()
 
@@ -44,7 +45,7 @@ export default function SignIn({
       }
     })
     setErrorMessage(null)
-    on()
+    onLink()
 
     const signInResult = await signIn("email", {
       email: data.email.toLowerCase(),
@@ -52,7 +53,7 @@ export default function SignIn({
       callbackUrl: '/my',
     })
 
-    off()
+    offLink()
 
     if (!signInResult?.ok || signInResult.error) {
       console.error(signInResult?.error)
@@ -123,6 +124,7 @@ export default function SignIn({
                   colorScheme="teal"
                   w="100%"
                   type='submit'
+                  isLoading={loadingMagicLink} isDisabled={loadingMagicLink || loadingGitHub}
                 >
                   <Icon as={Mail} mr={4} /> Sign in with Email
                 </Button>
@@ -134,7 +136,10 @@ export default function SignIn({
                 </AbsoluteCenter>
               </Box>
               <VStack w="100%">
-                <Button w='100%' variant='outline' onClick={() => signIn('github')}>
+                <Button isLoading={loadingGitHub} isDisabled={loadingGitHub || loadingMagicLink} w='100%' variant='outline' onClick={() => {
+                  onGitHub()
+                  return signIn('github')
+                }}>
                   <Icon as={Github} mr={4} /> Sign in with GitHub
                 </Button>
               </VStack>
@@ -158,7 +163,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   // Note: Make sure not to redirect to the same page
   // To avoid an infinite loop!
   if (session) {
-    return { redirect: { destination: "/" } }
+    return { redirect: { destination: "/my" } }
   }
 
   const providers = await getProviders()

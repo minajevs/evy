@@ -10,8 +10,10 @@ export const Footer = () => {
     borderRadius={40}
     borderWidth={2}
     borderColor={useBackgroundColor('bold-border')}
-    bg={useBackgroundColor('navigation')}>
-    <HStack spacing={16} alignItems='start' justifyContent='space-between'>
+    bg={useBackgroundColor('navigation')}
+    boxShadow='lg'
+  >
+    <HStack spacing={16} alignItems='start' justifyContent='start'>
       <VStack alignItems='start'>
         <Heading size='md' mb={4}>Evy</Heading>
         <Text>

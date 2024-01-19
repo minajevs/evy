@@ -1,11 +1,23 @@
-import { Box, Button, Divider, Flex, HStack, Heading, Icon, IconButton, Link, type LinkProps, Stack, VStack, useColorMode, useColorModeValue, useDisclosure } from "@chakra-ui/react"
+import { Box, Button, Divider, Flex, HStack, Heading, Icon, IconButton, type LinkProps, Stack, VStack, useColorMode, useColorModeValue, useDisclosure } from "@chakra-ui/react"
 import { useBackgroundColor } from "@evy/styling"
+import { signIn } from "next-auth/react"
 import { useAutoAnimate } from "@formkit/auto-animate/react"
 import { Moon, Sun, X, Menu } from "lucide-react"
-import { signIn } from "next-auth/react"
 import { EvyLogo } from "../logo/EvyLogo"
+import { Link } from "@chakra-ui/next-js"
+import styled from "@emotion/styled"
 
-export const Navbar = () => {
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  &:focus, &:hover, &:visited, &:link, &:active {
+    text-decoration: none;
+  }
+`;
+
+type Props = {
+  signedIn: boolean
+}
+export const Navbar = ({ signedIn }: Props) => {
   const { colorMode, toggleColorMode } = useColorMode()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [parent] = useAutoAnimate({ easing: 'ease-in-out' })
@@ -35,7 +47,9 @@ export const Navbar = () => {
             borderRadius={40}
             borderWidth={2}
             borderColor={boldBorder}
-            bg={navigation}>
+            bg={navigation}
+            boxShadow='lg'
+          >
             <NavLink name="Features" href="/" />
             <NavLink name="About" href="/" />
             <NavLink name="Pricing" href="/" />
@@ -46,12 +60,23 @@ export const Navbar = () => {
             <Button onClick={toggleColorMode}>
               {colorMode === 'light' ? <Icon as={Moon} /> : <Icon as={Sun} />}
             </Button>
-            <Button
-              display={{ base: 'none', md: 'inherit' }}
-              colorScheme="teal"
-              onClick={() => void signIn()}>
-              Sign in
-            </Button>
+            {
+              signedIn
+                ? <Button
+                  as={StyledLink}
+                  href='/my'
+                  colorScheme="teal"
+                >
+                  Go to app
+                </Button>
+                : <Button
+                  display={{ base: 'none', md: 'inherit' }}
+                  colorScheme="teal"
+                  onClick={() => void signIn()}
+                >
+                  Sign in
+                </Button>
+            }
             <IconButton
               size="md"
               icon={isOpen ? <Icon as={X} /> : <Icon as={Menu} />}
@@ -85,14 +110,24 @@ export const Navbar = () => {
 
           <Divider mt={16} />
           <VStack>
-            <Heading fontSize='lg'>
+            <Heading fontSize=''>
               Existing user?
             </Heading>
-            <Button
-              colorScheme="teal"
-              onClick={() => void signIn()}>
-              Sign in
-            </Button>
+            {
+              signedIn
+                ? <Button
+                  as={StyledLink}
+                  href='/my'
+                  colorScheme="teal"
+                >
+                  Go to app
+                </Button>
+                : <Button
+                  colorScheme="teal"
+                  onClick={() => void signIn()}>
+                  Sign in
+                </Button>
+            }
           </VStack>
         </Stack>
       </Box>

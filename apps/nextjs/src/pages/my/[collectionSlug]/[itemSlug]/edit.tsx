@@ -149,7 +149,7 @@ const paramsSchema = z.object({ itemSlug: z.string(), collectionSlug: z.string()
 export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, params }) => {
   const auth = await getServerSession({ req, res })
   if (!auth) {
-    return { redirect: { destination: '/', permanent: false } }
+    return { redirect: { destination: '/my', permanent: false } }
   }
 
   const { itemSlug, collectionSlug } = paramsSchema.parse(params)

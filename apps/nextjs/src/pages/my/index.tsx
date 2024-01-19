@@ -48,7 +48,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res }
   const auth = await getServerSession({ req, res })
 
   if (!auth) {
-    return { redirect: { destination: '/', permanent: false } }
+    return { redirect: { destination: '/auth/signin', permanent: false } }
   }
 
   const collections = await prisma.collection.findMany({
