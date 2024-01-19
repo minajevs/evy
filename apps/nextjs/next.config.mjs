@@ -1,12 +1,15 @@
 // Importing env files here to validate on build
 import './src/env.mjs'
 import '@evy/auth/env.mjs'
+import withMdx from '@next/mdx'
 
 /** @type {import("next").NextConfig} */
 const config = {
   experimental: {
     swcPlugins: [['next-superjson-plugin', {}]],
   },
+  /** enable MDX pages (statically generated pages) */
+  pageExtensions: ['mdx', 'ts', 'tsx'],
   /** enable standalone deployment for docker */
   output: 'standalone',
   reactStrictMode: true,
@@ -45,13 +48,13 @@ const config = {
   webpack(config, { nextRuntime }) {
     config.experiments = { ...config.experiments, topLevelAwait: true }
 
-    if (nextRuntime !== 'nodejs') return config
+    if (nextRuntime !== 'nodejs') return config ?? null
     config.resolve.fallback = {
       ...config.resolve.fallback,
       fs: false,
     }
-    return config
+    return config ?? null
   },
 }
 
-export default config
+export default withMdx()(config)

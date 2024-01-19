@@ -26,11 +26,19 @@ export const Footer = () => {
       <HStack mt='0' spacing={16}>
         <VStack alignItems='start'>
           <Heading size="sm" mb={4}>
-            Links
+            About
           </Heading>
           <Link href="/">About</Link>
           <Link href="/">Features</Link>
           <Link href="/">Pricing</Link>
+        </VStack>
+        <VStack alignItems='start'>
+          <Heading size="sm" mb={4}>
+            Links
+          </Heading>
+          <Link href="/privacy">Privacy Policy</Link>
+          <Link href="/terms">Terms of Service</Link>
+          <Link href="mailto:hello@evy.app">Contact us</Link>
         </VStack>
       </HStack>
     </HStack>
