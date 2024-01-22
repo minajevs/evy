@@ -46,7 +46,7 @@ export const Sidebar = ({ linkItems, ...rest }: SidebarProps) => {
         {/* Collections navigation */}
         <Box py='4' width='100%'>
           <NavItemLink href='/my' alignItems='center' flexDirection='row'>
-            <HStack color='teal'>
+            <HStack color="primary">
               <Icon as={Inbox} />
               <Text fontWeight='600'>
                 Collections
@@ -64,7 +64,7 @@ export const Sidebar = ({ linkItems, ...rest }: SidebarProps) => {
         <Box width='100%' pt="4" pb='16' marginTop='auto'>
           <Divider />
           <NavItemLink href='/profile' alignItems='center' flexDirection='row'>
-            <HStack color='teal'>
+            <HStack color='primary'>
               <Icon as={User} />
               <Text fontWeight='600'>
                 Profile

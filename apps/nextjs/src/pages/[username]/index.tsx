@@ -29,7 +29,7 @@ const Profile: NextPage<Props> = ({ user }) => {
   return (
     <SharingLayout title={user.name ?? user.username}>
       <HStack mb='4'>
-        <Avatar size='lg' bg='teal.500' name={user.name ?? user.username} src={userImage} boxShadow='md' />
+        <Avatar size='lg' bg='primary.500' name={user.name ?? user.username} src={userImage} boxShadow='md' />
         <VStack alignItems='baseline' spacing={0}>
           <Heading>{nameEmpty ? user.username : user.name}</Heading>
           {!nameEmpty

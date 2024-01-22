@@ -1,3 +1,4 @@
-export * from './theme'
-export * from './useBackgroundColor'
-export * from './useBackgroundPattern'
+export * from './src/theme'
+export * from './src/useBackgroundColor'
+export * from './src/useBackgroundPattern'
+export * from './src/useTransparentColor'

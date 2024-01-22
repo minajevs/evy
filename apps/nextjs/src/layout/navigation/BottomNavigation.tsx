@@ -22,7 +22,7 @@ export const BottomNavigation = ({ ...rest }: Props) => {
       boxShadow='md'
       {...rest}>
       <Link href='/my' my={4}>
-        <VStack color='teal' spacing={0}>
+        <VStack color='primary' spacing={0}>
           <Icon as={Inbox} boxSize={6} />
           <Text fontWeight='600'>
             Collections
@@ -30,7 +30,7 @@ export const BottomNavigation = ({ ...rest }: Props) => {
         </VStack>
       </Link>
       <Link href='/profile' my={4}>
-        <VStack color='teal' spacing={0}>
+        <VStack color='primary' spacing={0}>
           <Icon as={User} boxSize={6} />
           <Text fontWeight='600'>
             Profile

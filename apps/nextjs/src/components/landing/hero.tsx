@@ -1,17 +1,17 @@
 import { Button, Container, Heading, Highlight, Text, VStack, useColorModeValue } from "@chakra-ui/react"
-import { useBackgroundPattern } from "@evy/styling"
+import { useBackgroundPattern, useTransparentColor } from "@evy/styling"
 import { signIn } from "next-auth/react"
 
 export const Hero = () => {
-  const pattern = useBackgroundPattern({ fade: true })
+  const patternColor = useColorModeValue('primary.300', 'primary.100')
+  const pattern = useBackgroundPattern({ fade: true, fill: patternColor })
 
-  // teal.100 - rgb(178, 245, 234)
-  // cyan.200 - rgb(157, 236, 249)
-  // teal darkmode = rgb(129, 230, 217)
-  // cyan darkmode = rgb(129, 230, 217)
+  const gradFrom = useTransparentColor(useColorModeValue('primary.200', 'primary.100'), 0.4)
+  const gradTo = useTransparentColor(useColorModeValue('primary.600', 'primary.300'), 0.4)
+
   const bgGradient = useColorModeValue(
-    'linear(to-br, rgba(178, 245, 234, 0.6), rgba(157, 236, 249, 0.6))',
-    'linear(to-br, rgba(129, 230, 217, 0.3), rgba(157, 236, 249, 0.3))'
+    `linear(to-br, ${gradFrom}, ${gradTo})`,
+    `linear(to-br, ${gradFrom}, ${gradTo})`
   )
 
   return <VStack
@@ -28,8 +28,6 @@ export const Hero = () => {
           pb: 1,
           rounded: 'full',
           bgGradient: bgGradient,
-          transform: 'skew(20deg)',
-          transformOrigin: 'top left',
           color: useColorModeValue('rgb(26, 32, 44)', 'rgba(255, 255, 255, 0.92)')
         }}
       >
@@ -48,7 +46,7 @@ export const Hero = () => {
     >
       <Button
         size='lg'
-        colorScheme="teal"
+        colorScheme="primary"
         onClick={() => void signIn()}
         boxShadow='lg'
         _hover={{

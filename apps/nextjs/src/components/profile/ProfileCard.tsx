@@ -9,7 +9,7 @@ export const ProfileCard = ({ user, ...rest }: Props) => {
   const nameEmpty = user.name === null || user.name.length === 0
 
   return <HStack mb='4' {...rest}>
-    <Avatar bg='teal.500' name={user.name ?? user.username} src={userImage} boxShadow='md' />
+    <Avatar bg='primary.500' name={user.name ?? user.username} src={userImage} boxShadow='md' />
     <VStack alignItems='baseline' spacing={0}>
       <Heading size='md'>{nameEmpty ? user.username : user.name}</Heading>
       {!nameEmpty

@@ -66,13 +66,13 @@ export const Navbar = ({ signedIn }: Props) => {
                   as={StyledLink}
                   href='/my'
                   display={{ base: 'none', md: 'inherit' }}
-                  colorScheme="teal"
+                  colorScheme="primary"
                 >
                   Go to app
                 </Button>
                 : <Button
                   display={{ base: 'none', md: 'inherit' }}
-                  colorScheme="teal"
+                  colorScheme="primary"
                   onClick={() => void signIn()}
                 >
                   Sign in
@@ -119,12 +119,12 @@ export const Navbar = ({ signedIn }: Props) => {
                 ? <Button
                   as={StyledLink}
                   href='/my'
-                  colorScheme="teal"
+                  colorScheme="secondary"
                 >
                   Go to app
                 </Button>
                 : <Button
-                  colorScheme="teal"
+                  colorScheme="secondary"
                   onClick={() => void signIn()}>
                   Sign in
                 </Button>
@@ -147,7 +147,7 @@ const NavLink = ({ name, href, ...rest }: NavLinkProps) => {
       lineHeight="inherit"
       _hover={{
         textDecoration: 'none',
-        color: useColorModeValue('teal.500', 'teal.200')
+        color: useColorModeValue('primary.500', 'primary.200')
       }}
       {...rest}
     >

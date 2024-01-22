@@ -48,7 +48,7 @@ export const SignInForm = ({ errorMessage, loading }: Props) => {
           : null
       }
       <Button
-        colorScheme="teal"
+        colorScheme="primary"
         w="100%"
         type='submit'
         isLoading={loading}

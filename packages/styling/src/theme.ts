@@ -1,18 +1,12 @@
 import {
   type ThemeConfig,
   extendTheme,
-  type Colors,
   type ThemeOverride,
 } from '@chakra-ui/react'
 import { withProse } from '@nikolovlazar/chakra-ui-prose'
 
-const colors: Colors = {
-  brand: {
-    900: '#1a365d',
-    800: '#153e75',
-    700: '#2a69ac',
-  },
-}
+import { colors } from './colors'
+
 // const Input = defineStyleConfig({
 //   baseStyle: {
 //     background: 'white',
@@ -26,9 +20,26 @@ const config: ThemeConfig = {
 
 export const theme = extendTheme(
   {
+    semanticTokens: {
+      colors: {
+        primary: {
+          default: 'primary.500',
+          _dark: 'primary.300',
+        },
+      },
+    },
     colors,
     config,
-    components: {},
+    components: {
+      Text: {
+        variants: {
+          // used as <Text variant="primary">
+          primary: {
+            color: 'primary',
+          },
+        },
+      },
+    },
   } as ThemeOverride,
   withProse({
     baseStyle: {
