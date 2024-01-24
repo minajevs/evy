@@ -1,6 +1,6 @@
-import { Box, Button, ButtonGroup, HStack, Heading, Text } from "@chakra-ui/react"
+import { Box, Button, ButtonGroup, HStack, Heading, Text, VStack } from "@chakra-ui/react"
 import { getServerSession } from "@evy/auth"
-import { type Collection, prisma, type Item, type User, type ItemImage } from "@evy/db"
+import { type Collection, prisma, type Item, type User, type ItemImage, type CollectionImage } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
 import { z } from "zod"
 import { NewItem } from "~/components/new-item"
@@ -20,14 +20,16 @@ import { Pagination } from "~/components/common/Paginations"
 import { ItemSorting, type Sorting } from "~/components/items/ItemSorting"
 import { ItemViewSelector, type View } from "~/components/items/ItemViewSelector"
 import { HtmlView } from "~/components/common/HtmlView"
+import { ImageDisplay } from "~/components/common/ImageDisplay"
 
 const viewCookieName = 'preference:item-view'
 const pageSize = 30
 
+type CollectionProp = Collection & { user: User } & { images: CollectionImage[] }
 type ItemProp = Item & { collection: Collection & { user: User } } & { images: ItemImage[] }
 
 type Props = {
-  collection: Collection & { items: ItemProp[] } & { user: User } & { htmlDescription: string | null },
+  collection: CollectionProp & { items: ItemProp[] } & { user: User } & { htmlDescription: string | null },
   view: View,
   sorting: Sorting,
   sortingDirection: SortingDirection,
@@ -92,7 +94,17 @@ const CollectionPage: NextPage<Props> = ({ layout, collection, view, sorting, so
           </Button>
         </ButtonGroup>
       </HStack>
-      <HtmlView mb={8} value={collection.htmlDescription} />
+      <VStack spacing={4} mb={8} align='start'>
+        {collection.images.length > 0
+          ?
+          <ImageDisplay
+            height='10rem'
+            width='auto'
+            fit='cover'
+            image={collection.images[0]!} />
+          : null}
+        <HtmlView value={collection.htmlDescription} />
+      </VStack>
       <HStack width='100%' justifyContent='space-between' mb='4'>
         <HStack alignItems='baseline' spacing={8}>
           <Heading size="md">Items</Heading>
@@ -126,7 +138,6 @@ const CollectionPage: NextPage<Props> = ({ layout, collection, view, sorting, so
     </MyLayout >
   </>
 }
-
 const orderBySchema = z.enum([
   'name asc', 'name desc',
   'date asc', 'date desc'
@@ -160,6 +171,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
       },
       include: {
         user: true,
+        images: true,
         items: {
           skip,
           take,

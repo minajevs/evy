@@ -9,7 +9,7 @@ type Props = {
 } & FlexProps
 export const Pagination = ({ currentPage, pageSize = 10, totalItems, changePage, ...rest }: Props) => {
   const totalPages = Math.ceil(totalItems / pageSize)
-  if (totalPages === 1) return null
+  if (totalPages <= 1) return null
 
   const lastItem = Math.min(currentPage * pageSize, totalItems)
   const firstItem = (currentPage - 1) * pageSize + 1

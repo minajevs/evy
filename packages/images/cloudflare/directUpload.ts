@@ -13,7 +13,7 @@ export type DirectUploadUrlResult = {
 
 type DirectUploadUrlRequest = {
   userId: string
-  itemId: string
+  other: Record<string, string | undefined>
 }
 
 const endpoint = '/v2/direct_upload'
@@ -22,12 +22,12 @@ const endpoint = '/v2/direct_upload'
 // This function is server-only
 export const getDirectUploadUrl = async ({
   userId,
-  itemId,
+  other,
 }: DirectUploadUrlRequest) => {
   const data = new FormData()
   // makes images private
   data.append('requireSignedURLs', 'true')
-  data.append('metadata', JSON.stringify({ userId, itemId }))
+  data.append('metadata', JSON.stringify({ userId, other }))
 
   const response = await fetch(cloudflareApiUrl + endpoint, {
     method: 'POST',

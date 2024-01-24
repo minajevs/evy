@@ -1,9 +1,9 @@
 import { Box, type BoxProps } from "@chakra-ui/react"
-import { type ItemImage } from "@evy/db"
+import { type CollectionImage, type ItemImage } from "@evy/db"
 import { CustomImage } from "~/components/common/CustomImage"
 
 type Props = {
-  image: ItemImage
+  image: ItemImage | CollectionImage
   fit?: 'cover' | 'contain'
   height?: BoxProps['height']
   width?: BoxProps['width']

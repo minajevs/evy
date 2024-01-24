@@ -25,9 +25,9 @@ export const NewCollectionDialog = ({ as, ...rest }: Props) => {
   const createMutation = api.collection.create.useMutation()
 
   const onSubmit = handleSubmit(async (input) => {
-    await createMutation.mutateAsync(input)
+    const createdCollection = await createMutation.mutateAsync(input)
     onClose()
-    await router.replace(router.asPath)
+    await router.push(`/my/${createdCollection.slug}`)
   })
 
   const ButtonComponent = as ?? Button

@@ -11,9 +11,12 @@ import {
 export const imageRouter = createTRPCRouter({
   getDirectUploadUrl: protectedProcedure
     .input(directUploadUrlSchema)
-    .mutation(async ({ ctx, input: { itemId } }) => {
+    .mutation(async ({ ctx, input: { itemId, collectionId } }) => {
       const { session } = ctx
-      return await getDirectUploadUrl({ itemId, userId: session.user.id })
+      return await getDirectUploadUrl({
+        other: { itemId, collectionId },
+        userId: session.user.id,
+      })
     }),
   createBasicImage: protectedProcedure
     .input(createBasicImageSchema)

@@ -1,10 +1,10 @@
 import NextImage from "next/image"
 import { type ImageProps } from "@chakra-ui/next-js"
-import { type ItemImage } from "@evy/db"
+import { type CollectionImage, type ItemImage } from "@evy/db"
 import { getDataFromThumbhash, imageSrc } from "@evy/images"
 
 type Props = {
-  image: ItemImage
+  image: ItemImage | CollectionImage
   fit: 'cover' | 'contain'
 } & Omit<ImageProps, 'src' | 'alt' | 'placeholder'>
 

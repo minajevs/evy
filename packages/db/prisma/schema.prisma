@@ -16,13 +16,34 @@ model Collection {
     description String?
     slug        String @unique
     userId      String
+    defaultImageId String? @unique
 
     user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
     items       Item[]
+    images      CollectionImage[] @relation("images")
+    defaultImage CollectionImage? @relation("default_image", fields: [defaultImageId], references: [id])
 
     createdAt   DateTime
+
     @@index([userId])
     @@index([slug])
+}
+
+model CollectionImage {
+    id              String @id @default(cuid())
+    collectionId    String
+    externalImageId String
+    thumbhash       String
+
+    name            String?
+    description     String?
+
+    defaultCollection Collection? @relation("default_image")
+    collection      Collection @relation("images", fields: [collectionId], references: [id], onDelete: Cascade)
+
+    createdAt       DateTime
+    
+    @@index([collectionId])
 }
 
 model Item {

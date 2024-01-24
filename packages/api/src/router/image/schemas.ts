@@ -1,7 +1,8 @@
 import { z } from 'zod'
 
 export const directUploadUrlSchema = z.object({
-  itemId: z.string().min(1),
+  itemId: z.string().optional(),
+  collectionId: z.string().optional(),
 })
 export const createBasicImageSchema = z.object({
   externalImageId: z.string().min(1),
