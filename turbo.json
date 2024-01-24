@@ -57,6 +57,7 @@
   },
   "globalEnv": [
     "CI",
+    "FEATURE_GOOGLE_AUTH_ENABLED",
     "DATABASE_URL",
     "NEXT_PUBLIC_HOST",
     "NEXTAUTH_SECRET",

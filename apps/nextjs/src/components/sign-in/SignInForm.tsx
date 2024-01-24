@@ -10,8 +10,9 @@ import { DiscordProviderButton } from "./provider-buttons/DiscordProviderButton"
 type Props = {
   errorMessage: string | null
   loading: boolean
+  featureGoogleAuthEnabled: boolean
 }
-export const SignInForm = ({ errorMessage, loading }: Props) => {
+export const SignInForm = ({ errorMessage, featureGoogleAuthEnabled, loading }: Props) => {
   const {
     register,
     formState: { errors },
@@ -65,7 +66,11 @@ export const SignInForm = ({ errorMessage, loading }: Props) => {
     </Box>
     <VStack w="100%">
       <GithubProviderButton disabled={disableButtons} onClick={onGithub} />
-      <GoogleProviderButton disabled={disableButtons} onClick={onGoogle} />
+      {
+        featureGoogleAuthEnabled
+          ? <GoogleProviderButton disabled={disableButtons} onClick={onGoogle} />
+          : null
+      }
       <DiscordProviderButton disabled={disableButtons} onClick={onDiscord} />
     </VStack>
   </>

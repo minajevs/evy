@@ -1,6 +1,6 @@
 import { useBackgroundColor } from './useBackgroundColor'
 import { useToken } from '@chakra-ui/react'
-import { backgroundPattern } from './backgroundPattern'
+import { backgroundPattern } from './backgroundPattern3'
 
 type Props = {
   fill?: string
@@ -13,7 +13,7 @@ export const useBackgroundPattern = (props?: Props) => {
   const translateY = props?.translateY ?? 0
   const fade = props?.fade ?? false
 
-  const opacity = 0.2
+  const opacity = 0.1
 
   const bg = useBackgroundColor('page')
   const [bgHex, fillHex] = useToken('colors', [bg, fill])

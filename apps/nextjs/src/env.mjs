@@ -8,6 +8,10 @@ export const env = createEnv({
    */
   server: {
     DATABASE_URL: z.string().url(),
+    FEATURE_GOOGLE_AUTH_ENABLED: z
+      .string()
+      .refine((s) => s === 'true' || s === 'false')
+      .transform((s) => s === 'true'),
   },
   /**
    * Specify your client-side environment variables schema here.
@@ -20,6 +24,7 @@ export const env = createEnv({
    * Destructure all variables from `process.env` to make sure they aren't tree-shaken away.
    */
   runtimeEnv: {
+    FEATURE_GOOGLE_AUTH_ENABLED: process.env.FEATURE_GOOGLE_AUTH_ENABLED,
     DATABASE_URL: process.env.DATABASE_URL,
     NEXT_PUBLIC_HOST: process.env.NEXT_PUBLIC_HOST,
   },

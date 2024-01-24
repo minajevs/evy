@@ -15,9 +15,11 @@ import { FormCard, signinFormSchema } from "~/components/sign-in/FormCard"
 import { FormProvider } from "react-hook-form"
 import { SignInForm } from "~/components/sign-in/SignInForm"
 import { AgreeDisclosure } from "~/components/sign-in/AgreeDisclosure"
+import { env } from "~/env.mjs"
 
 export default function SignIn({
   providers,
+  featureGoogleAuthEnabled
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [loading, { on, off }] = useBoolean(false)
@@ -65,6 +67,7 @@ export default function SignIn({
               : <SignInForm
                 loading={loading}
                 errorMessage={errorMessage}
+                featureGoogleAuthEnabled={featureGoogleAuthEnabled}
               />
           }
         </FormProvider>
@@ -88,6 +91,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const providers = await getProviders()
 
   return {
-    props: { providers: providers ?? [] },
+    props: {
+      providers: providers ?? [],
+      featureGoogleAuthEnabled: env.FEATURE_GOOGLE_AUTH_ENABLED
+    },
   }
 }
