@@ -20,6 +20,14 @@ import { Pagination } from "~/components/common/Paginations"
 import { ItemSorting, type Sorting } from "~/components/items/ItemSorting"
 import { ItemViewSelector, type View } from "~/components/items/ItemViewSelector"
 import { HtmlView } from "~/components/common/HtmlView"
+import styled from "@emotion/styled"
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  &:focus, &:hover, &:visited, &:link, &:active {
+    text-decoration: none;
+  }
+`
 
 const viewCookieName = 'preference:item-view'
 const pageSize = 30
@@ -83,11 +91,11 @@ const CollectionPage: NextPage<Props> = ({ layout, collection, view, sorting, so
         </Heading>
         <ButtonGroup isAttached>
           <ShareDialog
-            buttonProps={{ leftIcon: <Icon as={Share2} /> }}
+            buttonProps={{ leftIcon: <Icon as={Share2} />, variant: 'outline' }}
             username={collection.user.username}
             collectionSlug={collection.slug}
           />
-          <Button leftIcon={<Icon as={Edit} />} variant='solid' as={Link} href={`/my/${collection.slug}/edit`}>
+          <Button leftIcon={<Icon as={Edit} />} variant='outline' as={StyledLink} href={`/my/${collection.slug}/edit`}>
             Edit
           </Button>
         </ButtonGroup>

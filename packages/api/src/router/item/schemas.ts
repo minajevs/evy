@@ -28,3 +28,12 @@ export const verifyItemSlugSchema = z.object({
       'Slug may only contain alphanumeric characters, single hyphen or underscore, and cannot begin or end with a hyphen or underscore',
     ),
 })
+export const updateTagsSchema = z.object({
+  itemId: z.string().min(1),
+  tags: z.array(
+    z.object({
+      id: z.string().min(1),
+      text: z.string().min(1),
+    }),
+  ),
+})

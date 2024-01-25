@@ -19,6 +19,7 @@ model Collection {
 
     user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
     items       Item[]
+    tags        Tag[]
 
     createdAt   DateTime
     @@index([userId])
@@ -34,6 +35,7 @@ model Item {
 
     collection      Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
     images          ItemImage[]
+    tags            ItemTag[]
 
     createdAt       DateTime
     
@@ -41,6 +43,32 @@ model Item {
     @@index([collectionId])
     @@index([slug])
 } 
+
+model Tag {
+    id              String @id @default(cuid())
+    text            String @unique
+    collectionId    String
+
+    collection      Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+    itemTags        ItemTag[]
+
+    createdAt       DateTime
+
+    @@index([collectionId])
+}
+
+model ItemTag {
+    id              String @id @default(cuid())
+    tagId           String
+    itemId          String
+
+    item            Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
+    tag             Tag @relation(fields: [tagId], references: [id], onDelete: Cascade)
+    createdAt       DateTime
+
+    @@index([tagId])
+    @@index([itemId])
+}
 
 model ItemImage {
     id              String @id @default(cuid())

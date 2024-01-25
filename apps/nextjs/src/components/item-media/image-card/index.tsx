@@ -10,7 +10,6 @@ export const ImageCard = ({ image, onClick, ...rest }: Props) => {
   return <>
     <Box
       role='group'
-      zIndex={1}
       cursor='pointer'
       onClick={onClick}
       {...rest}

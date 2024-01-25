@@ -1,5 +1,10 @@
 import { TRPCError } from '@trpc/server'
-import { editItemSchema, newItemSchema, verifyItemSlugSchema } from './schemas'
+import {
+  editItemSchema,
+  newItemSchema,
+  updateTagsSchema,
+  verifyItemSlugSchema,
+} from './schemas'
 import { createTRPCRouter, protectedProcedure } from '../../trpc/trpc'
 import { slugify } from '@evy/auth/src/slugify'
 import { customAlphabet } from 'nanoid'
@@ -32,6 +37,7 @@ export const itemRouter = createTRPCRouter({
       const collection = await ctx.prisma.collection.findFirst({
         where: {
           id: collectionId,
+          userId: ctx.session.user.id,
         },
       })
       if (collection === null)
@@ -106,6 +112,102 @@ export const itemRouter = createTRPCRouter({
           collection: {
             userId: ctx.session.user.id,
           },
+        },
+      })
+    }),
+  updateTags: protectedProcedure
+    .input(updateTagsSchema)
+    .mutation(async ({ ctx, input: { itemId, tags } }) => {
+      const item = await ctx.prisma.item.findFirst({
+        where: {
+          id: itemId,
+          collection: {
+            userId: ctx.session.user.id,
+          },
+        },
+        include: {
+          tags: {
+            include: {
+              tag: {
+                include: {
+                  itemTags: true,
+                },
+              },
+            },
+          },
+        },
+      })
+
+      if (item === null) throw new TRPCError({ code: 'BAD_REQUEST' })
+
+      // Get all common tag ids
+      const existingTagIds = item.tags.map((x) => x.tag.id)
+      // Get tags which should be deleted from an item
+      const deletedTagIds = existingTagIds.filter(
+        (existingId) => !tags.some((tag) => tag.id === existingId),
+      )
+      // Get itemTag ids to delete
+      const deletedItemTagIds = item.tags
+        .filter((itemTag) =>
+          deletedTagIds.some((deletedTagId) => itemTag.tagId === deletedTagId),
+        )
+        .map((x) => x.id)
+      // If tag, for which we delete itemTag has no more itemtags left, delete tag as well
+      const deletedTagsIdsToDelete = item.tags
+        .map((x) => x.tag)
+        .filter((tag) =>
+          deletedTagIds.some((deletedId) => deletedId === tag.id),
+        )
+        .filter((tag) => tag.itemTags.length === 1)
+        .map((x) => x.id)
+
+      // Get tags to create for an item
+      const createTags = tags.filter(
+        (tag) => !existingTagIds.some((existingId) => tag.id === existingId),
+      )
+
+      await ctx.prisma.$transaction([
+        prisma.itemTag.deleteMany({
+          where: {
+            itemId,
+            id: { in: deletedItemTagIds },
+          },
+        }),
+        prisma.tag.deleteMany({
+          where: {
+            id: { in: deletedTagsIdsToDelete },
+          },
+        }),
+        ...createTags.map((createTag) =>
+          prisma.itemTag.create({
+            data: {
+              item: {
+                connect: { id: itemId },
+              },
+              tag: {
+                connectOrCreate: {
+                  where: {
+                    text: createTag.text,
+                  },
+                  create: {
+                    collectionId: item.collectionId,
+                    text: createTag.text,
+                    createdAt: new Date(),
+                  },
+                },
+              },
+              createdAt: new Date(),
+            },
+          }),
+        ),
+      ])
+
+      return ctx.prisma.itemTag.findMany({
+        where: {
+          itemId,
+        },
+        include: {
+          tag: true,
         },
       })
     }),

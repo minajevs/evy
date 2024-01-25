@@ -2,7 +2,7 @@ import { Icon } from "@chakra-ui/react"
 import { Link } from "@chakra-ui/next-js"
 import { Button, ButtonGroup, HStack, Heading, Text, useDisclosure } from "@chakra-ui/react"
 import { getServerSession } from "@evy/auth"
-import { type Collection, prisma, type Item, type ItemImage, type User } from "@evy/db"
+import { type Collection, prisma, type Item, type ItemImage, type User, type ItemTag, type Tag } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
 import { z } from "zod"
 import { ItemMedia } from "~/components/item-media"
@@ -11,9 +11,22 @@ import { MyLayout } from "~/layout"
 import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 import { Edit, Plus, Share2 } from "lucide-react"
 import { HtmlView } from "~/components/common/HtmlView"
+import styled from "@emotion/styled"
+import { ItemTags } from "~/components/items/ItemTags"
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  &:focus, &:hover, &:visited, &:link, &:active {
+    text-decoration: none;
+  }
+`
 
 type Props = {
-  item: Item & { collection: Collection & { user: User } } & { images: ItemImage[] } & { htmlDescription: string | null }
+  item: Item
+  & { collection: Collection & { user: User } & { tags: Tag[] } }
+  & { images: ItemImage[] }
+  & { htmlDescription: string | null }
+  & { tags: (ItemTag & { tag: Tag })[] }
 } & LayoutServerSideProps
 
 const ItemPage: NextPage<Props> = ({ layout, item }) => {
@@ -29,15 +42,18 @@ const ItemPage: NextPage<Props> = ({ layout, item }) => {
         </Heading>
         <ButtonGroup>
           <ShareDialog
-            buttonProps={{ leftIcon: <Icon as={Share2} /> }}
+            buttonProps={{ leftIcon: <Icon as={Share2} />, variant: 'outline' }}
             username={item.collection.user.username}
             collectionSlug={item.collection.slug}
             itemSlug={item.slug}
           />
-          <Button leftIcon={<Icon as={Edit} />} variant='solid' as={Link} href={`/my/${item.collection.slug}/${item.slug}/edit`}>
+          <Button leftIcon={<Icon as={Edit} />} variant='outline' as={StyledLink} href={`/my/${item.collection.slug}/${item.slug}/edit`}>
             Edit
           </Button>
         </ButtonGroup>
+      </HStack>
+      <HStack mb={4}>
+        <ItemTags itemId={item.id} collectionTags={item.collection.tags} tags={item.tags.map(x => x.tag)} />
       </HStack>
       <HtmlView mb={8} value={item.htmlDescription} />
       <HStack width='100%' justifyContent='space-between' mb={2}>
@@ -69,9 +85,15 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
       slug: itemSlug
     },
     include: {
+      tags: {
+        include: {
+          tag: true
+        }
+      },
       collection: {
         include: {
-          user: true
+          user: true,
+          tags: true
         }
       },
       images: {
