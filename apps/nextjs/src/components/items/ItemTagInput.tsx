@@ -5,10 +5,6 @@ import { useRef, useState } from "react"
 import useTextWidth from "~/utils/useTextWidth"
 import { type Tag as DbTag } from "@evy/db"
 
-function onlyUnique<T>(value: T, index: number, array: T[]) {
-  return array.indexOf(value) === index;
-}
-
 export type NewItemTag = Pick<DbTag, 'text' | 'id'>
 
 type Props = {
@@ -37,10 +33,11 @@ export const ItemTagInput = ({ collectionTags, tags, onSave }: Props) => {
   }
 
   const onSelect = (value: string) => {
+    inputRef.current?.blur()
+    onClose()
     if (!validate(value)) return
     // Save mock tag with mock ID. Will be populated on save in backend
     onSave({ text: value, id: Date.now().toString() })
-    onClose()
   }
 
   const onKeyDown = (code: string) => {
@@ -49,6 +46,7 @@ export const ItemTagInput = ({ collectionTags, tags, onSave }: Props) => {
   }
 
   const handleSave = () => {
+    console.log('handle save')
     if (!valid) return
     // Save mock tag with mock ID. Will be populated on save in backend
     onSave({ text: inputText, id: Date.now().toString() })
@@ -92,7 +90,7 @@ export const ItemTagInput = ({ collectionTags, tags, onSave }: Props) => {
           onKeyDown={e => onKeyDown(e.code)}
           isInvalid={!valid}
           onFocus={on}
-          onBlur={off}
+          onBlur={() => off()}
         />
       </PopoverAnchor>
       <PopoverContent maxW='100%' w="full" maxWidth='90vw'>
@@ -105,9 +103,14 @@ export const ItemTagInput = ({ collectionTags, tags, onSave }: Props) => {
           ))}
           {
             collectionOptions.map(tag => (
-              <Tag key={tag.id} height='unset' as={Button} colorScheme='secondary' variant='outline' onClick={() => {
-                onSelect(tag.text)
-              }}>
+              <Tag key={tag.id} height='unset' as={Button} colorScheme='secondary' variant='outline'
+                onMouseDown={(e) => {
+                  // prevent input blur
+                  // blue will be manually called
+                  e.preventDefault()
+                  onSelect(tag.text)
+                }}
+              >
                 <TagLeftIcon as={TagIcon} />
                 <TagLabel>{tag.text}</TagLabel>
               </Tag>
