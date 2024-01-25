@@ -1,5 +1,5 @@
 import { Button, Flex, Icon, Input, Popover, PopoverAnchor, PopoverBody, PopoverContent, Tag, TagCloseButton, TagLabel, TagLeftIcon, useBoolean } from "@chakra-ui/react"
-import { Check, TagIcon } from "lucide-react"
+import { Check, HashIcon } from "lucide-react"
 import { useOutsideClick } from '@chakra-ui/react'
 import { useRef, useState } from "react"
 import useTextWidth from "~/utils/useTextWidth"
@@ -73,7 +73,7 @@ export const ItemTagInput = ({ collectionTags, tags, onSave }: Props) => {
   const existingOptions = inputText.length > 0 ? tags.filter(tag => tag.text.startsWith(inputText)) : []
 
   return <Tag ref={ref} variant='outline' colorScheme='secondary' height='unset'>
-    <TagLeftIcon as={TagIcon} />
+    <TagLeftIcon as={HashIcon} />
     <Popover
       isOpen={hasFocus && (existingOptions.length > 0 || collectionOptions.length > 0)}
       initialFocusRef={inputRef}
@@ -97,7 +97,7 @@ export const ItemTagInput = ({ collectionTags, tags, onSave }: Props) => {
         <PopoverBody as={Flex} gap={2} flexWrap='wrap'>
           {existingOptions.map(tag => (
             <Tag key={tag.id} height='unset' colorScheme='secondary'>
-              <TagLeftIcon as={TagIcon} />
+              <TagLeftIcon as={HashIcon} />
               <TagLabel>{tag.text}</TagLabel>
             </Tag>
           ))}
@@ -111,7 +111,7 @@ export const ItemTagInput = ({ collectionTags, tags, onSave }: Props) => {
                   onSelect(tag.text)
                 }}
               >
-                <TagLeftIcon as={TagIcon} />
+                <TagLeftIcon as={HashIcon} />
                 <TagLabel>{tag.text}</TagLabel>
               </Tag>
             ))

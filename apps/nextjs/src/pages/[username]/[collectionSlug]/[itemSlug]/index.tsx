@@ -1,6 +1,6 @@
 import { Link } from "@chakra-ui/next-js"
 import { Box, Card, CardBody, Center, Divider, Flex, HStack, Heading, Icon, IconButton, Text, VStack, useDisclosure } from "@chakra-ui/react"
-import { type Collection, prisma, type Item, type ItemImage, type User } from "@evy/db"
+import { type Collection, prisma, type Item, type ItemImage, type User, type ItemTag, type Tag as DbTag } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
 import { useCallback, useRef, useState } from "react"
 import { z } from "zod"
@@ -12,8 +12,13 @@ import { ImageDisplay } from "~/components/common/ImageDisplay"
 import { ArrowLeft, ArrowRight, Expand } from "lucide-react"
 import { useHasOverflow } from "~/utils/useHasOverflow"
 import { ProfileCard } from "~/components/profile/ProfileCard"
+import { ItemTagView } from "~/components/items/ItemTagView"
 
-type ItemProp = Item & { collection: Collection & { user: User } } & { images: ItemImage[] } & { htmlDescription: string | null }
+type ItemProp = Item
+  & { collection: Collection & { user: User } }
+  & { images: ItemImage[] }
+  & { htmlDescription: string | null }
+  & { tags: (ItemTag & { tag: DbTag })[] }
 
 type Props = {
   item: ItemProp
@@ -86,6 +91,13 @@ const ImageView = ({ item }: Props) => {
     >
       <Box width={{ base: '100%', md: '50%' }}>
         <ItemHeading item={item} />
+        {
+          item.tags.length > 0
+            ? <Flex mb={4} gap={2} flexWrap='wrap' width='full'>
+              {item.tags.map(tag => <ItemTagView key={tag.id} tag={tag.tag} />)}
+            </Flex>
+            : null
+        }
         {item.description !== null && item.description.length > 0
           ? <Card boxShadow='xl' mb={4}>
             <CardBody>
@@ -219,6 +231,11 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
       slug: itemSlug
     },
     include: {
+      tags: {
+        include: {
+          tag: true
+        }
+      },
       collection: {
         include: {
           user: true

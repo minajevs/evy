@@ -1,8 +1,8 @@
 import { VStack, SimpleGrid } from "@chakra-ui/react"
-import { type Collection, type Item, type ItemImage } from "@evy/db"
+import { type ItemTag, type Tag as DbTag, type Collection, type Item, type ItemImage } from "@evy/db"
 import { ItemCard } from "./ItemCard"
 
-type ItemProp = Item & { collection: Collection } & { images: ItemImage[] }
+type ItemProp = Item & { collection: Collection } & { images: ItemImage[] } & { tags: (ItemTag & { tag: DbTag })[] }
 
 type Props = {
   items: ItemProp[]

@@ -1,6 +1,6 @@
-import { Button, ButtonGroup, Flex, Icon, Tag, TagCloseButton, TagLabel, TagLeftIcon, useBoolean } from "@chakra-ui/react"
+import { Button, ButtonGroup, Flex, type FlexProps, Icon, Tag, TagCloseButton, TagLabel, TagLeftIcon, useBoolean } from "@chakra-ui/react"
 import { type Tag as DbTag } from "@evy/db"
-import { Edit, Save, TagIcon, X } from "lucide-react"
+import { Edit, HashIcon, Save, X } from "lucide-react"
 import { useState } from "react"
 import { ItemTagInput, type NewItemTag } from "./ItemTagInput"
 import { api } from "~/utils/api"
@@ -13,8 +13,8 @@ type Props = {
   itemId: string
   tags: (DbTag)[]
   collectionTags: DbTag[]
-}
-export const ItemTags = ({ itemId, collectionTags, tags }: Props) => {
+} & FlexProps
+export const ItemTags = ({ itemId, collectionTags, tags, ...rest }: Props) => {
   const [localTags, setLocalTags] = useState<LocalTag[]>(tags)
   const [lastSaveTags, setLastSaveTags] = useState<LocalTag[]>(tags)
   const [editMode, { on, off }] = useBoolean()
@@ -48,9 +48,9 @@ export const ItemTags = ({ itemId, collectionTags, tags }: Props) => {
   }
 
   if (editMode) return (
-    <Flex gap={2} flexWrap='wrap' width='full' ref={parent}>
+    <Flex gap={2} flexWrap='wrap' width='full' ref={parent} {...rest}>
       {localTags.map((tag, i) => <Tag key={i} colorScheme='secondary' textOverflow='clip'>
-        <TagLeftIcon as={TagIcon} />
+        <TagLeftIcon as={HashIcon} />
         <TagLabel overflow='unset' whiteSpace='nowrap' textOverflow='unset'>{tag.text}</TagLabel>
         <TagCloseButton height='unset' boxSize={4} onClick={() => onRemoveTag(tag.id)}><Icon as={X} boxSize={4} color="red" /></TagCloseButton>
       </Tag>
@@ -69,9 +69,12 @@ export const ItemTags = ({ itemId, collectionTags, tags }: Props) => {
     </Flex>
   )
 
-  return (<Flex gap={2} flexWrap='wrap' width='full' ref={parent}>
+  return (<Flex gap={2} flexWrap='wrap' width='full' ref={parent} {...rest}>
+    {/* Warning: Tags are defined inline here, and not in a separate component, 
+      because this way auto-animation can animate change to edit mode
+    */}
     {localTags.map((tag, i) => <Tag key={i} colorScheme='secondary'>
-      <TagLeftIcon as={TagIcon} />
+      <TagLeftIcon as={HashIcon} />
       <TagLabel overflow='unset' whiteSpace='nowrap' textOverflow='unset'>{tag.text}</TagLabel>
     </Tag>
     )}

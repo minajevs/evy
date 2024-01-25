@@ -52,9 +52,7 @@ const ItemPage: NextPage<Props> = ({ layout, item }) => {
           </Button>
         </ButtonGroup>
       </HStack>
-      <HStack mb={4}>
-        <ItemTags itemId={item.id} collectionTags={item.collection.tags} tags={item.tags.map(x => x.tag)} />
-      </HStack>
+      <ItemTags mb={4} itemId={item.id} collectionTags={item.collection.tags} tags={item.tags.map(x => x.tag)} />
       <HtmlView mb={8} value={item.htmlDescription} />
       <HStack width='100%' justifyContent='space-between' mb={2}>
         <Heading size='md'>Media</Heading>

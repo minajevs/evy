@@ -1,14 +1,15 @@
-import { VStack, HStack, useColorModeValue, Box, Divider, Icon, ButtonGroup, Card, Text, IconButton, Menu, MenuButton, MenuList, Button } from "@chakra-ui/react"
-import { type User, type Collection, type Item, type ItemImage } from "@evy/db"
+import { VStack, HStack, useColorModeValue, Box, Divider, Icon, ButtonGroup, Card, Text, IconButton, Menu, MenuButton, MenuList, Button, Flex } from "@chakra-ui/react"
+import { type ItemTag, type Collection, type Item, type ItemImage, type Tag, type User } from "@evy/db"
 import { ImageDisplay } from "../common/ImageDisplay"
 import { Edit, ExternalLink, Image, MoreHorizontal, Share2 } from "lucide-react"
 import { ShareDialog } from "../share-dialog/ShareDialog"
 import { Link } from "@chakra-ui/next-js"
 import { Fragment } from "react"
+import { ItemTagView } from "./ItemTagView"
 
 const imageSize = 16
 
-type ItemProp = Item & { collection: Collection & { user: User } } & { images: ItemImage[] }
+type ItemProp = Item & { collection: Collection & { user: User } } & { images: ItemImage[] } & { tags: (ItemTag & { tag: Tag })[] }
 
 type Props = {
   items: ItemProp[]
@@ -28,11 +29,21 @@ export const ItemTable = ({ items }: Props) => {
               />
               : <NoImage />}
           </Box>
-          <Box flex={1} minWidth={0}>
+          <Box minWidth='25%'>
             <Text fontWeight={600} overflow='hidden' whiteSpace='nowrap' textOverflow='ellipsis'>
               {item.name}
             </Text>
           </Box>
+          <Flex direction='row' my={2} gap={2} flex={1} overflowX='scroll' sx={{
+            "::-webkit-scrollbar": {
+              display: "none",
+            },
+            msOverflowStyle: 'none',
+            scrollbarWidth: 'none'
+          }}>
+            {/* margin-left: auto on first child because "justify-items: end" breaks */}
+            {item.tags.map((tag, i) => <ItemTagView ml={i === 0 ? 'auto' : 'unset'} flex='none' key={tag.id} tag={tag.tag} />)}
+          </Flex>
           <ButtonGroup mx={4} flexShrink={0}>
             <Menu>
               <MenuButton variant='ghost' as={IconButton} icon={<Icon as={MoreHorizontal} />} />
@@ -63,9 +74,10 @@ export const ItemTable = ({ items }: Props) => {
           </ButtonGroup>
         </HStack>
         {items.length - 1 !== i && <Divider m={0} />}
-      </Fragment>)}
-    </VStack>
-  </Card>
+      </Fragment>)
+      }
+    </VStack >
+  </Card >
 }
 
 const NoImage = () => {

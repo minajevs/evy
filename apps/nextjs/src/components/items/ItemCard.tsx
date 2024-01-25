@@ -1,12 +1,12 @@
-import { Box, Card, CardBody, Icon, Stack, Text, useColorModeValue } from "@chakra-ui/react"
-import type { Collection, Item, ItemImage } from "@evy/db"
+import { Box, Card, CardBody, Flex, Icon, Stack, Text, useColorModeValue } from "@chakra-ui/react"
+import type { Collection, Item, ItemImage, ItemTag, Tag as DbTag } from "@evy/db"
 import Link from "next/link"
 import { ImageDisplay } from "../common/ImageDisplay"
 import { Image } from "lucide-react"
-
+import { ItemTagView } from "./ItemTagView"
 type Props = {
   linkPrefix?: string
-  item: Item & { collection: Collection } & { images: ItemImage[] }
+  item: Item & { collection: Collection } & { images: ItemImage[] } & { tags: (ItemTag & { tag: DbTag })[] }
 }
 export const ItemCard = ({ linkPrefix, item }: Props) => {
   {/* width - full, heigh - full, paddingTop - 100% to achieve square */ }
@@ -37,7 +37,10 @@ export const ItemCard = ({ linkPrefix, item }: Props) => {
       <Stack>
         {image}
         <CardBody>
-          <Text fontWeight={600}>{item.name}</Text>
+          <Text fontWeight={600} mb={4}>{item.name}</Text>
+          <Flex gap={2} flexWrap='wrap'>
+            {item.tags.map(tag => <ItemTagView key={tag.id} tag={tag.tag} />)}
+          </Flex>
         </CardBody>
       </Stack>
     </Card>

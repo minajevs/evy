@@ -1,6 +1,6 @@
 import { Box, Button, ButtonGroup, HStack, Heading, Text } from "@chakra-ui/react"
 import { getServerSession } from "@evy/auth"
-import { type Collection, prisma, type Item, type User, type ItemImage } from "@evy/db"
+import { type Collection, prisma, type Item, type User, type ItemImage, type ItemTag, type Tag as DbTag } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
 import { z } from "zod"
 import { NewItem } from "~/components/new-item"
@@ -32,7 +32,7 @@ const StyledLink = styled(Link)`
 const viewCookieName = 'preference:item-view'
 const pageSize = 30
 
-type ItemProp = Item & { collection: Collection & { user: User } } & { images: ItemImage[] }
+type ItemProp = Item & { collection: Collection & { user: User } } & { images: ItemImage[] } & { tags: (ItemTag & { tag: DbTag })[] }
 
 type Props = {
   collection: Collection & { items: ItemProp[] } & { user: User } & { htmlDescription: string | null },
@@ -172,6 +172,11 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
           skip,
           take,
           include: {
+            tags: {
+              include: {
+                tag: true
+              }
+            },
             collection: {
               include: {
                 user: true
