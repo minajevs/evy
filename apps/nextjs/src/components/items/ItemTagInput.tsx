@@ -48,17 +48,17 @@ export const ItemTagInput = ({ collectionTags, tags, onSave }: Props) => {
     if (code === 'Escape') onClose()
   }
 
-  useOutsideClick({
-    ref: ref,
-    handler: onClose,
-  })
-
   const handleSave = () => {
     if (!valid) return
     // Save mock tag with mock ID. Will be populated on save in backend
     onSave({ text: inputText, id: Date.now().toString() })
     onClose()
   }
+
+  useOutsideClick({
+    ref: ref,
+    handler: handleSave,
+  })
 
   const minWidth = 75
   // width = textWidth * 0.922 + 8

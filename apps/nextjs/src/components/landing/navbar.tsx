@@ -119,12 +119,12 @@ export const Navbar = ({ signedIn }: Props) => {
                 ? <Button
                   as={StyledLink}
                   href='/my'
-                  colorScheme="secondary"
+                  colorScheme="primary"
                 >
                   Go to app
                 </Button>
                 : <Button
-                  colorScheme="secondary"
+                  colorScheme="primary"
                   onClick={() => void signIn()}>
                   Sign in
                 </Button>
