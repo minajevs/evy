@@ -16,7 +16,7 @@ export const LandingLayout = ({ children }: Props) => {
       <meta name="description" content="Amazing Evy app!" />
       <link rel="icon" href="/favicon.svg" />
     </Head>
-    <Box minH="100vh" bg={bg} display='flex' flexDirection='column'>
+    <Box minH="100dvh" bg={bg} display='flex' flexDirection='column'>
       {children}
     </Box>
   </>

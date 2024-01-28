@@ -36,6 +36,7 @@
     "@trpc/server": "^10.44.1",
     "@types/mdx": "^2.0.10",
     "bcryptjs": "^2.4.3",
+    "chakra-react-select": "^4.7.6",
     "framer-motion": "^10.16.1",
     "lexical": "^0.12.5",
     "lucide-react": "^0.307.0",

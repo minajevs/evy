@@ -8,9 +8,10 @@ type TagLike = {
 type Props = {
   tag: TagLike
 } & TagProps
-export const ItemTagView = ({ tag, ...rest }: Props) => {
+export const ItemTagView = ({ tag, children, ...rest }: Props) => {
   return <Tag key={tag.id} colorScheme='secondary' {...rest}>
     <TagLeftIcon as={HashIcon} />
     <TagLabel>{tag.text}</TagLabel>
+    {children}
   </Tag>
 }

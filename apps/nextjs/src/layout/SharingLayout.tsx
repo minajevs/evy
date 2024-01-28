@@ -21,7 +21,7 @@ export const SharingLayout = ({ title, children }: Props) => {
       <meta name="description" content="Amazing Evy app!" />
       <link rel="icon" href="/favicon.svg" />
     </Head>
-    <Box minHeight="100vh" height={{ base: '100%', md: '100vh' }} bg={bg} display='flex' flexDirection='column'>
+    <Box minHeight="100dvh" height={{ base: '100%', md: '100dvh' }} bg={bg} display='flex' flexDirection='column'>
       <HStack width='100%' justifyContent='flex-end'>
         <IconButton
           m={4}

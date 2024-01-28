@@ -1,5 +1,5 @@
 import { Box, Card, CardBody, HStack, Heading, SimpleGrid, Text } from "@chakra-ui/react"
-import { type Collection, prisma, type Item, type User, type ItemImage } from "@evy/db"
+import { type Collection, prisma, type Item, type User, type ItemImage, type ItemTag, type Tag as DbTag } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
 import { z } from "zod"
 import { SharingLayout } from "~/layout"
@@ -9,7 +9,7 @@ import { HtmlView } from "~/components/common/HtmlView"
 import { Link } from "@chakra-ui/next-js"
 import { ProfileCard } from "~/components/profile/ProfileCard"
 
-type ItemProp = Item & { collection: Collection } & { images: ItemImage[] }
+type ItemProp = Item & { collection: Collection } & { images: ItemImage[] } & { tags: (ItemTag & { tag: DbTag })[] }
 
 type Props = {
   collection: Collection & { items: ItemProp[] } & { user: User } & { htmlDescription: string | null }
@@ -88,6 +88,11 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
       },
       items: {
         include: {
+          tags: {
+            include: {
+              tag: true
+            }
+          },
           collection: true,
           images: {
             orderBy: {

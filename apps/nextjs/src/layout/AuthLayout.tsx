@@ -16,7 +16,7 @@ export const AuthLayout = ({ children }: Props) => {
       <link rel="icon" href="/favicon.svg" />
     </Head>
     <Flex
-      minH="100vh"
+      minH="100dvh"
       p={8}
       pt={32}
       justifyContent="center"

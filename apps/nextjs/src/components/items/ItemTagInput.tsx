@@ -93,7 +93,7 @@ export const ItemTagInput = ({ collectionTags, tags, onSave }: Props) => {
           onBlur={() => off()}
         />
       </PopoverAnchor>
-      <PopoverContent maxW='100%' w="full" maxWidth='90vw'>
+      <PopoverContent w="full" maxWidth='90vw'>
         <PopoverBody as={Flex} gap={2} flexWrap='wrap'>
           {existingOptions.map(tag => (
             <Tag key={tag.id} height='unset' colorScheme='secondary'>

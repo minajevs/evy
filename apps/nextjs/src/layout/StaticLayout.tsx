@@ -22,7 +22,7 @@ export const StaticLayout = ({ title, children }: Props) => {
       <meta name="description" content="Amazing Evy app!" />
       <link rel="icon" href="/favicon.svg" />
     </Head>
-    <Box minH="100vh" bg={bg} display='flex' flexDirection='column'>
+    <Box minH="100dvh" bg={bg} display='flex' flexDirection='column'>
       <Navbar signedIn={session.status === 'authenticated'} />
       <Container maxW='4xl' mt={16} mb={8}>
         <Prose>
