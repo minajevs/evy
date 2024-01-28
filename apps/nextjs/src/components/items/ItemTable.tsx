@@ -6,6 +6,7 @@ import { ShareDialog } from "../share-dialog/ShareDialog"
 import { Link } from "@chakra-ui/next-js"
 import { Fragment } from "react"
 import { ItemTagView } from "./ItemTagView"
+import { HorizontalScrollShadow } from "../common/HorizontalScrollShadow"
 
 const imageSize = 16
 
@@ -19,7 +20,7 @@ export const ItemTable = ({ items }: Props) => {
   return <Card boxShadow='md'>
     <VStack border='0' rounded="md" spacing={0} overflow='hidden'>
       {items.map((item, i) => <Fragment key={item.id}>
-        <HStack width='100%' _hover={{ bg: hover }} spacing={4}>
+        <HStack width='100%' _hover={{ bg: hover }} spacing={4} role='group'>
           <Box>
             {item.images[0] !== undefined
               ? <ImageDisplay
@@ -29,20 +30,29 @@ export const ItemTable = ({ items }: Props) => {
               />
               : <NoImage />}
           </Box>
-          <Box minWidth='25%'>
+          <Box minWidth='25%' flex={{ base: 1, md: 0 }}>
             <Text fontWeight={600} overflow='hidden' whiteSpace='nowrap' textOverflow='ellipsis'>
               {item.name}
             </Text>
           </Box>
-          <Flex direction='row' my={2} gap={2} flex={1} overflowX='scroll' sx={{
-            "::-webkit-scrollbar": {
-              display: "none",
-            },
-            msOverflowStyle: 'none',
-            scrollbarWidth: 'none'
-          }}>
+          <Flex
+            direction='row'
+            my={2}
+            gap={2}
+            flex={1}
+            overflowX='scroll'
+            sx={{
+              "::-webkit-scrollbar": {
+                display: "none",
+              },
+              msOverflowStyle: 'none',
+              scrollbarWidth: 'none'
+            }}
+            as={HorizontalScrollShadow}
+            display={{ base: 'none', md: 'flex' }}
+          >
             {/* margin-left: auto on first child because "justify-items: end" breaks */}
-            {item.tags.map((tag, i) => <ItemTagView ml={i === 0 ? 'auto' : 'unset'} flex='none' key={tag.id} tag={tag.tag} />)}
+            {item.tags.map((tag, i) => <ItemTagView flex='none' key={tag.id} tag={tag.tag} />)}
           </Flex>
           <ButtonGroup mx={4} flexShrink={0}>
             <Menu>

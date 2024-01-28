@@ -4,6 +4,7 @@ import Link from "next/link"
 import { ImageDisplay } from "../common/ImageDisplay"
 import { Image } from "lucide-react"
 import { ItemTagView } from "./ItemTagView"
+import { HorizontalScrollShadow } from "../common/HorizontalScrollShadow"
 type Props = {
   linkPrefix?: string
   item: Item & { collection: Collection } & { images: ItemImage[] } & { tags: (ItemTag & { tag: DbTag })[] }
@@ -38,8 +39,18 @@ export const ItemCard = ({ linkPrefix, item }: Props) => {
         {image}
         <CardBody>
           <Text fontWeight={600} mb={4}>{item.name}</Text>
-          <Flex gap={2} flexWrap='wrap'>
-            {item.tags.map(tag => <ItemTagView key={tag.id} tag={tag.tag} />)}
+          <Flex
+            gap={2}
+            overflowX='scroll'
+            sx={{
+              "::-webkit-scrollbar": {
+                display: "none",
+              },
+              msOverflowStyle: 'none',
+              scrollbarWidth: 'none'
+            }}
+            as={HorizontalScrollShadow}>
+            {item.tags.map(tag => <ItemTagView flex='none' key={tag.id} tag={tag.tag} />)}
           </Flex>
         </CardBody>
       </Stack>
