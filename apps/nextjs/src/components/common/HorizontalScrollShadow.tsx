@@ -55,6 +55,7 @@ export const HorizontalScrollShadow = ({ children, ...rest }: Props) => {
       position='relative'
     >
       <Box
+        zIndex={1}
         id='shadow-left'
         position='sticky'
         left={0}
@@ -72,6 +73,7 @@ export const HorizontalScrollShadow = ({ children, ...rest }: Props) => {
       />
       {children}
       <Box
+        zIndex={1}
         id='shadow-right'
         position='sticky'
         right={0}

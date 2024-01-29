@@ -94,7 +94,7 @@ const ImageView = ({ item }: Props) => {
         {
           item.tags.length > 0
             ? <Flex mb={4} gap={2} flexWrap='wrap' width='full'>
-              {item.tags.map(tag => <ItemTagView key={tag.id} tag={tag.tag} />)}
+              {item.tags.map(tag => <ItemTagView key={tag.id} tag={tag.tag} onClick={console.log} />)}
             </Flex>
             : null
         }

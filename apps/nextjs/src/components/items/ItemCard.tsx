@@ -5,11 +5,13 @@ import { ImageDisplay } from "../common/ImageDisplay"
 import { Image } from "lucide-react"
 import { ItemTagView } from "./ItemTagView"
 import { HorizontalScrollShadow } from "../common/HorizontalScrollShadow"
+
 type Props = {
   linkPrefix?: string
   item: Item & { collection: Collection } & { images: ItemImage[] } & { tags: (ItemTag & { tag: DbTag })[] }
+  onTagClick: (tag: DbTag) => void
 }
-export const ItemCard = ({ linkPrefix, item }: Props) => {
+export const ItemCard = ({ linkPrefix, item, onTagClick }: Props) => {
   {/* width - full, heigh - full, paddingTop - 100% to achieve square */ }
   {/* set paddingTop to change dimensions, eg. w = 100px, paddingTop = 33% => h == 33px  */ }
   const image = item.images[0] !== undefined
@@ -50,7 +52,10 @@ export const ItemCard = ({ linkPrefix, item }: Props) => {
               scrollbarWidth: 'none'
             }}
             as={HorizontalScrollShadow}>
-            {item.tags.map(tag => <ItemTagView flex='none' key={tag.id} tag={tag.tag} />)}
+            {item.tags.map(tag => <ItemTagView flex='none' key={tag.id} tag={tag.tag} onClick={(e) => {
+              e.preventDefault()
+              onTagClick(tag.tag)
+            }} />)}
           </Flex>
         </CardBody>
       </Stack>

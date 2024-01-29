@@ -1,6 +1,6 @@
 import { Circle, FormControl, FormLabel, Icon, IconButton, type IconButtonProps, Popover, PopoverBody, PopoverCloseButton, PopoverContent, PopoverTrigger, Portal, useColorModeValue } from '@chakra-ui/react'
 import { ListFilter } from 'lucide-react'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { type TagLike, TagsSelect } from './TagsSelect'
 
 type Props = {
@@ -12,12 +12,16 @@ export const ItemFilter = ({ filter, tags, onTagsChange, ...rest }: Props) => {
   const [tagsFilter, setTagsFilter] = useState<TagLike[] | null>(filter)
   const popoverRef = useRef(null)
 
+  useEffect(() => {
+    setTagsFilter(filter)
+  }, [filter])
+
   const onChange = (tags: TagLike[] | null) => {
     setTagsFilter(tags)
     onTagsChange(tags)
   }
 
-  const badgeBg = useColorModeValue('primary.500', 'priamry.200')
+  const badgeBg = useColorModeValue('primary.500', 'primary.500')
 
   return <Popover>
     <PopoverTrigger>

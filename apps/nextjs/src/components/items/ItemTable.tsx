@@ -14,8 +14,9 @@ type ItemProp = Item & { collection: Collection & { user: User } } & { images: I
 
 type Props = {
   items: ItemProp[]
+  onTagClick: (tag: Tag) => void
 }
-export const ItemTable = ({ items }: Props) => {
+export const ItemTable = ({ items, onTagClick }: Props) => {
   const hover = useColorModeValue('gray.200', 'gray.600')
   return <Card boxShadow='md'>
     <VStack border='0' rounded="md" spacing={0} overflow='hidden'>
@@ -51,8 +52,8 @@ export const ItemTable = ({ items }: Props) => {
             as={HorizontalScrollShadow}
             display={{ base: 'none', md: 'flex' }}
           >
-            {/* margin-left: auto on first child because "justify-items: end" breaks */}
-            {item.tags.map((tag, i) => <ItemTagView flex='none' key={tag.id} tag={tag.tag} />)}
+            {item.tags.map((tag, i) => <ItemTagView flex='none' key={tag.id} tag={tag.tag} onClick={() => onTagClick(tag.tag)}
+            />)}
           </Flex>
           <ButtonGroup mx={4} flexShrink={0}>
             <Menu>

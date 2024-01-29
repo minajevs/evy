@@ -21,6 +21,11 @@ export const TagsSelect = ({ filter, tags, onTagsChange }: Props) => {
   const [tagsFilter, setTagsFilter] = useState<TagLike[] | null>(filter)
   const [state, setState] = useState<MultiValue<SelectOption>>(tagsFilter?.map(tagToOption) ?? [])
 
+  useEffect(() => {
+    setTagsFilter(filter)
+    setState(filter?.map(tagToOption) ?? [])
+  }, [filter])
+
   const onChange = (options: MultiValue<SelectOption>) => {
     setState(options)
     const tags = options.map(optionToTag)

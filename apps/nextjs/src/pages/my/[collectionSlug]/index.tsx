@@ -47,6 +47,7 @@ type Props = {
 } & LayoutServerSideProps
 
 const CollectionPage: NextPage<Props> = ({ layout, collection, tagsFilter, view, sorting, sortingDirection, page, totalItems }) => {
+  const [currentTags, setCurrentTagsFilter] = useState<TagLike[] | null>(tagsFilter === null ? null : collection.tags.filter(tag => tagsFilter.includes(tag.text)))
   const router = useRouter()
   const [cookies, setCookie] = useCookies([viewCookieName])
   const [currentView, setView] = useState<View>(view)
@@ -83,7 +84,7 @@ const CollectionPage: NextPage<Props> = ({ layout, collection, tagsFilter, view,
   const changeTagFilter = async (tags: TagLike[] | null) => {
     const orderBy = router.query['orderBy']
     const page = router.query['page']
-
+    setCurrentTagsFilter(tags)
     // if tags are unselected, remove them from query and reset pagination
     if (tags === null) {
       await router.push({
@@ -100,7 +101,21 @@ const CollectionPage: NextPage<Props> = ({ layout, collection, tagsFilter, view,
           ...orderBy === undefined ? {} : { orderBy },
           tags: tags.map(x => x.text),
         } as z.infer<typeof querySchema>,
-      }, undefined, { shallow: false })
+      })
+    }
+  }
+
+  const addTagToFilter = async (tag: TagLike) => {
+    if (currentTags === null) {
+      // if no tags selected - add a tag
+      await changeTagFilter([tag])
+    } else if (currentTags.some(x => x.id === tag.id)) {
+      // if clicked tag is already in selected - unselect it
+      const newTags = currentTags.filter(x => x.id !== tag.id)
+      await changeTagFilter(newTags.length > 0 ? newTags : null)
+    } else {
+      // if tag no selected - select it
+      await changeTagFilter([...currentTags, tag])
     }
   }
 
@@ -110,8 +125,8 @@ const CollectionPage: NextPage<Props> = ({ layout, collection, tagsFilter, view,
       <Text>{'Click "Add" to add a first item'}</Text>
     </Box>
     : currentView === 'grid'
-      ? <ItemGrid items={collection.items} />
-      : <ItemTable items={collection.items} />
+      ? <ItemGrid items={collection.items} onTagClick={addTagToFilter} />
+      : <ItemTable items={collection.items} onTagClick={addTagToFilter} />
 
 
   return <>
@@ -144,13 +159,13 @@ const CollectionPage: NextPage<Props> = ({ layout, collection, tagsFilter, view,
         <HStack>
           <Box display={{ base: 'none', xl: 'flex' }}>
             <TagsSelect
-              filter={tagsFilter === null ? null : collection.tags.filter(tag => tagsFilter.includes(tag.text))}
+              filter={currentTags}
               tags={collection.tags}
               onTagsChange={changeTagFilter} />
           </Box>
           <ItemFilter
             display={{ base: 'flex', xl: 'none' }}
-            filter={tagsFilter === null ? null : collection.tags.filter(tag => tagsFilter.includes(tag.text))}
+            filter={currentTags}
             tags={collection.tags}
             onTagsChange={changeTagFilter}
           />
@@ -169,7 +184,7 @@ const CollectionPage: NextPage<Props> = ({ layout, collection, tagsFilter, view,
             sortingDirection={sortingDirection}
             updateSorting={updateSorting} />
           <ItemFilter
-            filter={tagsFilter === null ? null : collection.tags.filter(tag => tagsFilter.includes(tag.text))}
+            filter={currentTags}
             tags={collection.tags}
             onTagsChange={changeTagFilter}
           />
