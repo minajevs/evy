@@ -192,7 +192,7 @@ const orderBySchema = z.enum([
 const querySchema = z.object({
   page: z.coerce.number().optional(),
   orderBy: orderBySchema.optional(),
-  tags: z.string().or(z.array(z.string())).transform(arg => arg instanceof Array ? arg : [arg])
+  tags: z.string().or(z.array(z.string())).optional().transform(arg => arg === undefined ? undefined : arg instanceof Array ? arg : [arg])
 })
 const paramsSchema = z.object({ collectionSlug: z.string() })
 
