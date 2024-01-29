@@ -19,6 +19,7 @@ type DirectUploadUrlRequest = {
 const endpoint = '/v2/direct_upload'
 
 // Read more on cloudlfare direct upload: https://developers.cloudflare.com/images/cloudflare-images/upload-images/direct-creator-upload/
+// To get batch upload urls - https://developers.cloudflare.com/images/upload-images/images-batch/
 // This function is server-only
 export const getDirectUploadUrl = async ({
   userId,

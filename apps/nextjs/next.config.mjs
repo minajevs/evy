@@ -31,6 +31,11 @@ const config = {
     remotePatterns: [
       {
         protocol: 'https',
+        hostname: 'evy.app',
+        port: '',
+      },
+      {
+        protocol: 'https',
         hostname: 'imagedelivery.net',
         port: '',
       },
@@ -41,8 +46,8 @@ const config = {
       },
     ],
     // only necessary to resize local images
-    //   loader: 'custom',
-    //   loaderFile: './images/loader.js',
+    // loader: 'custom',
+    // loaderFile: './images/loader.js',
   },
   // https://github.com/vercel/next.js/discussions/39549
   webpack(config, { nextRuntime }) {
