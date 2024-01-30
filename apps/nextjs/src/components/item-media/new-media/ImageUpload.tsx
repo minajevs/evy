@@ -1,18 +1,31 @@
-import { Box, Flex, Icon, Link, Stack, Text, VStack, VisuallyHidden } from "@chakra-ui/react"
-import { type ReactNode, useRef } from "react"
+import { Box, Flex, Icon, IconButton, Image, Link, Stack, Text, VStack, VisuallyHidden } from "@chakra-ui/react"
+import { Trash2 } from "lucide-react"
+import { type ReactNode, useRef, useState, useCallback } from "react"
 import { useDropzone } from 'react-dropzone'
 
 type FileUploadProps = {
   multiple?: boolean
   children?: ReactNode
+  height?: string
   onDrop: (acceptedFiles: File[]) => void
 }
 
 const accept = 'image/*'
 
-export const ImageUpload = ({ onDrop, multiple = false }: FileUploadProps) => {
+export const ImageUpload = ({ onDrop, height, multiple = false }: FileUploadProps) => {
+  const [preview, setPreview] = useState<string | null>(null)
+
+  const onFileDrop = useCallback((acceptedFiles: File[]) => {
+    setPreview(URL.createObjectURL(acceptedFiles[0]!))
+    onDrop(acceptedFiles)
+  }, [onDrop])
+  const onRemoveFile = useCallback(() => {
+    setPreview(null)
+    onDrop([])
+  }, [setPreview, onDrop])
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
+    onDrop: onFileDrop,
     accept: {
       'image/jpeg': [],
       'image/png': []
@@ -21,6 +34,38 @@ export const ImageUpload = ({ onDrop, multiple = false }: FileUploadProps) => {
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   const handleClick = () => inputRef.current?.click()
+
+  if (preview !== null) return <Flex
+    justify="center"
+    px={6}
+    py={6}
+    borderWidth={2}
+    borderStyle="dashed"
+    borderColor={'gray.400'}
+    rounded="lg"
+    height={height}
+    position='relative'
+    role="group"
+  >
+    <Image
+      height='100%'
+      objectFit='cover'
+      alt='uploaded image preview'
+      filter='brightness(75%) saturate(140%)'
+      src={preview}
+    />
+    <IconButton
+      aria-label="remove image"
+      icon={<Icon as={Trash2} />}
+      position='absolute'
+      margin='auto'
+      top={0}
+      left={0}
+      bottom={0}
+      right={0}
+      onClick={onRemoveFile}
+    />
+  </Flex>
 
   return (
     <Flex
@@ -31,6 +76,8 @@ export const ImageUpload = ({ onDrop, multiple = false }: FileUploadProps) => {
       borderStyle="dashed"
       borderColor={isDragActive ? 'gray.700' : 'gray.400'}
       rounded="lg"
+      height={height}
+      position='relative'
       {...getRootProps()}
 
     >
@@ -65,15 +112,6 @@ export const ImageUpload = ({ onDrop, multiple = false }: FileUploadProps) => {
             onClick={handleClick}
           >
             <Text width='full'>Browse the files</Text>
-            <VisuallyHidden>
-              <input
-                type={'file'}
-                multiple={multiple}
-                hidden
-                accept={accept}
-                {...getInputProps()}
-              />
-            </VisuallyHidden>
           </Link>
           <Text pl={1}>{isDragActive ? 'or drop file here' : 'or drag and drop here'}</Text>
         </VStack>
@@ -85,6 +123,15 @@ export const ImageUpload = ({ onDrop, multiple = false }: FileUploadProps) => {
           </Text>
         </Box>
       </Stack>
+      <VisuallyHidden>
+        <input
+          type={'file'}
+          multiple={multiple}
+          hidden
+          accept={accept}
+          {...getInputProps()}
+        />
+      </VisuallyHidden>
     </Flex>
   )
 }

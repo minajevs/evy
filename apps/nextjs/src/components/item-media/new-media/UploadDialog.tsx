@@ -1,9 +1,9 @@
 import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, type UseDisclosureReturn, Spinner, Stack } from "@chakra-ui/react"
 import { ImageUpload } from "./ImageUpload"
 import { api } from "~/utils/api"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useState } from "react"
 import { type ItemImage } from "@evy/db"
-import { type DirectUploadUrlResult, uploadImage, validateFiles, getThumbhash } from "@evy/images"
+import { uploadImage, validateFiles, getThumbhash } from "@evy/images"
 import { useRouter } from "next/router"
 import { ImageUploadUpdateModal } from "./ImageUploadUpdateModal"
 
@@ -16,35 +16,31 @@ type Props = {
 export const UploadDialog = ({ itemId, disclosure, onUploaded, onUpdated }: Props) => {
   const router = useRouter()
   const { isOpen, onClose } = disclosure
-  const [directUpload, setDirectUpload] = useState<DirectUploadUrlResult | null>(null)
   const [uploading, setUploading] = useState<boolean>(false)
   const [uploadedImage, setUploadedImage] = useState<ItemImage | null>(null)
 
   const { mutateAsync: directUploadMutateAsync } = api.image.getDirectUploadUrl.useMutation()
   const imageCreateMutation = api.image.createBasicImage.useMutation()
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const directUpload = await directUploadMutateAsync({ itemId })
-      setDirectUpload(directUpload)
-    }
-    if (disclosure.isOpen && directUpload === null) {
-      fetchData().catch(console.error)
-    }
-  }, [disclosure, directUpload, itemId, directUploadMutateAsync])
+  const handleClose = useCallback(() => {
+    onClose()
+    setUploading(false)
+    setUploadedImage(null)
+  }, [onClose, setUploading, setUploadedImage])
 
   const onSave = useCallback(async (image: ItemImage) => {
     onUpdated(image)
-    onClose()
+    handleClose()
     await router.replace(router.asPath)
-    setDirectUpload(null)
     setUploading(false)
     setUploadedImage(null)
-  }, [setDirectUpload, onClose, router, onUpdated])
+  }, [handleClose, router, onUpdated])
 
   const handleFiles = useCallback(async (files: File[]) => {
+    if (files.length === 0) return
+
     const validationResult = validateFiles(files)
-    if (validationResult !== true || directUpload === null) {
+    if (validationResult !== true) {
       // TODO: Show error to user?
       console.error(validationResult)
       return
@@ -52,8 +48,8 @@ export const UploadDialog = ({ itemId, disclosure, onUploaded, onUpdated }: Prop
 
     setUploading(true)
 
+    const directUpload = await directUploadMutateAsync({ itemId })
     await uploadImage({ file: files[0]!, directUpload: directUpload.result })
-
     const thumbhash = await getThumbhash(files[0]!)
 
     const createdImage = await imageCreateMutation.mutateAsync({ itemId, externalImageId: directUpload.result.id, thumbhash })
@@ -61,9 +57,9 @@ export const UploadDialog = ({ itemId, disclosure, onUploaded, onUpdated }: Prop
     setUploading(false)
     onUploaded(createdImage)
     setUploadedImage(createdImage)
-  }, [directUpload, imageCreateMutation, itemId, onUploaded])
+  }, [directUploadMutateAsync, imageCreateMutation, itemId, onUploaded])
 
-  const body = directUpload === null || uploading
+  const body = uploading
     ? <>
       <ModalBody>
         <Stack height='150' width='full' alignItems='center'><Spinner size='lg' /></Stack>
@@ -75,7 +71,7 @@ export const UploadDialog = ({ itemId, disclosure, onUploaded, onUpdated }: Prop
     : uploadedImage === null
       ? <>
         <ModalBody>
-          <ImageUpload onDrop={handleFiles} />
+          <ImageUpload height="30vh" onDrop={handleFiles} />
         </ModalBody>
 
         <ModalFooter>
@@ -83,7 +79,7 @@ export const UploadDialog = ({ itemId, disclosure, onUploaded, onUpdated }: Prop
       </>
       : <ImageUploadUpdateModal image={uploadedImage} onSave={onSave} />
 
-  return <Modal size='2xl' isOpen={isOpen} onClose={onClose} >
+  return <Modal size='2xl' isOpen={isOpen} onClose={handleClose} >
     <ModalOverlay />
     <ModalContent>
       <ModalHeader>Upload Image</ModalHeader>
