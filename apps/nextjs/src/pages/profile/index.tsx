@@ -1,6 +1,6 @@
 import { Icon } from "@chakra-ui/react"
 import { HStack, Heading, Button, Text, Box, Divider, SimpleGrid } from "@chakra-ui/react"
-import { getServerSession } from "@evy/auth";
+import { getServerSession } from "@evy/auth"
 import { type Collection, prisma, type User, type Item } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
 import Link from "next/link"
@@ -34,9 +34,7 @@ const Profile: NextPage<Props> = ({ user, layout }) => {
           Edit
         </Button>
       </HStack>
-
       <ProfileCard user={user} />
-
       <Box fontWeight={500} color='gray.500'>
         <Text display='inline'>Joined:</Text>
         <Text display='inline'>{user.createdAt.toLocaleDateString('en-GB')}</Text>

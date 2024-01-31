@@ -1,9 +1,10 @@
-import { Flex, type FlexProps, HStack, Heading, Icon, useColorMode, Button } from "@chakra-ui/react"
+import { Flex, type FlexProps, HStack, Heading, Icon, useColorMode, IconButton } from "@chakra-ui/react"
 import { useBackgroundColor } from "@evy/styling";
 import { Link } from "@chakra-ui/next-js"
-import { signIn, signOut, useSession } from "next-auth/react"
+import { useSession } from "next-auth/react"
 import { Moon, Sun } from "lucide-react"
 import { EvyLogo } from "~/components/logo/EvyLogo";
+import { ProfileNavButton } from "~/components/profile/ProfileNavButton";
 
 type MobileProps = FlexProps
 
@@ -37,12 +38,8 @@ export const MobileNav = ({ ...rest }: MobileProps) => {
           icon={<Icon as={FiSearch} />}
         /> */}
         <HStack spacing='0'>
-          <Button variant='ghost' onClick={toggleColorMode}>
-            {colorMode === 'light' ? <Icon as={Moon} /> : <Icon as={Sun} />}
-          </Button>
-          <Button justifyContent='flex-start' textAlign='left' variant='ghost' onClick={session.status === 'authenticated' ? () => void signOut({ callbackUrl: '/' }) : () => void signIn()}>
-            {session.status === 'authenticated' ? "Sign out" : "Sign in"}
-          </Button>
+          <IconButton aria-label="change dark or light mode" icon={colorMode === 'light' ? <Icon as={Moon} /> : <Icon as={Sun} />} isRound variant='ghost' onClick={toggleColorMode} />
+          <ProfileNavButton />
         </HStack>
       </HStack>
     </Flex>

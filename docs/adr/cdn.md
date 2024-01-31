@@ -16,7 +16,11 @@ Pros:
 
 - Very cheap
   Cons:
-- No image optimization
+- ~No image optimization~ Not actual since 11/2023, but comes at a price
+
+Cons:
+
+- Damn it's slow. Tried dogfooding app myself, and image uploads are either really fast, or fail completely. DirectURL fails sporadically.
 
 ### Cloudflare Images
 

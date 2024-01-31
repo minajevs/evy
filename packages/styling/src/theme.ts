@@ -31,6 +31,26 @@ export const theme = extendTheme(
     colors,
     config,
     components: {
+      Link: {
+        baseStyle: {
+          textDecoration: 'none',
+          _focus: {
+            textDecoration: 'none',
+          },
+          _hover: {
+            textDecoration: 'none',
+          },
+          _visited: {
+            textDecoration: 'none',
+          },
+          _activeLink: {
+            textDecoration: 'none',
+          },
+          _active: {
+            textDecoration: 'none',
+          },
+        },
+      },
       Text: {
         variants: {
           // used as <Text variant="primary">
