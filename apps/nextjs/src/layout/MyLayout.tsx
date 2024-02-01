@@ -34,7 +34,7 @@ export const MyLayout = ({ children, layout, title }: Props) => {
       <meta name="description" content="Amazing Evy app!" />
       <link rel="icon" href="/favicon.svg" />
     </Head>
-    <Box minH="100dvh" display='flex' flexDirection='column' bg={bg}>
+    <Box minH="100dvh" maxW='100dvw' overflow='hidden' display='flex' flexDirection='column' bg={bg}>
       {authContent}
       {/* margin bottom to account for fixed bottom navigation */}
       <Box ml={{ base: 0, md: 60 }} p={{ base: 4, sm: 8 }} mb={{ base: 24, md: 0 }}>

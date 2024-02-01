@@ -1,4 +1,4 @@
-import { Box, Button, ButtonGroup, HStack, Heading, Text } from "@chakra-ui/react"
+import { Box, Button, ButtonGroup, HStack, Heading, IconButton, Menu, MenuButton, MenuItem, MenuList, Text } from "@chakra-ui/react"
 import { getServerSession } from "@evy/auth"
 import { type Collection, prisma, type Item, type User, type ItemImage, type ItemTag, type Tag as DbTag, type Tag } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
@@ -9,7 +9,7 @@ import { Link } from "@chakra-ui/next-js"
 import { Icon } from "@chakra-ui/react"
 import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 import { ShareDialog } from "~/components/share-dialog/ShareDialog"
-import { Edit, Share2 } from "lucide-react"
+import { Edit, MoreVerticalIcon, Share2 } from "lucide-react"
 import { type SortingDirection } from "~/utils/sorting/types"
 import { ItemGrid } from "~/components/items/ItemGrid"
 import { useState } from "react"
@@ -131,11 +131,28 @@ const CollectionPage: NextPage<Props> = ({ layout, collection, tagsFilter, view,
 
   return <>
     <MyLayout title="Collection" layout={layout}>
-      <HStack width='100%' justifyContent='space-between'>
+      <HStack width='100%' justifyContent='space-between' alignItems='baseline'>
         <Heading size="lg" mb="4">
           <Text>{collection.name}</Text>
         </Heading>
-        <ButtonGroup isAttached>
+        {/* Mobile Menu Buttons */}
+        <Menu>
+          <MenuButton as={IconButton} aria-label="item actions" icon={<Icon as={MoreVerticalIcon} />} variant='outline' display={{ base: 'flex', md: 'none' }}>
+            Actions
+          </MenuButton>
+          <MenuList>
+            <ShareDialog
+              customButton={<MenuItem icon={<Icon as={Share2} />}>Share</MenuItem>}
+              username={collection.user.username}
+              collectionSlug={collection.slug}
+            />
+            <MenuItem icon={<Icon as={Edit} />} as={StyledLink} href={`/my/${collection.slug}/edit`}>
+              Edit
+            </MenuItem>
+          </MenuList>
+        </Menu>
+        {/* Desktop Menu Buttons */}
+        <ButtonGroup display={{ base: 'none', md: 'flex' }}>
           <ShareDialog
             buttonProps={{ leftIcon: <Icon as={Share2} />, variant: 'outline' }}
             username={collection.user.username}
@@ -164,7 +181,7 @@ const CollectionPage: NextPage<Props> = ({ layout, collection, tagsFilter, view,
               onTagsChange={changeTagFilter} />
           </Box>
           <ItemFilter
-            display={{ base: 'flex', xl: 'none' }}
+            display={{ base: 'none', lg: 'flex', xl: 'none' }}
             filter={currentTags}
             tags={collection.tags}
             onTagsChange={changeTagFilter}

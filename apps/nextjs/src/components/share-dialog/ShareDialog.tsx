@@ -3,17 +3,19 @@ import { Link } from "@chakra-ui/next-js"
 import { Button, type ButtonProps, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure, Input, InputGroup, InputRightElement, useClipboard } from "@chakra-ui/react"
 import { env } from "~/env.mjs"
 import { CopyCheckIcon, CopyIcon } from "lucide-react"
+import { cloneElement, type ReactElement } from "react"
 
 type Props = {
-  buttonProps: Omit<ButtonProps, 'onClick'>
+  buttonProps?: Omit<ButtonProps, 'onClick'>
   username: string
   collectionSlug?: string
   itemSlug?: string
+  customButton?: ReactElement<{ onClick: () => void }>
 }
 
 const scheme = process.env.NODE_ENV === 'production' ? 'https' : 'http'
 
-export const ShareDialog = ({ username, collectionSlug, itemSlug, buttonProps }: Props) => {
+export const ShareDialog = ({ username, collectionSlug, itemSlug, buttonProps, customButton }: Props) => {
   const path = [username, collectionSlug, itemSlug].filter(Boolean).join('/')
   const shortPath = [collectionSlug, itemSlug].filter(Boolean).join('/')
 
@@ -30,7 +32,11 @@ export const ShareDialog = ({ username, collectionSlug, itemSlug, buttonProps }:
 
   return (
     <>
-      <Button {...buttonProps} onClick={onOpen}>Share</Button>
+      {
+        customButton !== undefined
+          ? cloneElement(customButton, { onClick: onOpen, ...buttonProps })
+          : <Button {...buttonProps} onClick={onOpen}>Share</Button>
+      }
 
       <Modal isOpen={isOpen} onClose={onClose} motionPreset='slideInBottom' size='xl'>
         <ModalOverlay />
