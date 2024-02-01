@@ -195,21 +195,21 @@ const CollectionPage: NextPage<Props> = ({ layout, collection, tagsFilter, view,
         </HStack>
       </HStack>
       <HStack mb={4} display={{ base: 'flex', lg: 'none' }} justifyContent='space-between'>
+        <ItemSorting
+          sorting={sorting}
+          sortingDirection={sortingDirection}
+          updateSorting={updateSorting} />
         <HStack>
-          <ItemSorting
-            sorting={sorting}
-            sortingDirection={sortingDirection}
-            updateSorting={updateSorting} />
           <ItemFilter
             filter={currentTags}
             tags={collection.tags}
             onTagsChange={changeTagFilter}
           />
+          <ItemViewSelector
+            currentView={currentView}
+            updateView={updateView}
+          />
         </HStack>
-        <ItemViewSelector
-          currentView={currentView}
-          updateView={updateView}
-        />
       </HStack>
       {itemView}
       <Pagination currentPage={page} totalItems={totalItems} pageSize={pageSize} changePage={changePage} mt={4} />
