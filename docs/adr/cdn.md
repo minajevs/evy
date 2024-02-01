@@ -40,6 +40,11 @@ Pros:
 
 A bit more pricey than Cloudflare, but still cheaper than competitors.
 
+Cons:
+
+- No "creator upload" option. Uploaded files must go through backend (multer or something)
+- Support is not very helpful. Support if very responsive, but does not understand requests (regarding "creator upload")
+
 ### Bunny CDN
 
 Pure CDN. Has option for Streaming videos.
