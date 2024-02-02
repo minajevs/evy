@@ -16,7 +16,9 @@ const bricolageGrotesqueFont = localFont({
 })
 
 const onestFont = localFont({
-  src: '../../public/Onest-VariableFont_wght.ttf'
+  src: '../../public/Onest-VariableFont_wght.ttf',
+  display: 'swap',
+  fallback: ['sans-serif']
 })
 
 
