@@ -19,30 +19,28 @@ export const Hero = () => {
     alignItems='center'
   //backgroundImage={pattern}
   >
-    <Heading fontSize='5xl' mt={12} mb={8} textAlign='center' fontFamily='onest'>
+    <Heading fontSize='5xl' mt={{ base: 16, md: 32 }} mb={4} textAlign='center' fontFamily='onest'>
       <Highlight
-        query='everyone'
+        query='organized'
         styles={{
-          px: 2,
-          pt: 0,
-          pb: 1,
+          px: 3,
           rounded: 'full',
           bgGradient: bgGradient,
           color: useColorModeValue('rgb(26, 32, 44)', 'rgba(255, 255, 255, 0.92)')
         }}
       >
-        Collection management for everyone
+        Keep your things organized
       </Highlight>
     </Heading>
     <Container textAlign='center'>
       <Text fontSize='xl'>
-        Evy is an app to manage, overview, track, share and discover precious hobbies
+        Evy is an app to manage your collections. Keep track of your stuff and share it with the world.
       </Text>
     </Container>
     <VStack
       justifyContent='center'
       alignItems='center'
-      mt={8}
+      mt={{ base: 8, md: 16 }}
     >
       <Button
         size='lg'
@@ -62,6 +60,9 @@ export const Hero = () => {
       >
         Get started
       </Button>
+      <Text>
+        yes, it's free
+      </Text>
     </VStack>
   </VStack>
 }

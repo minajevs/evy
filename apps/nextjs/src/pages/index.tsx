@@ -7,6 +7,7 @@ import { Hero } from "~/components/landing/hero";
 import { useBackgroundPattern } from "@evy/styling";
 import { Navbar } from "~/components/landing/navbar";
 import { Footer } from "~/components/landing/footer";
+import { ImageSection } from "~/components/landing/imageSection";
 
 type Props = {
   signedIn: boolean
@@ -18,13 +19,15 @@ const Home: NextPage<Props> = ({ signedIn }) => {
     <LandingLayout>
       <Box backgroundImage={pattern} flex={1}>
         <Navbar signedIn={signedIn} />
-        <Box>
-          <Hero />
-          <Text width='100%' textAlign='center' my={4}>
-            This is a landing page v0.2,
-            don&apos;t judge, ok?
-          </Text>
-        </Box>
+
+        <Hero />
+
+        <ImageSection mt={{ base: 8, md: 16 }} />
+
+        <Text width='100%' textAlign='center' my={4}>
+          This is a landing page v0.2,
+          don&apos;t judge, ok?
+        </Text>
       </Box>
       <Footer />
     </LandingLayout>

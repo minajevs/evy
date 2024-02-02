@@ -1,5 +1,5 @@
 import { Button, Flex, Icon, Input, Popover, PopoverAnchor, PopoverBody, PopoverContent, Tag, TagCloseButton, TagLabel, TagLeftIcon, useBoolean } from "@chakra-ui/react"
-import { Check, HashIcon } from "lucide-react"
+import { HashIcon, PlusCircle } from "lucide-react"
 import { useOutsideClick } from '@chakra-ui/react'
 import { useRef, useState } from "react"
 import useTextWidth from "~/utils/useTextWidth"
@@ -120,6 +120,6 @@ export const ItemTagInput = ({ collectionTags, tags, onSave }: Props) => {
       </PopoverContent>
     </Popover>
 
-    <TagCloseButton mr={1} height='unset' boxSize={4} onClick={handleSave} visibility={valid ? 'visible' : 'hidden'}><Icon as={Check} boxSize={4} /></TagCloseButton>
+    <TagCloseButton mr={1} height='unset' boxSize={4} onClick={handleSave} visibility={valid ? 'visible' : 'hidden'}><Icon as={PlusCircle} boxSize={4} /></TagCloseButton>
   </Tag>
 }
