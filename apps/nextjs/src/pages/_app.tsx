@@ -4,11 +4,26 @@ import { ChakraProvider } from '@chakra-ui/react'
 import NextNProgress from 'nextjs-progressbar'
 import PlausibleProvider from 'next-plausible'
 
-import { theme } from '@evy/styling'
+import { getTheme } from '@evy/styling'
 
 import { api } from "~/utils/api"
 import { ConfirmProvider } from "~/utils/confirm/ConfirmProvider";
 import { env } from "~/env.mjs"
+import localFont from "next/font/local";
+
+const bricolageGrotesqueFont = localFont({
+  src: '../../public/BricolageGrotesque-VariableFont_opsz,wdth,wght.ttf'
+})
+
+const onestFont = localFont({
+  src: '../../public/Onest-VariableFont_wght.ttf'
+})
+
+
+const theme = getTheme({
+  grotesque: bricolageGrotesqueFont.style.fontFamily,
+  onest: onestFont.style.fontFamily,
+})
 
 const MyApp: AppType = ({
   Component,

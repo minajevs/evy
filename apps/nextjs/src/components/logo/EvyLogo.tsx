@@ -1,18 +1,11 @@
 import { Box, type BoxProps, Icon } from "@chakra-ui/react"
-import { Library } from "lucide-react"
-import localFont from "next/font/local"
-
-const logoFont = localFont({
-  src: '../../../public/Onest-VariableFont_wght.ttf',
-  preload: true
-})
-
+import { Evy } from "../common/icons/Evy"
 
 type Props = BoxProps
 export const EvyLogo = ({ ...props }: Props) => <Box
-  className={logoFont.className}
+  fontFamily='onest'
   display='flex'
   alignItems='center'
   {...props}>
-  Evy <Icon as={Library} mx={1} />
+  <Icon as={Evy} mx={1} color='primary.500' /> Evy
 </Box>

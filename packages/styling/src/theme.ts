@@ -2,6 +2,7 @@ import {
   type ThemeConfig,
   extendTheme,
   type ThemeOverride,
+  type RecursiveObject,
 } from '@chakra-ui/react'
 import { withProse } from '@nikolovlazar/chakra-ui-prose'
 
@@ -18,57 +19,59 @@ const config: ThemeConfig = {
   useSystemColorMode: true,
 }
 
-export const theme = extendTheme(
-  {
-    semanticTokens: {
-      colors: {
-        primary: {
-          default: 'primary.500',
-          _dark: 'primary.300',
-        },
-      },
-    },
-    colors,
-    config,
-    components: {
-      Link: {
-        baseStyle: {
-          textDecoration: 'none',
-          _focus: {
-            textDecoration: 'none',
-          },
-          _hover: {
-            textDecoration: 'none',
-          },
-          _visited: {
-            textDecoration: 'none',
-          },
-          _activeLink: {
-            textDecoration: 'none',
-          },
-          _active: {
-            textDecoration: 'none',
-          },
-        },
-      },
-      Text: {
-        variants: {
-          // used as <Text variant="primary">
+export const getTheme = (fonts?: RecursiveObject<string>) =>
+  extendTheme(
+    {
+      fonts: fonts ?? {},
+      semanticTokens: {
+        colors: {
           primary: {
-            color: 'primary',
+            default: 'primary.500',
+            _dark: 'primary.300',
           },
         },
       },
-    },
-  } as ThemeOverride,
-  withProse({
-    baseStyle: {
-      p: {
-        margin: 0,
+      colors,
+      config,
+      components: {
+        Link: {
+          baseStyle: {
+            textDecoration: 'none',
+            _focus: {
+              textDecoration: 'none',
+            },
+            _hover: {
+              textDecoration: 'none',
+            },
+            _visited: {
+              textDecoration: 'none',
+            },
+            _activeLink: {
+              textDecoration: 'none',
+            },
+            _active: {
+              textDecoration: 'none',
+            },
+          },
+        },
+        Text: {
+          variants: {
+            // used as <Text variant="primary">
+            primary: {
+              color: 'primary',
+            },
+          },
+        },
       },
-      a: {
-        textDecoration: 'underline',
+    } as ThemeOverride,
+    withProse({
+      baseStyle: {
+        p: {
+          margin: 0,
+        },
+        a: {
+          textDecoration: 'underline',
+        },
       },
-    },
-  }),
-)
+    }),
+  )

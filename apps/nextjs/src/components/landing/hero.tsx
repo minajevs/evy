@@ -19,7 +19,7 @@ export const Hero = () => {
     alignItems='center'
   //backgroundImage={pattern}
   >
-    <Heading fontSize='5xl' mt={12} mb={8} textAlign='center'>
+    <Heading fontSize='5xl' mt={12} mb={8} textAlign='center' fontFamily='onest'>
       <Highlight
         query='everyone'
         styles={{
