@@ -5,11 +5,11 @@ type Props = {
   children: ReactNode
 }
 export const Reveal = ({ children }: Props) => {
-  const { isOpen, onToggle } = useDisclosure()
+  const { isOpen, onOpen } = useDisclosure()
 
-  useEffect(onToggle, [])
+  useEffect(onOpen, [])
 
-  return <Fade in={isOpen} unmountOnExit={false} transition={{ enter: { duration: 0.05, ease: 'easeInOut' } }}>
+  return <Fade in={isOpen} unmountOnExit={false} transition={{ enter: { duration: 0.1, ease: 'easeInOut' } }}>
     {children}
   </Fade>
 }

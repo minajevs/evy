@@ -9,7 +9,7 @@ const CoolImage = chakra(NextImage, {
 
 type Props = {} & BoxProps
 export const ImageSection = ({ ...rest }: Props) => {
-  const { isOpen, onToggle } = useDisclosure()
+  const { isOpen, onOpen } = useDisclosure()
 
   return <Box width='100%' {...rest}>
     <Container maxW='container.lg' px={{ base: 4, md: 8 }} py={6} mx="auto">
@@ -26,7 +26,7 @@ export const ImageSection = ({ ...rest }: Props) => {
             boxShadow='2xl'
             sizes="(max-width: 480px) 90vw, (max-width: 768px) 88vw, (max-width: 991px) 85vw, 70vw"
             transition='0.3s'
-            onLoad={onToggle}
+            onLoad={onOpen}
           />
         </SlideFade>
       </Box>
