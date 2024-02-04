@@ -27,6 +27,7 @@ export const ImageSection = ({ ...rest }: Props) => {
             sizes="(max-width: 480px) 90vw, (max-width: 768px) 88vw, (max-width: 991px) 85vw, 70vw"
             transition='0.3s'
             onLoad={onOpen}
+            priority // this image is LCP, meaning that it should *not* be lazy loaded (re. pagespeed)
           />
         </SlideFade>
       </Box>

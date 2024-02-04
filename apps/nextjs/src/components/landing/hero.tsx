@@ -19,7 +19,7 @@ export const Hero = () => {
     alignItems='center'
   //backgroundImage={pattern}
   >
-    <Heading fontSize='5xl' mt={{ base: 16, md: 32 }} mb={4} textAlign='center' fontFamily='onest'>
+    <Heading fontSize='5xl' mt={{ base: 8, sm: 16, md: 32 }} mb={4} textAlign='center' fontFamily='onest'>
       <Highlight
         query='organized'
         styles={{
@@ -60,7 +60,7 @@ export const Hero = () => {
       >
         Get started
       </Button>
-      <Text>
+      <Text fontSize='sm'>
         yes, it's free
       </Text>
     </VStack>

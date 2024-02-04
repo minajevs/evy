@@ -2,6 +2,7 @@
 import './src/env.mjs'
 import '@evy/auth/env.mjs'
 import withMdx from '@next/mdx'
+import withBundleAnalyzer from '@next/bundle-analyzer'
 
 /** @type {import("next").NextConfig} */
 const config = {
@@ -62,4 +63,12 @@ const config = {
   },
 }
 
-export default withMdx()(config)
+const combinePlugins = (/** @type {import('next').NextConfig} */ config) => {
+  const plugins = [
+    withMdx(),
+    withBundleAnalyzer({ enabled: process.env.ANALYZE === 'true' }),
+  ]
+  return plugins.reduce((acc, cur) => cur(acc), config)
+}
+
+export default combinePlugins(config)
