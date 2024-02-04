@@ -50,10 +50,10 @@
     "nextjs-progressbar": "^0.0.16",
     "react": "^18.2.0",
     "react-cookie": "^7.0.0",
-    "react-dom": "18.2.0",
+    "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.45.4",
-    "superjson": "^1.13.3",
+    "superjson": "^2.2.1",
     "turndown": "^7.1.2",
     "zod": "3.21.4"
   },
