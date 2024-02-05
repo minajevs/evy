@@ -35,7 +35,6 @@ export const uploadImage = async ({
   const result = await axios
     .post(directUpload.uploadURL, data, {
       onUploadProgress: (progress) => {
-        console.log(progress)
         onProgress(progress.progress ?? 0)
       },
       headers: {

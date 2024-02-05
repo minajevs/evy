@@ -6,7 +6,6 @@ const CoolImage = chakra(NextImage, {
   shouldForwardProp: (prop) => ['width', 'height', 'src', 'alt', 'placeholder', 'style', 'onLoad'].includes(prop),
 })
 
-
 type Props = {} & BoxProps
 export const ImageSection = ({ ...rest }: Props) => {
   const { isOpen, onOpen } = useDisclosure()
@@ -17,7 +16,6 @@ export const ImageSection = ({ ...rest }: Props) => {
         <SlideFade in={isOpen} unmountOnExit={false} transition={{ enter: { delay: 0.2 } }}>
           <CoolImage
             src={EvyDemoImage}
-            placeholder='blur'
             alt={'evy demo screenshot'}
             style={{ objectFit: 'cover' }}
             borderRadius={{ base: 8, md: 16 }}
