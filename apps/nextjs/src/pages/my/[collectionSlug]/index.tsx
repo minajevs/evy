@@ -34,7 +34,11 @@ const StyledLink = styled(Link)`
 const viewCookieName = 'preference:item-view'
 const pageSize = 30
 
-type ItemProp = Item & { collection: Collection & { user: User } } & { images: ItemImage[] } & { tags: (ItemTag & { tag: DbTag })[] }
+type ItemProp = Item
+  & { collection: Collection & { user: User } }
+  & { defaultImage: ItemImage | null }
+  & { images: ItemImage[] }
+  & { tags: (ItemTag & { tag: DbTag })[] }
 
 type Props = {
   collection: Collection & { items: ItemProp[] } & { user: User } & { htmlDescription: string | null } & { tags: Tag[] },
@@ -279,9 +283,10 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
             },
             images: {
               orderBy: {
-                createdAt: 'asc'
+                createdAt: 'desc'
               }
-            }
+            },
+            defaultImage: true
           },
           orderBy: {
             ...(orderBy === 'name' ? { name: direction } : {}),

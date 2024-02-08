@@ -32,9 +32,11 @@ model Item {
     description     String?
     slug            String 
     collectionId    String
+    defaultImageId  String? @unique
 
     collection      Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
-    images          ItemImage[]
+    images          ItemImage[] @relation("images")
+    defaultImage    ItemImage? @relation(fields: [defaultImageId], references: [id])
     tags            ItemTag[]
 
     createdAt       DateTime
@@ -79,7 +81,8 @@ model ItemImage {
     name            String?
     description     String?
 
-    item            Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
+    item            Item @relation("images", fields: [itemId], references: [id], onDelete: Cascade)
+    defaultItem     Item? @relation()
 
     createdAt       DateTime
     

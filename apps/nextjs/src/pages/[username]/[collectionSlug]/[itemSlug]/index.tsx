@@ -4,7 +4,7 @@ import { type Collection, prisma, type Item, type ItemImage, type User, type Ite
 import type { GetServerSideProps, NextPage } from "next"
 import { useCallback, useRef, useState } from "react"
 import { z } from "zod"
-import { ImageModal } from "~/components/item-media/ImageModal"
+import { ImageModal } from "~/components/item-images/ImageModal"
 import { SharingLayout } from "~/layout"
 import { getServerSession } from "@evy/auth"
 import { HtmlView } from "~/components/common/HtmlView"
@@ -94,7 +94,7 @@ const ImageView = ({ item }: Props) => {
         {
           item.tags.length > 0
             ? <Flex mb={4} gap={2} flexWrap='wrap' width='full'>
-              {item.tags.map(tag => <ItemTagView key={tag.id} tag={tag.tag} onClick={console.log} />)}
+              {item.tags.map(tag => <ItemTagView key={tag.id} tag={tag.tag} onClick={() => void 0} />)}
             </Flex>
             : null
         }

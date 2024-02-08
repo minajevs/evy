@@ -8,20 +8,33 @@ import { HorizontalScrollShadow } from "../common/HorizontalScrollShadow"
 
 type Props = {
   linkPrefix?: string
-  item: Item & { collection: Collection } & { images: ItemImage[] } & { tags: (ItemTag & { tag: DbTag })[] }
+  item: Item
+  & { collection: Collection }
+  & { defaultImage: ItemImage | null }
+  & { images: ItemImage[] }
+  & { tags: (ItemTag & { tag: DbTag })[] }
   onTagClick: (tag: DbTag) => void
 }
 export const ItemCard = ({ linkPrefix, item, onTagClick }: Props) => {
+
   {/* width - full, heigh - full, paddingTop - 100% to achieve square */ }
   {/* set paddingTop to change dimensions, eg. w = 100px, paddingTop = 33% => h == 33px  */ }
-  const image = item.images[0] !== undefined
+  const image = item.defaultImage !== null
     ? <ImageDisplay
-      image={item.images[0]}
+      image={item.defaultImage}
       width='full'
       height='full'
       paddingTop='50%'
     />
-    : <NoImage />
+    : item.images[0] !== undefined
+      ? <ImageDisplay
+        image={item.images[0]}
+        width='full'
+        height='full'
+        paddingTop='50%'
+      />
+      : <NoImage />
+
   return <Link href={`/${linkPrefix ?? 'my'}/${item.collection.slug}/${item.slug}`}>
     <Card
       _hover={{

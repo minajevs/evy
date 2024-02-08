@@ -5,6 +5,7 @@ import {
   createBasicImageSchema,
   deleteImageSchema,
   directUploadUrlSchema,
+  setDefaultImageSchema,
   updateImageSchema,
 } from './schemas'
 
@@ -58,6 +59,7 @@ export const imageRouter = createTRPCRouter({
           name,
           description,
         },
+        include: { defaultItem: true },
       })
     }),
   deleteImage: protectedProcedure
@@ -112,5 +114,32 @@ export const imageRouter = createTRPCRouter({
       } catch (e) {
         return false
       }
+    }),
+  setDefaultImage: protectedProcedure
+    .input(setDefaultImageSchema)
+    .mutation(async ({ ctx, input: { id: imageId } }) => {
+      const image = await ctx.prisma.itemImage.findFirst({
+        where: {
+          id: imageId,
+          item: {
+            collection: {
+              userId: ctx.session.user.id,
+            },
+          },
+        },
+      })
+
+      if (image === null) {
+        throw new TRPCError({ code: 'UNAUTHORIZED' })
+      }
+
+      return ctx.prisma.item.update({
+        where: {
+          id: image.itemId,
+        },
+        data: {
+          defaultImageId: imageId,
+        },
+      })
     }),
 })

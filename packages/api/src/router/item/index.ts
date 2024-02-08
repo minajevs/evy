@@ -68,53 +68,59 @@ export const itemRouter = createTRPCRouter({
     }),
   update: protectedProcedure
     .input(editItemSchema)
-    .mutation(async ({ ctx, input: { id, name, description, slug } }) => {
-      if (!urlSafeRegex.test(slug)) {
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: 'Slug is in incorrect format',
-        })
-      }
-
-      const item = await ctx.prisma.item.findFirst({
-        where: {
-          id,
-          collection: {
-            userId: ctx.session.user.id,
-          },
-        },
-      })
-
-      if (item === null) throw new TRPCError({ code: 'BAD_REQUEST' })
-
-      if (item.slug !== slug) {
-        const slugAvailable = await checkSlugAvailable(
-          ctx.session.user.id,
-          item.collectionId,
-          slug,
-        )
-        if (!slugAvailable) {
+    .mutation(
+      async ({
+        ctx,
+        input: { id, name, description, slug, defaultImageId },
+      }) => {
+        if (!urlSafeRegex.test(slug)) {
           throw new TRPCError({
             code: 'BAD_REQUEST',
-            message: 'Slug is unavailable',
+            message: 'Slug is in incorrect format',
           })
         }
-      }
 
-      return ctx.prisma.item.update({
-        data: {
-          name,
-          description,
-          slug,
-        },
-        where: {
-          id,
-          collection: {
-            userId: ctx.session.user.id,
+        const item = await ctx.prisma.item.findFirst({
+          where: {
+            id,
+            collection: {
+              userId: ctx.session.user.id,
+            },
           },
-        },
-      })
-    }),
+        })
+
+        if (item === null) throw new TRPCError({ code: 'BAD_REQUEST' })
+
+        if (item.slug !== slug) {
+          const slugAvailable = await checkSlugAvailable(
+            ctx.session.user.id,
+            item.collectionId,
+            slug,
+          )
+          if (!slugAvailable) {
+            throw new TRPCError({
+              code: 'BAD_REQUEST',
+              message: 'Slug is unavailable',
+            })
+          }
+        }
+
+        return ctx.prisma.item.update({
+          data: {
+            name,
+            description,
+            slug,
+            defaultImageId,
+          },
+          where: {
+            id,
+            collection: {
+              userId: ctx.session.user.id,
+            },
+          },
+        })
+      },
+    ),
   updateTags: protectedProcedure
     .input(updateTagsSchema)
     .mutation(async ({ ctx, input: { itemId, tags } }) => {

@@ -1,35 +1,46 @@
 import { Box, Text, type UseDisclosureReturn, useDisclosure } from "@chakra-ui/react"
-import { type ItemImage } from "@evy/db"
+import { type Item, type ItemImage } from "@evy/db"
 import { useCallback, useState } from "react"
-import { UploadDialog } from "./new-media/UploadDialog"
+import { UploadDialog } from "./new-image/UploadDialog"
 import { ImageGrid } from "./ImageGrid"
 import { ImageUpdateModal } from "./image-update/ImageUpdateModal"
 
+type LocalImage = ItemImage & { defaultItem: Item | null }
+
 type Props = {
   itemId: string
-  images: ItemImage[]
+  images: LocalImage[]
   uploadDisclosure: UseDisclosureReturn
 }
 
-export const ItemMedia = ({ itemId, images, uploadDisclosure }: Props) => {
+export const ItemImages = ({ itemId, images, uploadDisclosure }: Props) => {
   const editImageDisclosure = useDisclosure()
 
-  const [editImage, setEditImage] = useState<ItemImage | null>(null)
-  const [localImages, setLocalImages] = useState<ItemImage[]>(images)
+  const [editImage, setEditImage] = useState<LocalImage | null>(null)
+  const [localImages, setLocalImages] = useState<LocalImage[]>(images)
 
-  const onUploaded = useCallback((image: ItemImage) => {
+  const onUploaded = useCallback((image: LocalImage) => {
     setLocalImages(prev => [...prev, image])
   }, [setLocalImages])
 
-  const onUpdated = useCallback((image: ItemImage) => {
-    setLocalImages(prev => prev.map(img => img.id === image.id ? image : img))
+  const onUpdated = useCallback((updatedImage: LocalImage) => {
+    // Optimistically handle image being set as default (thumbnail)
+    const forceThumbnail = updatedImage.defaultItem !== null
+    setLocalImages(prev => prev.map(img => {
+      if (img.id === updatedImage.id) return updatedImage
+
+      if (forceThumbnail) {
+        return { ...img, defaultItem: null }
+      }
+      return img
+    }))
   }, [setLocalImages])
 
-  const onDeleted = useCallback((image: ItemImage) => {
+  const onDeleted = useCallback((image: LocalImage) => {
     setLocalImages(prev => prev.filter(x => x.id !== image.id))
   }, [setLocalImages])
 
-  const onClick = useCallback((image: ItemImage) => {
+  const onClick = useCallback((image: LocalImage) => {
     setEditImage(image)
     editImageDisclosure.onOpen()
   }, [setEditImage, editImageDisclosure])
@@ -37,7 +48,7 @@ export const ItemMedia = ({ itemId, images, uploadDisclosure }: Props) => {
   return <>
     <ImageGrid images={localImages} onClick={onClick}>
       <Box>
-        <Text>No media for this item yet</Text>
+        <Text>No images for this item yet</Text>
         <Text>{'Click "Add" to add first photo'}</Text>
       </Box>
     </ImageGrid>

@@ -5,7 +5,7 @@ import { getServerSession } from "@evy/auth"
 import { type Collection, prisma, type Item, type ItemImage, type User, type ItemTag, type Tag } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
 import { z } from "zod"
-import { ItemMedia } from "~/components/item-media"
+import { ItemImages } from "~/components/item-images"
 import { ShareDialog } from "~/components/share-dialog/ShareDialog"
 import { MyLayout } from "~/layout"
 import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
@@ -20,11 +20,12 @@ const StyledLink = styled(Link)`
     text-decoration: none;
   }
 `
+type LocalImage = ItemImage & { defaultItem: Item | null }
 
 type Props = {
   item: Item
   & { collection: Collection & { user: User } & { tags: Tag[] } }
-  & { images: ItemImage[] }
+  & { images: LocalImage[] }
   & { htmlDescription: string | null }
   & { tags: (ItemTag & { tag: Tag })[] }
 } & LayoutServerSideProps
@@ -73,12 +74,12 @@ const ItemPage: NextPage<Props> = ({ layout, item }) => {
       <ItemTags my={4} itemId={item.id} collectionTags={item.collection.tags} tags={item.tags.map(x => x.tag)} />
       <HtmlView mb={8} value={item.htmlDescription} />
       <HStack width='100%' justifyContent='space-between' mb={2}>
-        <Heading size='md'>Media</Heading>
+        <Heading size='md'>Images</Heading>
         <Button leftIcon={<Icon as={Plus} />} variant='solid' onClick={uploadDisclosure.onOpen}>
           Add
         </Button>
       </HStack>
-      <ItemMedia itemId={item.id} images={item.images} uploadDisclosure={uploadDisclosure} />
+      <ItemImages itemId={item.id} images={item.images} uploadDisclosure={uploadDisclosure} />
     </MyLayout>
   </>
 }
@@ -113,6 +114,9 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
         }
       },
       images: {
+        include: {
+          defaultItem: true
+        },
         orderBy: {
           createdAt: 'asc'
         }

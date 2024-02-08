@@ -1,5 +1,5 @@
-import { Modal, ModalOverlay, ModalContent, type UseDisclosureReturn, Card, CardBody, Text, VStack, Button, CardFooter, useBoolean } from "@chakra-ui/react"
-import { type ItemImage } from "@evy/db"
+import { Modal, ModalOverlay, ModalContent, type UseDisclosureReturn, Card, CardBody, Text, VStack, Button, CardFooter, useBoolean, Badge, Box } from "@chakra-ui/react"
+import { type Item, type ItemImage } from "@evy/db"
 import { Icon } from '@chakra-ui/react'
 import { useConfirm } from "~/utils/confirm"
 import { api } from "~/utils/api"
@@ -7,15 +7,16 @@ import { ImageUpdateForm } from "./ImageUpdateForm"
 import { useZodForm } from "~/components/forms"
 import { FormProvider } from "react-hook-form"
 import { useEffect, useState } from "react"
-import { Edit, Trash2 } from "lucide-react"
+import { CheckSquare, Edit, ImageIcon, Trash2 } from "lucide-react"
 import { updateImageSchema } from "@evy/api/schemas"
 import { ImageDisplay } from "~/components/common/ImageDisplay"
 
+type LocalImage = ItemImage & { defaultItem: Item | null }
 type Props = {
-  image: ItemImage
+  image: LocalImage
   disclosure: UseDisclosureReturn
-  onDeleted: (image: ItemImage) => void
-  onUpdated: (image: ItemImage) => void
+  onDeleted: (image: LocalImage) => void
+  onUpdated: (image: LocalImage) => void
 }
 export const ImageUpdateModal = ({ image, onDeleted, disclosure: { isOpen, onClose }, onUpdated }: Props) => {
   const [localImage, setLocalImage] = useState(image)
@@ -33,6 +34,7 @@ export const ImageUpdateModal = ({ image, onDeleted, disclosure: { isOpen, onClo
 
   const mutation = api.image.updateImage.useMutation()
   const deleteMutation = api.image.deleteImage.useMutation()
+  const setDefaultImageMutation = api.image.setDefaultImage.useMutation()
 
   const onSubmit = handleSubmit(async data => {
     onLoading()
@@ -49,7 +51,7 @@ export const ImageUpdateModal = ({ image, onDeleted, disclosure: { isOpen, onClo
   }
 
   const handleDelete = async () => {
-    const confirmResult = await confirmWithLoading({ text: 'Are you sure want to delete this image?' })
+    const confirmResult = await confirmWithLoading({ text: 'Are you sure you want to delete this image?' })
     if (!confirmResult) return
 
     await deleteMutation.mutateAsync({ id: image.id })
@@ -65,22 +67,49 @@ export const ImageUpdateModal = ({ image, onDeleted, disclosure: { isOpen, onClo
     onClose()
   }
 
+  const handleSetThumbnail = async () => {
+    onLoading()
+    const updatedItem = await setDefaultImageMutation.mutateAsync({ id: image.id })
+    const updatedImage = ({ ...localImage, defaultItem: updatedItem })
+    setLocalImage(updatedImage)
+    onUpdated(updatedImage)
+    offLoading()
+  }
+
+  const isDefault = localImage.defaultItem !== null
+
   const cardBody = editing
     ? <CardBody>
       <ImageUpdateForm image={image} />
+      <Box mt={4}>
+        {
+          isDefault
+            ? <Badge variant='subtle' colorScheme='green'><Icon as={CheckSquare} boxSize='1rem' verticalAlign='middle' pb={0.5} /> Item thumbnail</Badge>
+            : <Button variant='link' leftIcon={<Icon as={ImageIcon} />} onClick={handleSetThumbnail}>
+              Set as item thumbnail
+            </Button>
+        }
+      </Box>
     </CardBody>
-    : (localImage.name === null || localImage.name.length === 0) && (localImage.description === null || localImage.description.length === 0)
+    : (localImage.name === null || localImage.name.length === 0) && (localImage.description === null || localImage.description.length === 0) && !isDefault
       ? null
       : <CardBody>
         <Text as='b'>{localImage.name}</Text>
         <Text>{localImage.description}</Text>
+        <Box mt={4}>
+          {
+            isDefault
+              ? <Badge variant='subtle' colorScheme='green'><Icon as={CheckSquare} boxSize='1rem' verticalAlign='middle' pb={0.5} /> Item thumbnail</Badge>
+              : null
+          }
+        </Box>
       </CardBody>
 
   const cardFooter = editing
     ? <>
       <Button
         flex='1'
-        colorScheme='blue'
+        colorScheme='secondary'
         isDisabled={!isValid}
         // key necessary https://stackoverflow.com/questions/71754898/involuntary-form-submit-when-rendering-submit-button-in-reactjs
         key='submitButton'
@@ -105,7 +134,7 @@ export const ImageUpdateModal = ({ image, onDeleted, disclosure: { isOpen, onClo
   return <FormProvider {...form}>
     <Modal size='full' scrollBehavior="outside" isOpen={isOpen} onClose={handleClose}>
       <ModalOverlay />
-      <ModalContent background='transparent' height='100%' padding={3} shadow='none' border='none' onClick={onClose}>
+      <ModalContent background='transparent' height='100%' padding={3} shadow='none' border='none' onClick={handleClose}>
         <form style={{ height: '100%' }} onSubmit={onSubmit}>
           <VStack spacing={3} height='100%'>
             <ImageDisplay image={image} height='100%' fit='contain' onClick={handleClose} />

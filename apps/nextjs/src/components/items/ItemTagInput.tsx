@@ -46,7 +46,6 @@ export const ItemTagInput = ({ collectionTags, tags, onSave }: Props) => {
   }
 
   const handleSave = () => {
-    console.log('handle save')
     if (!valid) return
     // Save mock tag with mock ID. Will be populated on save in backend
     onSave({ text: inputText, id: Date.now().toString() })

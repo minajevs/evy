@@ -1,8 +1,8 @@
-import { Icon } from "@chakra-ui/react"
+import { Circle, Icon, SimpleGrid } from "@chakra-ui/react"
 import { Link } from "@chakra-ui/next-js"
 import { Button, ButtonGroup, FormControl, Flex, FormErrorMessage, Heading, Text, useBoolean, Input, FormLabel, VStack, Box, InputGroup, InputLeftAddon, useColorModeValue, InputRightElement, Spinner } from "@chakra-ui/react"
 import { getServerSession } from "@evy/auth"
-import { type Collection, prisma, type Item, type User } from "@evy/db"
+import { type Collection, prisma, type Item, type User, type ItemImage } from "@evy/db"
 import type { GetServerSideProps, NextPage } from "next"
 import { useRouter } from "next/router"
 import { z } from "zod"
@@ -12,13 +12,14 @@ import { MyLayout } from "~/layout"
 import { api } from "~/utils/api"
 import { getLayoutProps, type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 import { useVerifyValue } from "~/utils/useVerifyValue"
-import { Check, Save, X } from "lucide-react"
+import { Check, CheckCheck, Save, X } from "lucide-react"
 import { editItemSchema } from "@evy/api/schemas"
 import { Controller } from "react-hook-form"
 import { Editor } from "~/components/editor"
+import { ImageCard } from "~/components/item-images/image-card"
 
 type Props = {
-  item: Item & { collection: Collection & { user: User } } & { htmlDescription: string | null }
+  item: Item & { collection: Collection & { user: User } } & { htmlDescription: string | null } & { images: ItemImage[] }
 } & LayoutServerSideProps
 
 const EditItemPage: NextPage<Props> = ({ layout, item }) => {
@@ -37,7 +38,8 @@ const EditItemPage: NextPage<Props> = ({ layout, item }) => {
       id: item.id,
       name: item.name,
       description: item.description ?? undefined,
-      slug: item.slug
+      slug: item.slug,
+      defaultImageId: item.defaultImageId ?? undefined
     }
   })
 
@@ -56,6 +58,8 @@ const EditItemPage: NextPage<Props> = ({ layout, item }) => {
     const updatedItem = await updateMutation.mutateAsync(input)
     await router.replace(`/my/${item.collection.slug}/${updatedItem.slug}`)
   })
+
+  const badgeColor = useColorModeValue('white', 'black')
 
   return <>
     <MyLayout title="Item" layout={layout}>
@@ -139,6 +143,57 @@ const EditItemPage: NextPage<Props> = ({ layout, item }) => {
                   : 'This URL is unavailable'}</FormErrorMessage>
             </FormControl>
           </Box>
+          <Box width='full'>
+            <FormControl isInvalid={errors.defaultImageId !== undefined} isDisabled={loading}>
+              <FormLabel>Thumbnail</FormLabel>
+              <Controller
+                name='defaultImageId'
+                control={control}
+                render={({ field }) => (
+                  <SimpleGrid columns={{ xl: 8, md: 6, sm: 4, base: 2 }} spacing='3' width='100%'>
+                    {item.images.map(image =>
+                      <Flex justify='center' role="group" key={image.id} position='relative'>
+                        <ImageCard
+                          image={image}
+                          width='full'
+                          borderRadius='md'
+                          border={field.value === image.id ? '2px solid' : undefined}
+                          borderColor='primary'
+                          overflow='hidden'
+                          filter={field.value === image.id ? 'brightness(75%) saturate(140%)' : undefined}
+                          _hover={{ filter: 'brightness(75%) saturate(140%)' }}
+                          onClick={() => {
+                            if (field.value === image.id) return field.onChange(null)
+                            return field.onChange(image.id)
+                          }}
+                        />
+                        {
+                          field.value === image.id
+                            ?
+                            <Circle
+                              size={6}
+                              bg='primary'
+                              color={badgeColor}
+                              position='absolute'
+                              margin='auto'
+                              top={0}
+                              left={0}
+                              bottom={0}
+                              right={0}
+                            >
+                              <Icon
+                                as={CheckCheck}
+                              />
+                            </Circle>
+                            : null
+                        }
+                      </Flex>)}
+                  </SimpleGrid>
+                )}
+              />
+              <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
+            </FormControl>
+          </Box>
         </VStack>
       </form>
     </MyLayout>
@@ -163,6 +218,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
       slug: itemSlug
     },
     include: {
+      images: true,
       collection: {
         include: {
           user: true

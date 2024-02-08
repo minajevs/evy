@@ -16,3 +16,6 @@ export const updateImageSchema = z.object({
 export const deleteImageSchema = z.object({
   id: z.string().min(1),
 })
+export const setDefaultImageSchema = z.object({
+  id: z.string().min(1),
+})

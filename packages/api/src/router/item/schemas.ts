@@ -17,6 +17,7 @@ export const editItemSchema = z.object({
       'Slug may only contain alphanumeric characters, single hyphen or underscore, and cannot begin or end with a hyphen or underscore',
     ),
   description: z.string(),
+  defaultImageId: z.string(),
 })
 export const verifyItemSlugSchema = z.object({
   collectionId: z.string().min(1),

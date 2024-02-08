@@ -82,7 +82,7 @@ export const NewCollectionDialog = ({ as, ...rest }: Props) => {
 
           <ModalFooter>
             <Button
-              colorScheme='blue'
+              colorScheme='secondary'
               mr={3}
 
               isDisabled={!isDirty || !isValid}

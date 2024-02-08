@@ -9,7 +9,11 @@ import { HtmlView } from "~/components/common/HtmlView"
 import { Link } from "@chakra-ui/next-js"
 import { ProfileCard } from "~/components/profile/ProfileCard"
 
-type ItemProp = Item & { collection: Collection } & { images: ItemImage[] } & { tags: (ItemTag & { tag: DbTag })[] }
+type ItemProp = Item
+  & { collection: Collection }
+  & { defaultImage: ItemImage | null }
+  & { images: ItemImage[] }
+  & { tags: (ItemTag & { tag: DbTag })[] }
 
 type Props = {
   collection: Collection & { items: ItemProp[] } & { user: User } & { htmlDescription: string | null }
@@ -64,7 +68,7 @@ const ItemList = ({ username, items }: ItemListProps) => {
   }
   // TODO: Align with common components/items/ItemGrid 
   return <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }} spacing='8' width='100%'>
-    {items.map(item => <ItemCard key={item.id} item={item} linkPrefix={username} onTagClick={console.log} />)}
+    {items.map(item => <ItemCard key={item.id} item={item} linkPrefix={username} onTagClick={() => void 0} />)}
   </SimpleGrid>
 }
 
@@ -94,6 +98,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
             }
           },
           collection: true,
+          defaultImage: true,
           images: {
             orderBy: {
               createdAt: 'asc'

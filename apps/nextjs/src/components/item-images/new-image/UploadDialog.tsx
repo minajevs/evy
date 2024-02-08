@@ -2,23 +2,25 @@ import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHea
 import { ImageUpload } from "./ImageUpload"
 import { api } from "~/utils/api"
 import { useCallback, useState } from "react"
-import { type ItemImage } from "@evy/db"
+import { type Item, type ItemImage } from "@evy/db"
 import { uploadImage, validateFiles, getThumbhash } from "@evy/images"
 import { useRouter } from "next/router"
 import { ImageUploadUpdateModal } from "./ImageUploadUpdateModal"
 
+type LocalImage = ItemImage & { defaultItem: Item | null }
+
 type Props = {
   itemId: string
   disclosure: UseDisclosureReturn
-  onUploaded: (newImage: ItemImage) => void
-  onUpdated: (image: ItemImage) => void
+  onUploaded: (newImage: LocalImage) => void
+  onUpdated: (image: LocalImage) => void
 }
 export const UploadDialog = ({ itemId, disclosure, onUploaded, onUpdated }: Props) => {
   const router = useRouter()
   const { isOpen, onClose } = disclosure
   const [uploading, setUploading] = useState<boolean>(false)
   const [uploadProgress, setProgress] = useState<number | null>(null)
-  const [uploadedImage, setUploadedImage] = useState<ItemImage | null>(null)
+  const [uploadedImage, setUploadedImage] = useState<LocalImage | null>(null)
 
   const { mutateAsync: directUploadMutateAsync } = api.image.getDirectUploadUrl.useMutation()
   const imageCreateMutation = api.image.createBasicImage.useMutation()
@@ -29,7 +31,7 @@ export const UploadDialog = ({ itemId, disclosure, onUploaded, onUpdated }: Prop
     setUploadedImage(null)
   }, [onClose, setUploading, setUploadedImage])
 
-  const onSave = useCallback(async (image: ItemImage) => {
+  const onSave = useCallback(async (image: LocalImage) => {
     onUpdated(image)
     handleClose()
     await router.replace(router.asPath)

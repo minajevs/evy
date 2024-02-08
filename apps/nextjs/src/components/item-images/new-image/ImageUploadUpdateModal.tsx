@@ -1,15 +1,17 @@
 import { Button, ModalBody, ModalFooter, useBoolean } from "@chakra-ui/react"
 import { useZodForm } from "../../forms"
 import { api } from "~/utils/api"
-import { type ItemImage } from "@evy/db"
+import { type Item, type ItemImage } from "@evy/db"
 import { FormProvider } from "react-hook-form"
 import { ImageUpdateForm } from "../image-update/ImageUpdateForm"
 import { updateImageSchema } from "@evy/api/schemas"
 import { ImageDisplay } from "~/components/common/ImageDisplay"
 
+type LocalImage = ItemImage & { defaultItem: Item | null }
+
 type Props = {
-  image: ItemImage
-  onSave: (image: ItemImage) => void
+  image: LocalImage
+  onSave: (image: LocalImage) => void
 }
 
 export const ImageUploadUpdateModal = ({ image, onSave }: Props) => {
@@ -35,7 +37,7 @@ export const ImageUploadUpdateModal = ({ image, onSave }: Props) => {
 
       <ModalFooter>
         <Button
-          colorScheme='blue'
+          colorScheme='secondary'
           isDisabled={!isValid}
           type="submit"
           isLoading={loading}

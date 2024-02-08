@@ -10,7 +10,11 @@ import { HorizontalScrollShadow } from "../common/HorizontalScrollShadow"
 
 const imageSize = 16
 
-type ItemProp = Item & { collection: Collection & { user: User } } & { images: ItemImage[] } & { tags: (ItemTag & { tag: Tag })[] }
+type ItemProp = Item
+  & { collection: Collection & { user: User } }
+  & { images: ItemImage[] }
+  & { defaultImage: ItemImage | null }
+  & { tags: (ItemTag & { tag: Tag })[] }
 
 type Props = {
   items: ItemProp[]
@@ -23,13 +27,21 @@ export const ItemTable = ({ items, onTagClick }: Props) => {
       {items.map((item, i) => <Fragment key={item.id}>
         <HStack width='100%' _hover={{ bg: hover }} spacing={4} role='group'>
           <Box>
-            {item.images[0] !== undefined
-              ? <ImageDisplay
-                image={item.images[0]}
-                borderRadius='full'
-                boxSize={imageSize}
-              />
-              : <NoImage />}
+            {
+              item.defaultImage !== null
+                ? <ImageDisplay
+                  image={item.defaultImage}
+                  borderRadius='full'
+                  boxSize={imageSize}
+                />
+                : item.images[0] !== undefined
+                  ? <ImageDisplay
+                    image={item.images[0]}
+                    borderRadius='full'
+                    boxSize={imageSize}
+                  />
+                  : <NoImage />
+            }
           </Box>
           <Box minWidth='25%' flex={{ base: 1, md: 0 }}>
             <Text fontWeight={600} overflow='hidden' whiteSpace='nowrap' textOverflow='ellipsis'>
