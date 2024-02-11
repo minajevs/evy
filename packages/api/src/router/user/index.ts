@@ -5,9 +5,9 @@ import {
   publicProcedure,
 } from '../../trpc/trpc'
 import { editUserSchema, verifyUsernameSchema } from './schemas'
-import { urlSafeRegex } from '../../utils/urlSafeRegex'
 import { checkUsernameAvailable } from '../../lib/checkUsernameAvailable'
 import { checkUsernameBlocked } from '../../lib/checkUsernameBlocked'
+import { urlSafeRegex } from '../../constants/validation'
 
 export const userRouter = createTRPCRouter({
   update: protectedProcedure

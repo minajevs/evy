@@ -1,28 +1,27 @@
 import { z } from 'zod'
-import { urlSafeRegex } from '../../utils/urlSafeRegex'
+import { textLengths } from '../../constants/validation'
+import { slugSchema } from '../../constants/schemas'
+
+const nameSchema = z
+  .string()
+  .min(1, 'Collection name is required')
+  .max(
+    textLengths.normal,
+    `Collection name can be at most ${textLengths.normal} characters`,
+  )
+
+const collectionSlugSchema = slugSchema.min(1, 'Collection slug is required')
 
 export const editCollectionSchema = z.object({
   id: z.string().min(1),
-  name: z.string().min(1, 'Collection name is required'),
-  slug: z
-    .string()
-    .min(1, 'Collection slug is required')
-    .regex(
-      urlSafeRegex,
-      'Slug may only contain alphanumeric characters, single hyphen or underscore, and cannot begin or end with a hyphen or underscore',
-    ),
+  name: nameSchema,
+  slug: collectionSlugSchema,
   description: z.string(),
 })
 export const newCollectionSchema = z.object({
-  name: z.string().min(1, 'Collection name is required'),
+  name: nameSchema,
   description: z.string(),
 })
 export const verifyCollectionSlugSchema = z.object({
-  slug: z
-    .string()
-    .min(1, 'Collection slug is required')
-    .regex(
-      urlSafeRegex,
-      'Slug may only contain alphanumeric characters, single hyphen or underscore, and cannot begin or end with a hyphen or underscore',
-    ),
+  slug: collectionSlugSchema,
 })

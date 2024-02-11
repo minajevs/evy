@@ -9,7 +9,7 @@ import { createTRPCRouter, protectedProcedure } from '../../trpc/trpc'
 import { slugify } from '@evy/auth/src/slugify'
 import { customAlphabet } from 'nanoid'
 import { prisma } from '@evy/db'
-import { urlSafeRegex } from '../../utils/urlSafeRegex'
+import { urlSafeRegex } from '@evy/auth/src/signUpSchema'
 
 const slugId = customAlphabet('0123456789abcdefghijklmnopqrstuvwxyz', 5)
 

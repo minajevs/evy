@@ -1,4 +1,12 @@
 import { z } from 'zod'
+import { textLengths } from '../../constants/validation'
+
+const nameSchema = z
+  .string()
+  .max(
+    textLengths.normal,
+    `Name can be at most ${textLengths.normal} characters`,
+  )
 
 export const directUploadUrlSchema = z.object({
   itemId: z.string().min(1),
@@ -10,7 +18,7 @@ export const createBasicImageSchema = z.object({
 })
 export const updateImageSchema = z.object({
   id: z.string().min(1),
-  name: z.string(),
+  name: nameSchema,
   description: z.string(),
 })
 export const deleteImageSchema = z.object({

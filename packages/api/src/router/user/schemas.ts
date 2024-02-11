@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { urlSafeRegex } from '../../utils/urlSafeRegex'
+import { urlSafeRegex } from '../../constants/validation'
 
 export const editUserSchema = z.object({
   username: z

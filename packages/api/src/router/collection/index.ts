@@ -9,7 +9,7 @@ import {
 } from './schemas'
 import { TRPCError } from '@trpc/server'
 import { prisma } from '@evy/db'
-import { urlSafeRegex } from '../../utils/urlSafeRegex'
+import { urlSafeRegex } from '@evy/auth/src/signUpSchema'
 
 const slugId = customAlphabet('0123456789abcdefghijklmnopqrstuvwxyz', 5)
 

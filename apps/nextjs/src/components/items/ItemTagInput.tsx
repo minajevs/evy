@@ -4,6 +4,7 @@ import { useOutsideClick } from '@chakra-ui/react'
 import { useRef, useState } from "react"
 import useTextWidth from "~/utils/useTextWidth"
 import { type Tag as DbTag } from "@evy/db"
+import { textLengths } from "@evy/api/src/constants/validation"
 
 export type NewItemTag = Pick<DbTag, 'text' | 'id'>
 
@@ -28,7 +29,7 @@ export const ItemTagInput = ({ collectionTags, tags, onSave }: Props) => {
   const validate = (value: string) => value.length > 0 && tags.every(tag => tag.text !== value)
 
   const onChange = (value: string) => {
-    setInputText(value)
+    setInputText(value.toLocaleLowerCase().slice(0, textLengths.short))
     setValid(validate(value))
   }
 
