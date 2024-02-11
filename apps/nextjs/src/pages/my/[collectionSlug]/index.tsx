@@ -283,7 +283,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
             },
             images: {
               orderBy: {
-                createdAt: 'desc'
+                createdAt: 'asc'
               }
             },
             defaultImage: true

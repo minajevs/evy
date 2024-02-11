@@ -52,8 +52,6 @@ const CollectionEditPage: NextPage<Props> = ({ layout, collection }) => {
     await router.replace(`/my/${updatedCollection.slug}`)
   })
 
-  console.log(isValid, errors)
-
   return <>
     <MyLayout title="Collection" layout={layout}>
       <form onSubmit={onSubmit}>

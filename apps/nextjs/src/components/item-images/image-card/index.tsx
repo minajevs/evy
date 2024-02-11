@@ -4,7 +4,7 @@ import { ImageDisplay } from "~/components/common/ImageDisplay"
 
 type Props = {
   image: ItemImage
-  onClick: () => void
+  onClick?: () => void
 } & BoxProps
 export const ImageCard = ({ image, onClick, ...rest }: Props) => {
   return <>

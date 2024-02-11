@@ -61,8 +61,6 @@ const EditItemPage: NextPage<Props> = ({ layout, item }) => {
 
   const badgeColor = useColorModeValue('white', 'black')
 
-  console.log(isValid, errors)
-
   return <>
     <MyLayout title="Item" layout={layout}>
       <form onSubmit={onSubmit}>
@@ -156,7 +154,15 @@ const EditItemPage: NextPage<Props> = ({ layout, item }) => {
                     render={({ field }) => (
                       <SimpleGrid columns={{ xl: 8, md: 6, sm: 4, base: 2 }} spacing='3' width='100%'>
                         {item.images.map(image =>
-                          <Flex justify='center' role="group" key={image.id} position='relative'>
+                          <Flex
+                            justify='center'
+                            role="group"
+                            key={image.id}
+                            position='relative'
+                            onClick={() => {
+                              if (field.value === image.id) return field.onChange(null)
+                              return field.onChange(image.id)
+                            }}>
                             <ImageCard
                               image={image}
                               width='full'
@@ -166,10 +172,6 @@ const EditItemPage: NextPage<Props> = ({ layout, item }) => {
                               overflow='hidden'
                               filter={field.value === image.id ? 'brightness(75%) saturate(140%)' : undefined}
                               _hover={{ filter: 'brightness(75%) saturate(140%)' }}
-                              onClick={() => {
-                                if (field.value === image.id) return field.onChange(null)
-                                return field.onChange(image.id)
-                              }}
                             />
                             {
                               field.value === image.id
@@ -184,6 +186,7 @@ const EditItemPage: NextPage<Props> = ({ layout, item }) => {
                                   left={0}
                                   bottom={0}
                                   right={0}
+                                  cursor='pointer'
                                 >
                                   <Icon
                                     as={CheckCheck}
@@ -224,7 +227,11 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
       slug: itemSlug
     },
     include: {
-      images: true,
+      images: {
+        orderBy: {
+          createdAt: 'asc'
+        }
+      },
       collection: {
         include: {
           user: true
