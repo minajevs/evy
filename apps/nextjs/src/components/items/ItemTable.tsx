@@ -70,7 +70,7 @@ export const ItemTable = ({ items, onTagClick }: Props) => {
           <ButtonGroup mx={4} flexShrink={0}>
             <Menu>
               <MenuButton variant='ghost' as={IconButton} icon={<Icon as={MoreHorizontal} />} />
-              <MenuList p={0} minWidth='4xs'>
+              <MenuList p={0} minWidth='4xs' zIndex={10}>
                 <ShareDialog
                   buttonProps={{ leftIcon: <Icon as={Share2} />, variant: 'ghost', width: '100%', borderRadius: 0 }}
                   username={item.collection.user.username}

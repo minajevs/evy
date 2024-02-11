@@ -31,7 +31,10 @@ const CollectionEditPage: NextPage<Props> = ({ layout, collection }) => {
     register,
     formState: { errors, isValid },
     watch
-  } = useZodForm({ schema: editCollectionSchema, defaultValues: { id: collection.id, name: collection.name, slug: collection.slug, description: collection.description ?? undefined } })
+  } = useZodForm({
+    schema: editCollectionSchema,
+    defaultValues: { id: collection.id, name: collection.name, slug: collection.slug, description: collection.description ?? undefined }
+  })
 
   const updateMutation = api.collection.update.useMutation()
   const verifySlugAvailableQuery = api.collection.verifyCollectionSlug.useQuery({ slug: verifyValue! }, {
@@ -48,6 +51,8 @@ const CollectionEditPage: NextPage<Props> = ({ layout, collection }) => {
     const updatedCollection = await updateMutation.mutateAsync(input)
     await router.replace(`/my/${updatedCollection.slug}`)
   })
+
+  console.log(isValid, errors)
 
   return <>
     <MyLayout title="Collection" layout={layout}>

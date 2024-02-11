@@ -59,7 +59,6 @@ export const UploadDialog = ({ itemId, disclosure, onUploaded, onUpdated }: Prop
 
     const createdImage = await imageCreateMutation.mutateAsync({ itemId, externalImageId: directUpload.result.id, thumbhash })
 
-
     setUploading(false)
     onUploaded(createdImage)
     setUploadedImage(createdImage)

@@ -61,6 +61,8 @@ const EditItemPage: NextPage<Props> = ({ layout, item }) => {
 
   const badgeColor = useColorModeValue('white', 'black')
 
+  console.log(isValid, errors)
+
   return <>
     <MyLayout title="Item" layout={layout}>
       <form onSubmit={onSubmit}>
@@ -146,52 +148,56 @@ const EditItemPage: NextPage<Props> = ({ layout, item }) => {
           <Box width='full'>
             <FormControl isInvalid={errors.defaultImageId !== undefined} isDisabled={loading}>
               <FormLabel>Thumbnail</FormLabel>
-              <Controller
-                name='defaultImageId'
-                control={control}
-                render={({ field }) => (
-                  <SimpleGrid columns={{ xl: 8, md: 6, sm: 4, base: 2 }} spacing='3' width='100%'>
-                    {item.images.map(image =>
-                      <Flex justify='center' role="group" key={image.id} position='relative'>
-                        <ImageCard
-                          image={image}
-                          width='full'
-                          borderRadius='md'
-                          border={field.value === image.id ? '2px solid' : undefined}
-                          borderColor='primary'
-                          overflow='hidden'
-                          filter={field.value === image.id ? 'brightness(75%) saturate(140%)' : undefined}
-                          _hover={{ filter: 'brightness(75%) saturate(140%)' }}
-                          onClick={() => {
-                            if (field.value === image.id) return field.onChange(null)
-                            return field.onChange(image.id)
-                          }}
-                        />
-                        {
-                          field.value === image.id
-                            ?
-                            <Circle
-                              size={6}
-                              bg='primary'
-                              color={badgeColor}
-                              position='absolute'
-                              margin='auto'
-                              top={0}
-                              left={0}
-                              bottom={0}
-                              right={0}
-                            >
-                              <Icon
-                                as={CheckCheck}
-                              />
-                            </Circle>
-                            : null
-                        }
-                      </Flex>)}
-                  </SimpleGrid>
-                )}
-              />
-              <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
+              {
+                item.images.length > 0
+                  ? <Controller
+                    name='defaultImageId'
+                    control={control}
+                    render={({ field }) => (
+                      <SimpleGrid columns={{ xl: 8, md: 6, sm: 4, base: 2 }} spacing='3' width='100%'>
+                        {item.images.map(image =>
+                          <Flex justify='center' role="group" key={image.id} position='relative'>
+                            <ImageCard
+                              image={image}
+                              width='full'
+                              borderRadius='md'
+                              border={field.value === image.id ? '2px solid' : undefined}
+                              borderColor='primary'
+                              overflow='hidden'
+                              filter={field.value === image.id ? 'brightness(75%) saturate(140%)' : undefined}
+                              _hover={{ filter: 'brightness(75%) saturate(140%)' }}
+                              onClick={() => {
+                                if (field.value === image.id) return field.onChange(null)
+                                return field.onChange(image.id)
+                              }}
+                            />
+                            {
+                              field.value === image.id
+                                ?
+                                <Circle
+                                  size={6}
+                                  bg='primary'
+                                  color={badgeColor}
+                                  position='absolute'
+                                  margin='auto'
+                                  top={0}
+                                  left={0}
+                                  bottom={0}
+                                  right={0}
+                                >
+                                  <Icon
+                                    as={CheckCheck}
+                                  />
+                                </Circle>
+                                : null
+                            }
+                          </Flex>)}
+                      </SimpleGrid>
+                    )}
+                  />
+                  : <Text>No images for this item yet</Text>
+              }
+              <FormErrorMessage>{errors.defaultImageId?.message}</FormErrorMessage>
             </FormControl>
           </Box>
         </VStack>
