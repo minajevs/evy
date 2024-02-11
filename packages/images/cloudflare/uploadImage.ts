@@ -36,6 +36,7 @@ export const uploadImage = async ({
     .post(directUpload.uploadURL, data, {
       onUploadProgress: (progress) => {
         onProgress(progress.progress ?? 0)
+        console.log(progress)
       },
       headers: {
         'Content-Type': 'multipart/form-data',

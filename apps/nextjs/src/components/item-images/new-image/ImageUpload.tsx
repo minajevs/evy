@@ -1,5 +1,4 @@
-import { Box, Flex, Icon, IconButton, Image, Link, Stack, Text, VStack, VisuallyHidden } from "@chakra-ui/react"
-import { Trash2 } from "lucide-react"
+import { Box, Flex, Icon, Image, Link, Stack, Text, VStack, VisuallyHidden } from "@chakra-ui/react"
 import { type ReactNode, useRef, useState, useCallback } from "react"
 import { useDropzone } from 'react-dropzone'
 
@@ -54,7 +53,7 @@ export const ImageUpload = ({ onDrop, height, multiple = false }: FileUploadProp
       filter='brightness(75%) saturate(140%)'
       src={preview}
     />
-    <IconButton
+    {/* <IconButton
       aria-label="remove image"
       icon={<Icon as={Trash2} />}
       position='absolute'
@@ -64,7 +63,7 @@ export const ImageUpload = ({ onDrop, height, multiple = false }: FileUploadProp
       bottom={0}
       right={0}
       onClick={onRemoveFile}
-    />
+    /> */}
   </Flex>
 
   return (

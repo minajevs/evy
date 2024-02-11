@@ -40,6 +40,9 @@ export const imageRouter = createTRPCRouter({
             thumbhash,
             createdAt: new Date(),
           },
+          include: {
+            defaultItem: true,
+          },
         })
       },
     ),

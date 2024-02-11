@@ -1,4 +1,4 @@
-import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, type UseDisclosureReturn, Stack, Progress } from "@chakra-ui/react"
+import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, type UseDisclosureReturn, Box, AbsoluteCenter, CircularProgress, useColorModeValue } from "@chakra-ui/react"
 import { ImageUpload } from "./ImageUpload"
 import { api } from "~/utils/api"
 import { useCallback, useState } from "react"
@@ -53,25 +53,38 @@ export const UploadDialog = ({ itemId, disclosure, onUploaded, onUpdated }: Prop
     setProgress(null)
 
     const directUpload = await directUploadMutateAsync({ itemId })
-    await uploadImage({ file: files[0]!, directUpload: directUpload.result, onProgress: setProgress })
     const thumbhash = await getThumbhash(files[0]!)
+
+    await uploadImage({ file: files[0]!, directUpload: directUpload.result, onProgress: setProgress })
 
     const createdImage = await imageCreateMutation.mutateAsync({ itemId, externalImageId: directUpload.result.id, thumbhash })
 
-    //setUploading(false)
-    //onUploaded(createdImage)
-    //setUploadedImage(createdImage)
+
+    setUploading(false)
+    onUploaded(createdImage)
+    setUploadedImage(createdImage)
   }, [directUploadMutateAsync, imageCreateMutation, itemId, onUploaded])
+
+  const uploadProgressColor = useColorModeValue('secondary.500', 'secondary.200')
 
   const body = uploadedImage === null
     ? <>
       <ModalBody>
-        <ImageUpload height="30vh" onDrop={handleFiles} />
-        {
-          uploading
-            ? <Stack width='full' alignItems='center'><Progress width='full' colorScheme="secondary" borderRadius='full' hasStripe isAnimated isIndeterminate={uploadProgress === null} value={(uploadProgress ?? 0) * 100} /></Stack>
-            : null
-        }
+        <Box>
+          <ImageUpload height="30vh" onDrop={handleFiles} />
+          {
+            uploading
+              ? <AbsoluteCenter axis='both'>
+                <CircularProgress
+                  color={uploadProgressColor}
+                  size='5rem'
+                  isIndeterminate={uploadProgress === null}
+                  value={(uploadProgress ?? 0) * 100}
+                />
+              </AbsoluteCenter>
+              : null
+          }
+        </Box>
       </ModalBody>
 
       <ModalFooter>
@@ -79,7 +92,7 @@ export const UploadDialog = ({ itemId, disclosure, onUploaded, onUpdated }: Prop
     </>
     : <ImageUploadUpdateModal image={uploadedImage} onSave={onSave} />
 
-  return <Modal size='2xl' isOpen={isOpen} onClose={handleClose} >
+  return <Modal size='2xl' isOpen={isOpen} onClose={handleClose} closeOnOverlayClick={!uploading}>
     <ModalOverlay />
     <ModalContent>
       <ModalHeader>Upload Image</ModalHeader>
