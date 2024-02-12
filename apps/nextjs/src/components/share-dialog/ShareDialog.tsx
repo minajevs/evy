@@ -89,7 +89,7 @@ export const ShareDialog = ({ username, collectionSlug, itemSlug, buttonProps, c
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme='blue' width='5rem' onClick={onClose}>
+            <Button colorScheme='secondary' width='5rem' onClick={onClose}>
               Done
             </Button>
           </ModalFooter>

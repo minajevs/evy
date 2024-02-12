@@ -106,7 +106,7 @@ export const ItemTagInput = ({ collectionTags, tags, onSave }: Props) => {
               <Tag key={tag.id} height='unset' as={Button} colorScheme='secondary' variant='outline'
                 onMouseDown={(e) => {
                   // prevent input blur
-                  // blue will be manually called
+                  // blur will be manually called
                   e.preventDefault()
                   onSelect(tag.text)
                 }}
