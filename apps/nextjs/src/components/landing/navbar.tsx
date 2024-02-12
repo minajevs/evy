@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Flex, HStack, Heading, Icon, IconButton, type LinkProps, Stack, VStack, useColorMode, useColorModeValue, useDisclosure } from "@chakra-ui/react"
+import { Box, Button, Flex, HStack, Heading, Icon, IconButton, type LinkProps, Stack, VStack, useColorMode, useColorModeValue, useDisclosure } from "@chakra-ui/react"
 import { useBackgroundColor } from "@evy/styling"
 import { signIn } from "next-auth/react"
 import { useAutoAnimate } from "@formkit/auto-animate/react"
@@ -38,7 +38,7 @@ export const Navbar = ({ signedIn }: Props) => {
           </Heading>
 
           {/* Desktop menu  */}
-          <HStack
+          {/* <HStack
             display={{ base: 'none', md: 'flex' }}
             alignItems="center"
             spacing={8}
@@ -50,10 +50,10 @@ export const Navbar = ({ signedIn }: Props) => {
             bg={navigation}
             boxShadow='lg'
           >
-            <NavLink name="Features" href="/" />
+            <NavLink name="Features" href="#features" />
             <NavLink name="About" href="/" />
             <NavLink name="Pricing" href="/" />
-          </HStack>
+          </HStack> */}
 
           {/* Buttons */}
           <HStack w={150} justifyContent='end'>
@@ -105,11 +105,11 @@ export const Navbar = ({ signedIn }: Props) => {
           spacing={8}
           fontSize='lg'
         >
-          <NavLink name="Features" href="/" />
+          {/* <NavLink name="Features" href="/" />
           <NavLink name="About" href="/" />
           <NavLink name="Pricing" href="/" />
 
-          <Divider mt={16} />
+          <Divider mt={16} /> */}
           <VStack>
             <Heading fontSize=''>
               Existing user?

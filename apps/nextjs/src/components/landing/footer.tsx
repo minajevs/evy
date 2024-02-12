@@ -1,6 +1,7 @@
 import { Link } from "@chakra-ui/next-js"
 import { Box, Flex, HStack, Heading, Text, VStack, useColorModeValue } from "@chakra-ui/react"
 import { useBackgroundColor } from "@evy/styling"
+import { EvyLogo } from "../logo/EvyLogo"
 
 
 export const Footer = () => {
@@ -15,7 +16,7 @@ export const Footer = () => {
   >
     <Flex direction={{ base: 'column', md: 'row' }} gap={{ base: 8, md: 16 }} alignItems='start' justifyContent='start'>
       <VStack alignItems='start'>
-        <Heading size='md' mb={4}>Evy</Heading>
+        <EvyLogo />
         <Text>
           Evy is an app to manage, overview, track, share and discover precious hobbies
         </Text>
@@ -24,14 +25,14 @@ export const Footer = () => {
         </Text>
       </VStack>
       <HStack mt='0' spacing={16}>
-        <VStack alignItems='start'>
+        {/* <VStack alignItems='start'>
           <Heading size="sm" mb={4}>
             About
           </Heading>
           <Link href="/">About</Link>
           <Link href="/">Features</Link>
           <Link href="/">Pricing</Link>
-        </VStack>
+        </VStack> */}
         <VStack alignItems='start'>
           <Heading size="sm" mb={4}>
             Links

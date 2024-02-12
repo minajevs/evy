@@ -1,5 +1,5 @@
 import { Box, type BoxProps, useInterval } from "@chakra-ui/react"
-import { motion, AnimatePresence } from "framer-motion"
+import { m, AnimatePresence, LazyMotion, domAnimation } from "framer-motion"
 import { useState, type ReactNode } from "react"
 
 type Props = {
@@ -13,23 +13,24 @@ export const ScrollText = ({ children, ...rest }: Props) => {
   useInterval(nextChild, 3000)
 
   return <Box {...rest}>
-    <AnimatePresence mode='popLayout'>
-      <motion.div
-        key={currentChild}
-        initial={{ opacity: 0, scale: 0.9, y: '10px' }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.9, y: '-10px' }}
-        layout='position'
-        transition={{
-          duration: 0.25,
-          ease: 'easeInOut'
-        }}
-        onClick={nextChild}
-        style={{ cursor: 'pointer', userSelect: 'none' }}
-      >
-        {children[currentChild % (children.length - 1)]}
-      </motion.div>
-
-    </AnimatePresence>
+    <LazyMotion features={domAnimation}>
+      <AnimatePresence mode='popLayout'>
+        <m.div
+          key={currentChild}
+          initial={{ opacity: 0, scale: 0.9, y: '10px' }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.9, y: '-10px' }}
+          layout='position'
+          transition={{
+            duration: 0.25,
+            ease: 'easeInOut'
+          }}
+          onClick={nextChild}
+          style={{ cursor: 'pointer', userSelect: 'none' }}
+        >
+          {children[currentChild % (children.length - 1)]}
+        </m.div>
+      </AnimatePresence>
+    </LazyMotion>
   </Box>
 }

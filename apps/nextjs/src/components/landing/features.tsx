@@ -1,10 +1,11 @@
-import { Box, Card, CardBody, CardHeader, Container, type ContainerProps, Heading, SimpleGrid, Text, chakra, type CardBodyProps } from "@chakra-ui/react"
+import { Box, Card, CardBody, CardHeader, Container, type ContainerProps, Heading, SimpleGrid, Text, chakra, type CardBodyProps, type CardProps } from "@chakra-ui/react"
 import { type ReactNode } from "react"
 import NextImage from "next/image"
 
 import ItemsFilter from '../../../public/images/items-filter.png'
 import ItemPhotos from '../../../public/images/item-photos.png'
 import ItemSharing from '../../../public/images/item-sharing.png'
+import { useBackgroundPattern, useTransparentColor } from "@evy/styling"
 
 const CoolImage = chakra(NextImage, {
   shouldForwardProp: (prop) => ['width', 'height', 'src', 'alt', 'placeholder', 'style', 'onLoad'].includes(prop),
@@ -12,6 +13,9 @@ const CoolImage = chakra(NextImage, {
 
 type Props = {} & ContainerProps
 export const Features = ({ ...rest }: Props) => {
+  const pattern = useBackgroundPattern({ bg: 'var(--card-bg)', fade: true })
+  const cardBgColor = useTransparentColor('secondary.500', 0.1)
+
   return <Container maxWidth='1440' px={{ base: 6, md: 12 }} {...rest}>
     <SimpleGrid columns={{ base: 1, md: 3 }} spacing={4}>
       <Box gridColumnStart={{ base: 1 }} gridColumnEnd={{ base: 1, md: 3 }}>
@@ -37,7 +41,9 @@ export const Features = ({ ...rest }: Props) => {
         </FeatureCard>
       </Box>
       <Box gridColumnStart={{ base: 1, md: 3 }} gridColumnEnd={{ base: 1, md: 4 }}>
-        <FeatureCard label="Item photos">
+        <FeatureCard label="Item photos" cardProps={{
+          backgroundImage: `radial-gradient(at 0% 0%, ${cardBgColor} 0, transparent 80%);`
+        }}>
           <Text>
             Have a cool photoshoot of an item, want to create a visual inventory or track appearance and condition details?
             There is a place for it.
@@ -56,7 +62,7 @@ export const Features = ({ ...rest }: Props) => {
         </FeatureCard>
       </Box>
       <Box gridColumnStart={{ base: 1 }} gridColumnEnd={{ base: 1 }}>
-        <FeatureCard label="Free">
+        <FeatureCard label="Free" cardProps={{ backgroundImage: pattern }}>
           <Text>
             Evy is free to use, forever.
           </Text>
@@ -98,9 +104,10 @@ export const Features = ({ ...rest }: Props) => {
 type FeatureCardProps = {
   label: string
   children: ReactNode
+  cardProps?: CardProps
 } & CardBodyProps
-const FeatureCard = ({ label, children, ...rest }: FeatureCardProps) => {
-  return <Card boxShadow='xl' height='100%' borderRadius={{ base: 8, md: 16 }}>
+const FeatureCard = ({ label, children, cardProps, ...rest }: FeatureCardProps) => {
+  return <Card boxShadow='xl' height='100%' borderRadius={{ base: 8, md: 16 }} {...cardProps}>
     <CardHeader px={{ base: 4, md: 8 }} pt={{ base: 4, md: 8 }} pb={4}>
       <Heading size='md'>{label}</Heading>
     </CardHeader>
