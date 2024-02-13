@@ -33,9 +33,11 @@ export const getThumbhash = async (file: File) => {
 const emptyPixel =
   'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII='
 
-export const getDataFromThumbhash = (thumbhash: string) => {
+export const getDataFromThumbhash = (
+  thumbhash: string,
+): `data:image/${string}` => {
   if (thumbhash === 'error') return emptyPixel
   const buffer = new Uint8Array(Buffer.from(thumbhash, 'base64'))
   const dataUrl = thumbHashToDataURL(buffer)
-  return dataUrl
+  return dataUrl as `data:image/${string}`
 }
