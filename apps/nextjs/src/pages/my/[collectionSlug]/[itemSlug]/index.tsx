@@ -131,7 +131,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
   return {
     props: {
       item: currentItem,
-      ...await getLayoutProps(auth.user.id)
+      ...await getLayoutProps(auth.user.id, req.cookies)
     }
   }
 }

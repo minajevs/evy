@@ -318,7 +318,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, res, 
       sortingDirection: direction,
       page,
       totalItems: itemCount,
-      ...await getLayoutProps(auth.user.id)
+      ...await getLayoutProps(auth.user.id, req.cookies)
     }
   }
 }

@@ -89,6 +89,19 @@ model ItemImage {
     @@index([itemId])
 } 
 
+model Feedback {
+    id              String @id @default(cuid())
+    authorId        String
+
+    text            String
+    needsResponse   Boolean
+    responded       Boolean
+
+    author          User @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+    createdAt       DateTime
+}
+
 // -------------------
 // NextAuth.js Models
 // -------------------
@@ -134,6 +147,7 @@ model User {
     sessions      Session[]
 
     collections   Collection[]
+    feedback      Feedback[]
 }
 
 model VerificationToken {

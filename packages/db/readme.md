@@ -5,7 +5,7 @@
 ### Migrations
 
 1. Add necessary changes to `schema.prisma`
-2. Execute `npm run db:migrate` from `packages/db` folde
+2. Execute `npm run db:migrate` from `packages/db` folder
 
 - WARNING!: Make sure local or unnecessary DB is targeted, which is in sync with PROD
 

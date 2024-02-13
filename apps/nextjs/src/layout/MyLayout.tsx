@@ -5,6 +5,7 @@ import { Sidebar, type LinkItem } from "./navigation/Sidebar"
 import { type LayoutServerSideProps } from "~/utils/layoutServerSideProps"
 import { BottomNavigation } from "./navigation/BottomNavigation"
 import { MobileNav } from "./navigation/MobileNav"
+import { FeedbackWidget } from "~/components/feedback/FeedbackWidget"
 
 type Props = {
   children: React.ReactNode
@@ -40,6 +41,7 @@ export const MyLayout = ({ children, layout, title }: Props) => {
       <Box ml={{ base: 0, md: 60 }} p={{ base: 4, sm: 8 }} mb={{ base: 24, md: 0 }}>
         {children}
       </Box>
+      <FeedbackWidget display={{ base: 'none', md: 'flex' }} seenFeedback={layout.loggedIn && layout.seenFeedback} />
       <BottomNavigation display={{ base: 'flex', md: 'none' }} />
     </Box>
   </>
