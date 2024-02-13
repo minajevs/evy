@@ -3,7 +3,7 @@ import NextImage from "next/image"
 import EvyDemoImage from '../../../public/images/evy.png'
 
 const CoolImage = chakra(NextImage, {
-  shouldForwardProp: (prop) => ['width', 'height', 'src', 'alt', 'placeholder', 'style', 'onLoad'].includes(prop),
+  shouldForwardProp: (prop) => ['width', 'height', 'src', 'alt', 'placeholder', 'style', 'onLoad', 'priority', 'sizes'].includes(prop),
 })
 
 type Props = {} & BoxProps
