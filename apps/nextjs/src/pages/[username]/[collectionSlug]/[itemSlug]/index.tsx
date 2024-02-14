@@ -84,12 +84,12 @@ const ImageView = ({ item }: Props) => {
 
   return <>
     <Flex
-      height='100%'
-      alignItems='start'
+      flexGrow={1}
+      alignItems='stretch'
       gap={5}
       direction={{ base: 'column', md: 'row' }}
     >
-      <Box width={{ base: '100%', md: '50%' }}>
+      <Box height='100%' width={{ base: '100%', md: '50%' }}>
         <ItemHeading item={item} />
         {
           item.tags.length > 0
@@ -108,9 +108,10 @@ const ImageView = ({ item }: Props) => {
         }
       </Box>
       <VStack
-        height='100%'
+        flexGrow={1}
         width={{ base: '100%', md: '50%' }}
         minHeight='50vh'
+        maxHeight='90dvh'
         spacing={9}
       >
         <Card

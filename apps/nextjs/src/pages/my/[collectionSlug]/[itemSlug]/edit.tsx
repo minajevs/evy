@@ -39,7 +39,7 @@ const EditItemPage: NextPage<Props> = ({ layout, item }) => {
       name: item.name,
       description: item.description ?? undefined,
       slug: item.slug,
-      defaultImageId: item.defaultImageId ?? undefined
+      defaultImageId: item.defaultImageId ?? null
     }
   })
 
@@ -60,6 +60,8 @@ const EditItemPage: NextPage<Props> = ({ layout, item }) => {
   })
 
   const badgeColor = useColorModeValue('white', 'black')
+
+  console.log(errors)
 
   return <>
     <MyLayout title="Item" layout={layout}>
