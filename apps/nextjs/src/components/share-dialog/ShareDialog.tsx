@@ -69,7 +69,7 @@ export const ShareDialog = ({ username, collectionSlug, itemSlug, buttonProps, c
                     <QRCodeSVG
                       size={256}
                       value={url}
-                      level='M'
+                      level='Q'
                       imageSettings={{
                         src: EvyLogo.src,
                         excavate: true,
