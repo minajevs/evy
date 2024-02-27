@@ -17,6 +17,7 @@
     "db:migrate-create": "turbo db:migrate-create",
     "dev": "turbo dev --parallel",
     "dev:prisma": "turbo dev:prisma",
+    "dev:blog": "turbo dev:blog",
     "format": "prettier --write \"**/*.{js,cjs,mjs,ts,tsx,md,json}\" --ignore-path .gitignore",
     "lint": "turbo lint && manypkg check",
     "lint:local": "dotenv -- npm run lint",
@@ -38,6 +39,7 @@
   "workspaces": {
     "packages": [
       "apps/nextjs",
+      "apps/blog",
       "packages/api",
       "packages/auth",
       "packages/db",
